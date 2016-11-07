@@ -2,7 +2,7 @@ import { Navigation } from 'react-native-navigation';
 
 import DrawerScreen from './DrawerScreen';
 import ShareListScreen from './ShareListScreen';
-import ShareAddScreen from './ShareAddScreen';
+import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
 import MessageScreen from './MessageScreen';
 import ChatScreen from './ChatScreen';
 
@@ -12,4 +12,8 @@ export function registerScreens() {
   Navigation.registerComponent('app.message', () => MessageScreen);
   Navigation.registerComponent('app.chat', () => ChatScreen);
   Navigation.registerComponent('app.SideMenu', () => DrawerScreen);
+
+
+  Navigation.registerComponent('shareAdd.typeChoose', () => ShareTypeScreen);
+
 }
