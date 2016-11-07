@@ -3,6 +3,8 @@ import { Text, Image } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Flex from '../Flex';
 
+import styles from './index.style';
+
 class EmptyView extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +45,7 @@ class EmptyView extends Component {
 
   renderSubTip(subTip) {
     if (subTip) {
-      return <Text>{ subTip }</Text>
+      return <Text style={ styles.subTip }>{ subTip }</Text>
     }
     return false;
   }
@@ -53,7 +55,7 @@ class EmptyView extends Component {
     return (
       <Flex column justifyContent="center" alignItems="center">
         { this.renderIcon(icon) }
-        <Text>{ tip }</Text>
+        <Text style={ styles.tip }>{ tip }</Text>
         { this.renderSubTip(subTip) }
       </Flex>
     )
