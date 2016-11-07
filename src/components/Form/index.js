@@ -58,8 +58,8 @@ const create = () => (WrappedCompnent) => {
       return {
         onChangeText: (value) => {
           const cb = (err) => {
-            if ('string' !== typeof err) throw new Error('the validator of error should be string');
             if (err) {
+              if ('string' !== typeof err) throw new Error('the validator of error should be string');
               // set error
               this._setSuccFlag(fieldName, {
                 success: false,
