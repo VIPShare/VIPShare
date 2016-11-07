@@ -65,7 +65,7 @@ class ShareListScreen extends Component {
     }, 100);
   }
 
-  componentWillMount() {
+  componentWillUnmount() {
     if (this.loading) {
       clearTimeout(this.loading);
     }
@@ -122,6 +122,4 @@ class ShareListScreen extends Component {
   }
 }
 
-export default create({
-  navigatorButtons: ShareListScreen.navigatorButtons,
-})(ShareListScreen);
+export default create()(ShareListScreen);
