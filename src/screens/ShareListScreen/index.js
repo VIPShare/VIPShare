@@ -1,23 +1,27 @@
 import React, { Component } from 'react';
 import {
   ListView,
+  Alert,
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
+import EmptyView from '../../components/EmptyView';
 import { create } from '../SideMenuDecorator';
+import { list } from '../../services/account';
 
-const list = [
-  {
-    name: 'Amy Farha',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    subtitle: 'Vice President'
-  },
-  {
-    name: 'Chris Jackson',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    subtitle: 'Vice Chairman'
-  },
-]
+// const list = [
+//   {
+//     name: 'Amy Farha',
+//     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+//     subtitle: 'Vice President'
+//   },
+//   {
+//     name: 'Chris Jackson',
+//     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+//     subtitle: 'Vice Chairman'
+//   },
+// ]
+const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class ShareListScreen extends Component {
   static navigatorButtons = {
     rightButtons: [
@@ -32,17 +36,27 @@ class ShareListScreen extends Component {
   constructor(props) {
     super(props);
 
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows(list),
-    };
+      accounts: [],
+      loading: true,
+    }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
   componentDidMount() {
-    this.loading = setTimeout(() => {
-      
+    this.loading = setTimeout(async () => {
+      const { data, err } = await list();
+      if (err) {
+        Alert.alert(err.message);
+        return false;
+      }
+
+      this.setState({
+        accounts: data,
+        loading: false,
+        dataSource: ds.cloneWithRows(data),
+      })
     }, 100);
   }
 
@@ -64,7 +78,7 @@ class ShareListScreen extends Component {
     }
   }
 
-  renderRow (rowData, sectionID) {
+  renderRow(rowData, sectionID) {
     return (
       <ListItem
         roundAvatar
@@ -78,6 +92,14 @@ class ShareListScreen extends Component {
   }
 
   render() {
+    if (this.state.loading) {
+      return (
+        <EmptyView
+          tip="请稍后"
+          subTip="正在加载账号分享列表..."
+        />
+      );
+    }
     return (
       <ListView
         renderRow={ this.renderRow }

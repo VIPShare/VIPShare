@@ -7,6 +7,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "querystring": "^0.2.0",
     "react": "15.3.2",
     "react-native": "0.35.0",
     "react-native-elements": "^0.6.2",
