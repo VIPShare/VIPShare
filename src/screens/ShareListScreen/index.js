@@ -39,6 +39,7 @@ class ShareListScreen extends Component {
     this.state = {
       accounts: [],
       loading: true,
+      loadSuccess: true,
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
@@ -49,6 +50,10 @@ class ShareListScreen extends Component {
       const { data, err } = await list();
       if (err) {
         Alert.alert(err.message);
+        this.setState({
+          loading: false,
+          loadSuccess: false,
+        })
         return false;
       }
 
@@ -99,6 +104,14 @@ class ShareListScreen extends Component {
           subTip="正在加载账号分享列表..."
         />
       );
+    }
+    if (!this.state.loadSuccess) {
+      return (
+        <EmptyView
+          tip="加载失败"
+          subTip="很抱歉，加载账号分享列表失败"
+        />
+      )
     }
     return (
       <ListView
