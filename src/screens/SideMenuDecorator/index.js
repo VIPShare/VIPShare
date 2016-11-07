@@ -3,7 +3,8 @@ import { Alert } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 let userIcon;
-const create = ({ navigatorButtons = [] }) => (WrappedCompnent) => {
+const create = () => (WrappedCompnent) => {
+  const navigatorButtons = WrappedCompnent.navigatorButtons || [];
   class SideMenuDecorator extends Component {
 
     constructor(props) {
@@ -25,8 +26,6 @@ const create = ({ navigatorButtons = [] }) => (WrappedCompnent) => {
       this._populateIcons().then(() => {
         this._setLeftButtons(navigatorButtons.leftButtons);
         this._setRightButtons(navigatorButtons.rightButtons);
-
-        // this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
       }).catch( err => {
         console.error(err);
       } )
