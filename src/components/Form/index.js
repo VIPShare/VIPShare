@@ -2,67 +2,118 @@ import React, { Component, PropTypes } from 'react';
 import { View } from 'react-native';
 import { FormInput } from 'react-native-elements';
 
-export default class Form extends Component {
-  static propTypes = {
-    onChange: PropTypes.func.isRequired,
-  }
-  static defaultProps = {
-    onChange: () => {},
-  }
+import FormItem from './FormItem';
 
-  constructor(props) {
-    super(props);
+const create = () => (WrappedCompnent) => {
+  class FormWrapper extends Component {
+    static navigatorButtons = WrappedCompnent.navigatorButtons || [];
+    
+    constructor(props) {
+      super(props);
 
-    this.state = {
-      form: {},
-    }
-
-    this._putElement = this._putElement.bind(this);
-    this._onChange = this._onChange.bind(this);
-    this.getValues = this.getValues.bind(this);
-  }
-
-  _putElement(key, value) {
-    this.setState({
-      form: {
-        ...this.state.form,
-        [key]: value,
+      this.state = {
+        form: {},
       }
-    })
-  }
 
-  _onChange(key, value) {
-    this._putElement(key, value);
-    if (this.props.onChange) {
-      this.props.onChange({key, value}, this.getValues());
+      this._putElement = this._putElement.bind(this);
+      this._onChange = this._onChange.bind(this);
+      this._setSuccFlag = this._setSuccFlag.bind(this);
+
+      this.getFieldProps = this.getFieldProps.bind(this);
+      this.getFieldError = this.getFieldError.bind(this);
+      this.getFieldValidating = this.getFieldValidating.bind(this);
     }
-  }
 
-  getValues() {
-    return this.state.form;
-  }
+    _putElement(key, value) {
+      this.setState({
+        form: {
+          ...this.state.form,
+          [key]: {
+            value,
+            validating: false,
+          },
+        }
+      })
+    }
 
-  render() {
-    return (
-      <View>
-      {
-        React.Children.map(this.props.children, child => {
-          if (child.type === FormInput) {
-            if ('undefined' === typeof child.props.name || child.props.name.trim() === '') {
-              // no name specified.
-              console.warn('no name specified');
+    _setSuccFlag(key, options) {
+      this.setState({
+        form: {
+          ...this.state.form,
+          [key]: {
+            ...this.state.form[key],
+            validated: options.success,
+            error: options.success ? undefined : options.message,
+          },
+        }
+      })
+    }
+
+    _onChange(key, value) {
+      this._putElement(key, value);
+    }
+
+    getFieldProps(fieldName, options = {}) {
+      const field = this.state.form[fieldName];
+      return {
+        onChangeText: (value) => {
+          const cb = (err) => {
+            if ('string' !== typeof err) throw new Error('the validator of error should be string');
+            if (err) {
+              // set error
+              this._setSuccFlag(fieldName, {
+                success: false,
+                message: err,
+              });
               return false;
             }
-            return React.cloneElement(child, {
-              onChangeText: (text) => {
-                this._onChange(child.props.name, text);
-              }
-            })
+            // set success
+            this._setSuccFlag(fieldName, {
+              success: true,
+            });
           }
-          return child;
-        })
+
+          this._onChange(fieldName, value);
+          options.validator && options.validator(value, cb);
+        },
+        value: field ? field.value : undefined,
       }
-      </View>
-    )
+    }
+
+    getFieldError(fieldName) {
+      const field = this.state.form[fieldName];
+      return {
+        error: field ? field.validated : undefined,
+        message: field ? field.error : undefined,
+      }
+    }
+
+    getFieldValidating(fieldName) {
+      const field = this.state.form[fieldName];
+      return field ? field.validating : undefined;
+    }
+
+    render() {
+      const form = {
+        getFieldProps: this.getFieldProps,
+        getFieldError: this.getFieldError,
+        getFieldValidating: this.getFieldValidating,
+      }
+
+      return (
+        <WrappedCompnent {...this.props} form={ form }  />
+      )
+    }
   }
+
+  return FormWrapper;
 }
+
+const Form = ({ children }) => {
+  return <View>{ children }</View>
+}
+
+Form.create = create;
+Form.Item = FormItem;
+
+export default Form;
