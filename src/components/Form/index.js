@@ -14,27 +14,44 @@ const create = () => (WrappedCompnent) => {
       this.state = {
         form: {},
       }
+      this.fields = {};
 
+      this._initElement = this._initElement.bind(this);
       this._putElement = this._putElement.bind(this);
       this._onChange = this._onChange.bind(this);
       this._setSuccFlag = this._setSuccFlag.bind(this);
+      this._validateCb = this._validateCb.bind(this);
 
+      this.getField = this.getField.bind(this);
       this.getFieldProps = this.getFieldProps.bind(this);
       this.getFieldError = this.getFieldError.bind(this);
       this.getFieldValidating = this.getFieldValidating.bind(this);
       this.getFieldsValue = this.getFieldsValue.bind(this);
       this.getFieldValue = this.getFieldValue.bind(this);
+      this.validateForm = this.validateForm.bind(this);
     }
 
-    _putElement(key, value) {
+    _initElement(key, options) {
+      this.fields = {
+        ...this.fields,
+        [key]: {
+          validator: options.validator,
+        },
+      }
+    }
+
+    _putElement(key, value, cb) {
       this.setState({
         form: {
           ...this.state.form,
           [key]: {
+            ...this.state.form[key],
             value,
             validating: false,
           },
         }
+      }, () => {
+        cb();
       })
     }
 
@@ -51,56 +68,85 @@ const create = () => (WrappedCompnent) => {
       })
     }
 
-    _onChange(key, value) {
-      this._putElement(key, value);
+    _onChange(key, value, cb) {
+      this._putElement(key, value, cb);
+    }
+
+    _validateCb(fieldName, err) {
+      if (err) {
+        if ('string' !== typeof err) throw new Error('the validator of error should be string');
+        // set error
+        this._setSuccFlag(fieldName, {
+          success: false,
+          message: err,
+        });
+        return {
+          fieldName,
+          err,
+        };
+      }
+      // set success
+      this._setSuccFlag(fieldName, {
+        success: true,
+      });
+    }
+
+    getField(fieldName) {
+      const field = this.state.form[fieldName];
+      return {
+        ...field,
+        ...this.fields[fieldName],
+      }
     }
 
     getFieldProps(fieldName, options = {}) {
-      const field = this.state.form[fieldName];
+      this._initElement(fieldName, options);
+      const field = this.getField(fieldName);
       return {
         onChangeText: (value) => {
-          const cb = (err) => {
-            if (err) {
-              if ('string' !== typeof err) throw new Error('the validator of error should be string');
-              // set error
-              this._setSuccFlag(fieldName, {
-                success: false,
-                message: err,
-              });
-              return false;
-            }
-            // set success
-            this._setSuccFlag(fieldName, {
-              success: true,
-            });
-          }
-
-          this._onChange(fieldName, value);
-          options.validator && options.validator(value, cb);
+          this._onChange(fieldName, value, () => {
+            options.validator && options.validator(value, (err) => this._validateCb(fieldName, err));
+          });
         },
-        value: field ? field.value : undefined,
+        value: field.value,
       }
     }
 
     getFieldError(fieldName) {
-      const field = this.state.form[fieldName];
+      const field = this.getField(fieldName);
       return {
-        error: field ? field.validated : undefined,
-        message: field ? field.error : undefined,
+        error: field.validated,
+        message: field.error,
       }
     }
 
     getFieldValidating(fieldName) {
-      const field = this.state.form[fieldName];
-      return field ? field.validating : undefined;
+      const field = this.getField(fieldName);
+      return field.validating;
     }
 
     getFieldsValue() {
-      return Object.keys(this.state.form).map( key => ({[key]: getFieldValue(key)}) );
+      return Object.keys(this.state.form).map( key => ({[key]: this.getFieldValue(key)}) );
     }
 
     getFieldValue(key) {
-      return this.state.form[key].value;
+      return this.getField(key).value;
+    }
+
+    validateForm(cb) {
+      let errors;
+      Object.keys(this.fields).forEach((key, index) => {
+        const field = this.getField(key);
+        field.validator && field.validator(field.value, (err) => {
+          if (this._validateCb(key, err)) {
+            errors = [...(errors || {}), this._validateCb(key, err)];
+          }
+          if (Object.keys(this.fields).length - 1 === index) {
+            // the last validate
+            cb(errors);
+          }
+        });
+      });
     }
 
     render() {
@@ -110,6 +156,7 @@ const create = () => (WrappedCompnent) => {
         getFieldValidating: this.getFieldValidating,
         getFieldsValue: this.getFieldsValue,
         getFieldValue: this.getFieldValue,
+        validateForm: this.validateForm,
       }
 
       return (
