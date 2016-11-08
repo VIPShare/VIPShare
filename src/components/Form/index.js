@@ -22,6 +22,8 @@ const create = () => (WrappedCompnent) => {
       this.getFieldProps = this.getFieldProps.bind(this);
       this.getFieldError = this.getFieldError.bind(this);
       this.getFieldValidating = this.getFieldValidating.bind(this);
+      this.getFieldsValue = this.getFieldsValue.bind(this);
+      this.getFieldValue = this.getFieldValue.bind(this);
     }
 
     _putElement(key, value) {
@@ -93,11 +95,21 @@ const create = () => (WrappedCompnent) => {
       return field ? field.validating : undefined;
     }
 
+    getFieldsValue() {
+      return Object.keys(this.state.form).map( key => ({[key]: getFieldValue(key)}) );
+    }
+
+    getFieldValue(key) {
+      return this.state.form[key].value;
+    }
+
     render() {
       const form = {
         getFieldProps: this.getFieldProps,
         getFieldError: this.getFieldError,
         getFieldValidating: this.getFieldValidating,
+        getFieldsValue: this.getFieldsValue,
+        getFieldValue: this.getFieldValue,
       }
 
       return (
