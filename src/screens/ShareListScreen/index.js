@@ -8,6 +8,7 @@ import { List, ListItem } from 'react-native-elements';
 import EmptyView from '../../components/EmptyView';
 import { create } from '../SideMenuDecorator';
 import { list } from '../../services/account';
+import { userRequiredAndDispatch } from '../../utils/permission';
 
 // const list = [
 //   {
@@ -43,6 +44,11 @@ class ShareListScreen extends Component {
     }
 
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
+  }
+
+  async componentWillMount() {
+    // is login
+    await userRequiredAndDispatch(this.props.navigator);
   }
 
   componentDidMount() {
