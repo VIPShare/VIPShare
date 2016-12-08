@@ -23,7 +23,7 @@ class EmptyView extends Component {
         <Icon
           name={ icon.name }
           size={ icon.size }
-          color={ icon.color } 
+          color={ icon.color }
         />
       )
     }
