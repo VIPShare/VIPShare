@@ -3902,15 +3902,16 @@ react-native-dismiss-keyboard@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
 
-react-native-elements@^0.7.1:
-  version "0.7.1"
-  resolved "http://registry.npm.taobao.org/react-native-elements/download/react-native-elements-0.7.1.tgz#33111db698f4c2e030b540c90d673ad3f67f84e9"
+react-native-elements@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-0.9.0.tgz#fde48eb2f9b4379c9360e9997a4b4168197791c8"
   dependencies:
+    react-native-side-menu "^0.20.1"
     react-native-tab-navigator "^0.3.3"
 
-react-native-gifted-chat@0.0.10:
+react-native-gifted-chat@^0.0.10:
   version "0.0.10"
-  resolved "http://registry.npm.taobao.org/react-native-gifted-chat/download/react-native-gifted-chat-0.0.10.tgz#4ff71c9869e174eba357d086e33b4baff7fea0c6"
+  resolved "https://registry.yarnpkg.com/react-native-gifted-chat/-/react-native-gifted-chat-0.0.10.tgz#4ff71c9869e174eba357d086e33b4baff7fea0c6"
   dependencies:
     "@exponent/react-native-action-sheet" "git+https://github.com/FaridSafi/react-native-action-sheet.git"
     md5 "^2.1.0"
@@ -3928,9 +3929,9 @@ react-native-invertible-scroll-view@^1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-react-native-navigation@2.0.0-experimental.152:
-  version "2.0.0-experimental.152"
-  resolved "http://registry.npm.taobao.org/react-native-navigation/download/react-native-navigation-2.0.0-experimental.152.tgz#997a25cfcb0140ec5955c256ed95d141ac87cdef"
+react-native-navigation@v2.0.0-experimental.170:
+  version "2.0.0-experimental.170"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-2.0.0-experimental.170.tgz#64f6b8bc475d17a933e588fb36b8dcc2f846b873"
   dependencies:
     lodash "4.x.x"
   optionalDependencies:
@@ -3943,6 +3944,10 @@ react-native-parsed-text@^0.0.15:
 react-native-scrollable-mixin@^1.0.1:
   version "1.0.1"
   resolved "http://registry.npm.taobao.org/react-native-scrollable-mixin/download/react-native-scrollable-mixin-1.0.1.tgz#34a32167b64248594154fd0d6a8b03f22740548e"
+
+react-native-side-menu@^0.20.1:
+  version "0.20.1"
+  resolved "https://registry.yarnpkg.com/react-native-side-menu/-/react-native-side-menu-0.20.1.tgz#df21b4bb9d8a1aa3bae53d74ddf8a739eb59bfc5"
 
 react-native-tab-navigator@^0.3.3:
   version "0.3.3"
