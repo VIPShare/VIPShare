@@ -1,5 +1,6 @@
 # VIPShare
 账号分享app端
 
-原型提现：
-<iframe src="https://modao.cc/app/40bETkUcMLZy3pPhn3JS0POacWsX5yN/embed" width="515" height="968" allowTransparency="true" frameborder="0" allowfullscreen="allowfullscreen">&nbsp;</iframe>
+原型直通车：
+
+[<img src="./preview.png" width="515" height="968" alt="请点击这里进入原型" />](https://modao.cc/app/diQdUHoEFXmK0cgrztJE3ItHFiwO3kV)
