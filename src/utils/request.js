@@ -39,7 +39,8 @@ function request(url, options) {
     .then(parseText)
     .then(parseJSON)
     .then((data) => ({ data }))
-    .catch((error) => ({ error }));
+    .catch((error) => parseError(error))
+    .then((error) => {{ error }})
 }
 
 function parseError(error) {
@@ -80,5 +81,5 @@ function parseError(error) {
  */
 export {
   request as default,
-  parseError,
+  // parseError,
 }

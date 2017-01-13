@@ -14,6 +14,7 @@ import {
 import { FormInput } from 'react-native-elements';
 
 import Form from '../../components/Form';
+import { login } from '../../services/auth';
 import { isBlank } from '../../utils/string';
 
 class LoginScreen extends Component {
@@ -51,6 +52,7 @@ class LoginScreen extends Component {
   }
 
   login() {
+    const cb = this.props.cb;
     const { getFieldsValue, validateForm } = this.props.form;
     
     validateForm(errors => {
@@ -62,9 +64,18 @@ class LoginScreen extends Component {
 
       const data = getFieldsValue();
       // login
+      const { err } = login(data.username, data.password);
+      if (err) {
+        // 登录失败
+        Alert.alert('用户名或者密码错误');
+        return;
+      }
+
+      cb && 'function' === typeof cb && cb();
+
       this.props.navigator.dismissModal({
         animationType: 'slide-down',
-      })
+      });
     })
   }
 

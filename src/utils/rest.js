@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import querystring from 'querystring';
-import request, { parseError } from './request';
+import request from './request';
 
 async function accessToken(username, password) {
   if (!username) {
@@ -59,8 +59,13 @@ async function _pre() {
   const access_token = await AsyncStorage.getItem('access_token');
   const refresh_token = await AsyncStorage.getItem('refresh_token');
   if (!access_token) {
-    const tmp = await refreshToken(refresh_token);
-    return tmp;
+    return {
+      err: {
+        timestamp: new Date().getTime(),
+        message: 'need login',
+        status: 401,
+      },
+    }
   }
 
   return {
@@ -91,6 +96,8 @@ async function rest(url, options = {}) {
 
   return { err };
 }
+
+
 
 async function GET(url, params) {
   return await rest(`${url}?querystring.stringify(params)`);
@@ -138,7 +145,8 @@ async function DELETE(url, data) {
 
 export {
   rest as default,
-  parseError,
+  // parseError,
+  accessToken,
   GET,
   POST,
   PUT,
