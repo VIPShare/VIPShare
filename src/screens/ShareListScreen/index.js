@@ -36,7 +36,7 @@ class ShareListScreen extends Component {
 
   constructor(props) {
     super(props);
-
+    
     this.state = {
       accounts: [],
       loading: true,
@@ -71,10 +71,10 @@ class ShareListScreen extends Component {
         })
         return false;
       }
-
       this.setState({
         accounts: data,
         loading: false,
+        loadSuccess: true,
         dataSource: ds.cloneWithRows(data),
       })
     }, 100);
@@ -119,6 +119,14 @@ class ShareListScreen extends Component {
         <EmptyView
           tip="加载失败"
           subTip="很抱歉，加载账号分享列表失败"
+        />
+      )
+    }
+    if (this.state.accounts.length === 0) {
+      return (
+        <EmptyView
+          tip="还未有人分享哦！"
+          subTip="点击右上角Add按钮，成为第一个分享者吧！"
         />
       )
     }
