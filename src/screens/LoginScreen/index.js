@@ -55,7 +55,7 @@ class LoginScreen extends Component {
     const cb = this.props.cb;
     const { getFieldsValue, validateForm } = this.props.form;
     
-    validateForm(errors => {
+    validateForm(async errors => {
       if (errors && errors.length > 0) {
         console.log(errors);
         Alert.alert(errors[0].err);
@@ -64,7 +64,7 @@ class LoginScreen extends Component {
 
       const data = getFieldsValue();
       // login
-      const { err } = login(data.username, data.password);
+      const { err } = await login(data.username, data.password);
       if (err) {
         // 登录失败
         Alert.alert('用户名或者密码错误');
