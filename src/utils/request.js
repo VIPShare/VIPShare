@@ -39,13 +39,19 @@ function request(url, options) {
     .then(parseText)
     .then(parseJSON)
     .then((data) => ({ data }))
-    .catch((error) => parseError(error))
-    .then((error) => {{ error }})
+    .catch((error) => ({ err: error }));
 }
 
 function parseError(error) {
   try {
     return error.response.json()
+    .catch( err => {
+      return Promise.resolve({
+        timestamp: new Date().getTime(),
+        message: 'unkown error',
+        status: error.response && error.response.status,
+      });
+    } )
     .then( err => {
       if (err.status === 401) {
         return {
@@ -55,15 +61,22 @@ function parseError(error) {
         };
       }
 
+      if (err.status === 403) {
+        return {
+          ...err,
+          timestamp: new Date().getTime(),
+          message: '您没有权限访问该内容',
+        }
+      }
+
       return {
         ...err,
         message: err.message || err.error_description,
         timestamp: new Date().getTime(),
         status: error.response && error.response.status,
       }
-    } );
+    } )
   } catch (err) {
-    console.error(err);
     return Promise.resolve({
       timestamp: new Date().getTime(),
       message: 'unkown error',
@@ -81,5 +94,5 @@ function parseError(error) {
  */
 export {
   request as default,
-  // parseError,
+  parseError,
 }

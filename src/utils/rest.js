@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import querystring from 'querystring';
-import request from './request';
+import request, { parseError } from './request';
 
 async function accessToken(username, password) {
   if (!username) {
@@ -9,13 +9,13 @@ async function accessToken(username, password) {
   if (!password) {
     return { err: new Error('you should specific password parameter so that to get access_token') };
   }
-  const {data, err} = await request('/oauth2/token', {
+  const { data, err } = await request('/api/oauth2/token', {
     method: 'POST',
     headers: {
       'Authorization': 'Basic YXBwOnNlY3JldA==',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: `grant_type=password&username=${username}&password=${password}`,
+    body: `grant_type=password&username=${username}&password=${password}&scope=*`,
   });
 
   if (!err) {
@@ -27,14 +27,15 @@ async function accessToken(username, password) {
     };
   }
 
-  return { err };
+  const error = await parseError(err);
+  return { err: error };
 }
 
 async function refreshToken(refresh_token) {
   if(!refresh_token) {
     return { err: new Error('refresh_token should not be undefined') }
   }
-  const { data, err } = await request('/oauth2/token', {
+  const { data, err } = await request('/api/oauth2/token', {
     method: 'POST',
     headers: {
       'Authorization': 'Basic YXBwOnNlY3JldA==',
@@ -52,7 +53,8 @@ async function refreshToken(refresh_token) {
     };
   }
   
-  return { err };
+  const error = await parseError(err);
+  return { err: error };
 }
 
 async function _pre() {
@@ -85,7 +87,6 @@ async function rest(url, options = {}) {
     ...options,
     headers: {
       'Authorization': `Bearer ${obj.access_token}`, // could be overrided by options.headers.Authorization
-      'scope': '*',
       ...options.headers,
     }
   });
@@ -94,13 +95,14 @@ async function rest(url, options = {}) {
     return { data };
   }
 
-  return { err };
+  const error = await parseError(err);
+  return { err: error };
 }
 
 
 
 async function GET(url, params) {
-  return await rest(`${url}?querystring.stringify(params)`);
+  return await rest(`${url}?${querystring.stringify(params)}`);
 }
 
 async function POST(url, data) {
