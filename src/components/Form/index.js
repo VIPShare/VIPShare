@@ -126,7 +126,11 @@ const create = () => (WrappedCompnent) => {
     }
 
     getFieldsValue() {
-      return Object.keys(this.state.form).map( key => ({[key]: this.getFieldValue(key)}) );
+      let formdata = {};
+      Object.keys(this.state.form).forEach( key => {
+        formdata[key] = this.getFieldValue(key);
+      } );
+      return formdata;
     }
 
     getFieldValue(key) {
