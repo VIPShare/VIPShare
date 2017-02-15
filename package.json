@@ -10,7 +10,8 @@
     "querystring": "^0.2.0",
     "react": "15.4.1",
     "react-native": "^0.39.0",
-    "react-native-elements": "^0.9.0",
+    "react-native-config": "^0.3.1",
+    "react-native-elements": "0.9.0",
     "react-native-gifted-chat": "^0.0.10",
     "react-native-navigation": "next",
     "react-native-vector-icons": "3.0.0",
@@ -22,6 +23,7 @@
   "devDependencies": {
     "babel-jest": "^17.0.2",
     "babel-preset-react-native": "1.9.0",
+    "fetch-mock": "^5.9.3",
     "jest": "^17.0.3",
     "jest-react-native": "^17.1.0",
     "react-test-renderer": "^15.4.1",

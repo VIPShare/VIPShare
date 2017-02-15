@@ -1,6 +1,12 @@
+import Config from 'react-native-config';
 import { Navigation } from 'react-native-navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import '../ReactotronConfig';  // dev listener
+
+// set env
+if (Config.DEV) {
+  console.log('dev')
+}
 
 var listIcon, messageIcon;
 var selectedListIcon, selectedMessageIcon;

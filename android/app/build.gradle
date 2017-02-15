@@ -1,5 +1,13 @@
 apply plugin: "com.android.application"
 
+project.ext.envConfigFiles = [
+    debug: ".env.development",
+    release: ".env.production",
+    anycustombuildlowercase: ".env",
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+
 import com.android.build.OutputFile
 
 /**
@@ -126,6 +134,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-config')
     compile project(':react-native-vector-icons')
     compile project(':react-native-navigation')
     compile fileTree(dir: "libs", include: ["*.jar"])
