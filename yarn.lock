@@ -3902,7 +3902,7 @@ react-native-dismiss-keyboard@^1.0.0:
   version "1.0.0"
   resolved "http://registry.npm.taobao.org/react-native-dismiss-keyboard/download/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
 
-react-native-elements@^0.9.0:
+react-native-elements@0.9.0:
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/react-native-elements/-/react-native-elements-0.9.0.tgz#fde48eb2f9b4379c9360e9997a4b4168197791c8"
   dependencies:
@@ -3929,9 +3929,9 @@ react-native-invertible-scroll-view@^1.0.0:
     react-clone-referenced-element "^1.0.1"
     react-native-scrollable-mixin "^1.0.1"
 
-react-native-navigation@v2.0.0-experimental.170:
-  version "2.0.0-experimental.170"
-  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-2.0.0-experimental.170.tgz#64f6b8bc475d17a933e588fb36b8dcc2f846b873"
+react-native-navigation@next:
+  version "2.0.0-experimental.214"
+  resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-2.0.0-experimental.214.tgz#1673bf38ea74cbdf445861d217439119ee4551e8"
   dependencies:
     lodash "4.x.x"
   optionalDependencies:
