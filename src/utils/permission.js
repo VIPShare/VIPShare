@@ -1,4 +1,4 @@
-import { Navigation } from 'react-native-navigation';
+// import { Navigation } from 'react-native-navigation';
 // import { AsyncStorage } from 'react-native';
 
 // export const userRequired = async () => {
@@ -19,14 +19,14 @@ const eventGroupTrigger = () => {
 }
 
 export const userRequiredAndDispatch = async (cb) => {
-  Navigation.showModal({
-    screen: 'app.login',
-    title: '登录',
-    passProps: {
-      cb,
-    },
-    animationType: 'slide-up',
-  });
+  // Navigation.showModal({
+  //   screen: 'app.login',
+  //   title: '登录',
+  //   passProps: {
+  //     cb,
+  //   },
+  //   animationType: 'slide-up',
+  // });
 }
 
 export const checkAuth = async (err, cb) => {

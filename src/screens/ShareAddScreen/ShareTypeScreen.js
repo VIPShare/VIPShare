@@ -40,8 +40,6 @@ class ShareTypeScreen extends Component {
       loading: true,
       loadSuccess: true,
     }
-
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
   }
 
   componentDidMount() {

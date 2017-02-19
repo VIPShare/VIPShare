@@ -1,22 +1,35 @@
 import React, { Component, PropTypes } from 'react';
-import { Navigation } from 'react-native-navigation';
-
+import { Text } from 'react-native';
 import LoginScreen from './LoginScreen';
-import DrawerScreen from './DrawerScreen';
-import ShareListScreen from './ShareListScreen';
+import HomeScreen from './HomeScreen';
+// import ShareListScreen from './ShareListScreen';
 import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
-import MessageScreen from './MessageScreen';
+// import MessageScreen from './MessageScreen';
 import ChatScreen from './ChatScreen';
 
-export function registerScreens() {
-  Navigation.registerComponent('app.login', () => LoginScreen);
-  Navigation.registerComponent('app.shareList', () => ShareListScreen);
-  Navigation.registerComponent('app.shareAdd', () => ShareAddScreen);
-  Navigation.registerComponent('app.message', () => MessageScreen);
-  Navigation.registerComponent('app.chat', () => ChatScreen);
-  Navigation.registerComponent('app.SideMenu', () => DrawerScreen);
+const renderRoute = (screen, title, Comp) => {
+  return {
+    screen,
+    title,
+    renderScreen: (navigator, route) => <Comp navigator={ navigator } route={ route } />,
+    LeftButton: Comp.LeftButton,
+    RightButton: Comp.RightButton,
+    Title: Comp.Title,
+  }
+}
 
+const routes = [
+  renderRoute('app.login', '登录', LoginScreen),
+  renderRoute('app.home', null, HomeScreen),
+  renderRoute('app.shareAdd', 'ShareAdd', ShareAddScreen),
+  renderRoute('app.chat', null, ChatScreen),
 
-  Navigation.registerComponent('shareAdd.typeChoose', () => ShareTypeScreen);
+  renderRoute('shareAdd.typeChoose', null, ShareTypeScreen),
+]
 
+const defaultScreen = routes[1];
+
+export {
+  routes,
+  defaultScreen,
 }

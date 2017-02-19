@@ -2,6 +2,7 @@
 export const colors = {
   normal: '#aaa',
   secFonts: '#bbb',
+  highlight: 'red',
 }
 
 export const size = {

@@ -1,6 +1,7 @@
+import React, { Component, PropTypes } from 'react';
+import { Navigator, Text } from 'react-native';
 import Config from 'react-native-config';
-import { Navigation } from 'react-native-navigation';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { Icon } from 'react-native-elements';
 import '../ReactotronConfig';  // dev listener
 
 // set env
@@ -8,74 +9,64 @@ if (Config.DEV) {
   console.log('dev')
 }
 
-var listIcon, messageIcon;
-var selectedListIcon, selectedMessageIcon;
 // screen related book keeping
-import { registerScreens } from './screens';
-registerScreens();
+import { routes, defaultScreen } from './screens';
 
-export default class App {
+class App extends Component {
   constructor(props) {
-    this._populateIcons().then(() => {
-      // Start app only if all icons are loaded
-      this.startApp();
-    }).catch((error) => {
-      console.error(error);
-    });
+    super(props);
+
+    this.renderLeftButton = this.renderLeftButton.bind(this);
+    this.renderRightButton = this.renderRightButton.bind(this);
+    this.renderTitle = this.renderTitle.bind(this);
   }
 
-  _populateIcons() {
-    return new Promise(function (resolve, reject) {
-      Promise.all(
-        [
-          Icon.getImageSource('ios-keypad-outline', 30),
-          Icon.getImageSource('ios-chatboxes-outline', 30),
-          Icon.getImageSource('ios-keypad', 30),
-          Icon.getImageSource('ios-chatboxes', 30),
-        ]
-      ).then((values) => {
-        listIcon = values[0];
-        messageIcon = values[1];
-        selectedListIcon = values[2];
-        selectedMessageIcon = values[3];
-        resolve(true);
-      }).catch((error) => {
-        console.log(error);
-        reject(error);
-      }).done();
-    });
+  renderLeftButton(route, navigator, index, navState) {
+    if (route.LeftButton) {
+      return route.LeftButton;
+    }
+    if (index === 0) {
+      return null;
+    }
+    return <Icon name="keyboard-arrow-left" onPress={ () => navigator.pop() } />;
   }
 
-  startApp() {
-    // this will start our app
-    Navigation.startTabBasedApp({
-      tabs: [
-        {
-          label: 'Shares',
-          screen: 'app.shareList',
-          icon: listIcon,
-          selectedIcon: selectedListIcon,
-          title: 'Shares',
-        },
-        {
-          label: 'Message',
-          screen: 'app.message',
-          icon: messageIcon,
-          selectedIcon: selectedMessageIcon,
-          title: 'Message',
+  renderRightButton(route, navigator, index, navState) {
+    if (route.RightButton) {
+      return route.RightButton;
+    }
+    return null;
+  }
+
+  renderTitle(route, navigator, index, navState) {
+    if (route.renderTitle) {
+      return route.renderTitle();
+    }
+    if (route.title) {
+      return <Text>{ route.title }</Text>;
+    }
+    return null;
+  }
+
+  render() {
+    return (
+      <Navigator
+        initialRoute={ defaultScreen }
+        initialRouteStack={ [defaultScreen] }
+        renderScene={ (route, navigator) => route.renderScreen(navigator, route) }
+        navigationBar={
+          <Navigator.NavigationBar
+            routeMapper={{
+              LeftButton: this.renderLeftButton,
+              RightButton: this.renderRightButton,
+              Title: this.renderTitle,
+            }}
+            style={{backgroundColor: 'gray'}}
+          />
         }
-      ],
-      tabsStyle: {
-        tabBarButtonColor: '#ffff00',
-        tabBarSelectedButtonColor: '#ff9900',
-        tabBarBackgroundColor: '#551A8B',
-      },
-      drawer: {
-        left: {
-          screen: 'app.SideMenu'
-        }
-      },
-      portraitOnlyMode: true
-    });
+      />
+    );
   }
 }
+
+export default App;
