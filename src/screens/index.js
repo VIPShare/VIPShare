@@ -8,17 +8,44 @@ import HomeScreen from './HomeScreen';
 import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
 import ChatScreen from './ChatScreen';
 
+const wrapNavigator = (navigator) => {
+  if (!navigator) {
+    throw new Error('There is no navigator found.');
+  }
+
+  const findRoute = (screen, state) => {
+    let screenRoute = routes.filter(route => route.screen === screen);
+    if (screenRoute.length === 0) {
+      throw new Error(`There is no screen named ${screen}`);
+    }
+    return {
+      ...screenRoute[0],
+      routeState: state,
+    };
+  }
+
+  navigator.pushScreen = (screen, state) => {
+    navigator.push(findRoute(screen, state));
+  }
+  navigator.resetToScreen = (screen, state) => {
+    navigator.resetTo(findRoute(screen, state));
+  }
+
+  return navigator;
+}
+
 const renderScreen = (navigator, route, Comp) => {
+  navigator = wrapNavigator(navigator);
   return (
     <Grid>
       {
         (Comp.LeftButton || Comp.RightButton || route.title) ?
-        <Navigator navigator={ navigator } route={ route } leftButton={ Comp.LeftButton } rightButton={ Comp.RightButton } title={ Comp.title || route.title } />
+        <Navigator {...route.routeState} navigator={ navigator } route={ route } leftButton={ Comp.LeftButton } rightButton={ Comp.RightButton } title={ Comp.title || route.title } />
         :
-        <DefaultNav navigator={ navigator } route={ route } />
+        <DefaultNav {...route.routeState} navigator={ navigator } route={ route } />
       }
       <Row>
-        <Comp navigator={ navigator } route={ route } />
+        <Comp {...route.routeState} navigator={ navigator } route={ route } />
       </Row>
     </Grid>
   );

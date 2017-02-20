@@ -18,7 +18,6 @@ class Navigator extends Component {
     if (leftButton) {
       return leftButton(navigator);
     }
-    console.log(navigator)
     return <Icon name="keyboard-arrow-left" onPress={ () => navigator.pop() } />;
   }
 
@@ -75,9 +74,9 @@ class DefaultNav extends Navigator {
     const { navigator } = this.props;
     return (
       <Row style={ styles.container }>
-        <Col size={ 10 } style={ styles.left } >{ this.renderLeftButton(navigator) }</Col>
+        <Col size={ 10 } style={ styles.left } ></Col>
         <Col size={ 80 } style={ styles.title.container } >{ this.renderTitle(this.props.title) }</Col>
-        <Col size={ 10 } style={ styles.right } >{ this.renderRightButton(navigator) }</Col>
+        <Col size={ 10 } style={ styles.right } ></Col>
       </Row>
     );
   }
