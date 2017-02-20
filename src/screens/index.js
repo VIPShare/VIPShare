@@ -1,20 +1,36 @@
 import React, { Component, PropTypes } from 'react';
 import { Text } from 'react-native';
+import { Grid, Row } from 'react-native-elements';
+
+import Navigator from '../components/Navigator';
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
-// import ShareListScreen from './ShareListScreen';
 import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
-// import MessageScreen from './MessageScreen';
 import ChatScreen from './ChatScreen';
+
+const renderScreen = (navigator, route, Comp) => {
+  return (
+    <Grid>
+      <Row style={ {height: 60,backgroundColor: 'gray'} }>
+      {
+        (Comp.LeftButton || Comp.RightButton || route.title) ?
+        <Navigator leftButton={ Comp.LeftButton } rightButton={ Comp.RightButton } title={ Comp.title || route.title } />
+        :
+        false
+      }
+      </Row>
+      <Row>
+        <Comp navigator={ navigator } route={ route } />
+      </Row>
+    </Grid>
+  );
+}
 
 const renderRoute = (screen, title, Comp) => {
   return {
     screen,
     title,
-    renderScreen: (navigator, route) => <Comp navigator={ navigator } route={ route } />,
-    LeftButton: Comp.LeftButton,
-    RightButton: Comp.RightButton,
-    Title: Comp.Title,
+    renderScreen: (navigator, route) => renderScreen(navigator, route, Comp),
   }
 }
 
@@ -28,7 +44,7 @@ const routes = [
 ]
 
 const defaultScreen = routes[1];
-
+console.log(defaultScreen)
 export {
   routes,
   defaultScreen,

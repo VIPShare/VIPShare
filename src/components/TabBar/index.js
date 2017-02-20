@@ -22,6 +22,7 @@ class TabBar extends Component {
     this.setState({
       selectedTab,
     });
+    this.props.onChangeTab(this.state.selectedTab, this.props.tabs.filter(tab => tab.title === this.state.selectedTab)[0], this.props.tabs);
   }
 
   renderIcon(tab) {
@@ -76,10 +77,12 @@ TabBar.propTypes = {
     selectedIcon: PropTypes.oneOfType([PropTypes.node, PropTypes.string]).isRequired,
     content: PropTypes.node.isRequired,
   }).isRequired).isRequired,
+  onChangeTab: PropTypes.func.isRequired,
 }
 
 TabBar.defaultProps = {
   defaultSelected: 'Shares',
+  onChangeTab: () => {},
 }
 
 export default TabBar;
