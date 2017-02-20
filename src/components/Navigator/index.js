@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Text } from 'react-native';
 
-import { Icon, Row, Gird } from 'react-native-elements';
+import { Icon, Row, Gird, Col } from 'react-native-elements';
+
+import styles from './index.style';
 
 class Navigator extends Component {
   constructor(props) {
@@ -12,49 +14,82 @@ class Navigator extends Component {
     this.renderTitle = this.renderTitle.bind(this);
   }
 
-  renderLeftButton(leftButton) {
+  renderLeftButton(navigator, leftButton) {
     if (leftButton) {
-      return leftButton;
+      return leftButton(navigator);
     }
-    if (index === 0) {
-      return null;
-    }
+    console.log(navigator)
     return <Icon name="keyboard-arrow-left" onPress={ () => navigator.pop() } />;
   }
 
-  renderRightButton(rightButton) {
+  renderRightButton(navigator, rightButton) {
     if (rightButton) {
-      return rightButton;
+      return rightButton(navigator);
     }
     return null;
   }
 
   renderTitle(title) {
     if (title) {
-      return 'function' === typeof title ? title() : <Text>{ title }</Text>;
+      return 'function' === typeof title ? title() : <Text style={ styles.title.font }>{ title }</Text>;
     }
     return null;
   }
 
   render() {
-    const { leftButton, rightButton, title, style } = this.props;
+    const { navigator, route, leftButton, rightButton, title, style } = this.props;
     return (
-      <Row style={ style }>
-        <Col size={ 10 }>{ this.renderLeftButton(leftButton) }</Col>
-        <Col size={ 80 }>{ this.renderTitle(title) }</Col>
-        <Col size={ 10 }>{ this.renderRightButton(rightButton) }</Col>
+      <Row style={ [styles.container, style] }>
+        <Col size={ 10 } style={ styles.left } >{ this.renderLeftButton(navigator, leftButton) }</Col>
+        <Col size={ 80 } style={ styles.title.container } >{ this.renderTitle(title) }</Col>
+        <Col size={ 10 } style={ styles.right } >{ this.renderRightButton(navigator, rightButton) }</Col>
       </Row>
     );
   }
 }
 
 Navigator.propTypes = {
-  leftButton: PropTypes.node.isRequired,
-  rightButton: PropTypes.node.isRequired,
+  leftButton: PropTypes.func.isRequired,
+  rightButton: PropTypes.func.isRequired,
   title: PropTypes.oneOfType([
     PropTypes.string, PropTypes.func,
   ]).isRequired,
   style: PropTypes.object,
 }
 
-export default Navigator;
+Navigator.defaultProps = {
+  leftButton: () => {},
+  rightButton: () => {},
+}
+
+class DefaultNav extends Navigator {
+  constructor(props) {
+    super(props);
+  }
+
+  shouldComponentUpdate() {
+    return false;
+  }
+
+  render() {
+    const { navigator } = this.props;
+    return (
+      <Row style={ styles.container }>
+        <Col size={ 10 } style={ styles.left } >{ this.renderLeftButton(navigator) }</Col>
+        <Col size={ 80 } style={ styles.title.container } >{ this.renderTitle(this.props.title) }</Col>
+        <Col size={ 10 } style={ styles.right } >{ this.renderRightButton(navigator) }</Col>
+      </Row>
+    );
+  }
+  
+}
+
+DefaultNav.defaultProps = {
+  title: 'Navigator',
+  ...Navigator.defaultProps
+}
+
+export {
+  Navigator as default,
+  DefaultNav,
+};

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Text } from 'react-native';
 import { Grid, Row } from 'react-native-elements';
 
-import Navigator from '../components/Navigator';
+import Navigator, { DefaultNav } from '../components/Navigator';
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
@@ -11,14 +11,12 @@ import ChatScreen from './ChatScreen';
 const renderScreen = (navigator, route, Comp) => {
   return (
     <Grid>
-      <Row style={ {height: 60,backgroundColor: 'gray'} }>
       {
         (Comp.LeftButton || Comp.RightButton || route.title) ?
-        <Navigator leftButton={ Comp.LeftButton } rightButton={ Comp.RightButton } title={ Comp.title || route.title } />
+        <Navigator navigator={ navigator } route={ route } leftButton={ Comp.LeftButton } rightButton={ Comp.RightButton } title={ Comp.title || route.title } />
         :
-        false
+        <DefaultNav navigator={ navigator } route={ route } />
       }
-      </Row>
       <Row>
         <Comp navigator={ navigator } route={ route } />
       </Row>
