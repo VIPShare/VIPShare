@@ -62,7 +62,6 @@ class WrappedScreen extends Component {
     if (leftButton && leftButton === this.state.leftButton) {
       return false;
     }
-    console.log('setLeftButton')
     this.setState({
       leftButton,
     });
@@ -72,7 +71,6 @@ class WrappedScreen extends Component {
     if (rightButton && rightButton === this.state.rightButton) {
       return false;
     }
-    console.log('setRightButton')
     this.setState({
       rightButton,
     });
@@ -82,7 +80,6 @@ class WrappedScreen extends Component {
     if (title === this.state.title) {
       return false;
     }
-    console.log('setTitle')
     this.setState({
       title,
     });
