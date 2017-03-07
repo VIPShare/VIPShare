@@ -14,23 +14,23 @@ class Navigator extends Component {
     this.renderTitle = this.renderTitle.bind(this);
   }
 
-  renderLeftButton(navigator, leftButton) {
+  renderLeftButton(navigator, leftButton, props) {
     if (leftButton) {
-      return leftButton(navigator);
+      return leftButton(navigator, props);
     }
     return <Icon name="keyboard-arrow-left" onPress={ () => navigator.pop() } />;
   }
 
-  renderRightButton(navigator, rightButton) {
+  renderRightButton(navigator, rightButton, props) {
     if (rightButton) {
-      return rightButton(navigator);
+      return rightButton(navigator, props);
     }
     return null;
   }
 
-  renderTitle(title) {
+  renderTitle(title, props) {
     if (title) {
-      return 'function' === typeof title ? title() : <Text style={ styles.title.font }>{ title }</Text>;
+      return 'function' === typeof title ? title(title, props) : <Text style={ styles.title.font }>{ title }</Text>;
     }
     return null;
   }
@@ -38,10 +38,10 @@ class Navigator extends Component {
   render() {
     const { navigator, route, leftButton, rightButton, title, style } = this.props;
     return (
-      <Row style={ [styles.container, style] }>
-        <Col size={ 10 } style={ styles.left } >{ this.renderLeftButton(navigator, leftButton) }</Col>
-        <Col size={ 80 } style={ styles.title.container } >{ this.renderTitle(title) }</Col>
-        <Col size={ 10 } style={ styles.right } >{ this.renderRightButton(navigator, rightButton) }</Col>
+      <Row style={ styles.container }>
+        <Col size={ 10 } style={ styles.left } >{ this.renderLeftButton(navigator, leftButton, this.props) }</Col>
+        <Col size={ 80 } style={ styles.title.container } >{ this.renderTitle(title, this.props) }</Col>
+        <Col size={ 10 } style={ styles.right } >{ this.renderRightButton(navigator, rightButton, this.props) }</Col>
       </Row>
     );
   }
@@ -59,36 +59,9 @@ Navigator.propTypes = {
 Navigator.defaultProps = {
   leftButton: () => {},
   rightButton: () => {},
-}
-
-class DefaultNav extends Navigator {
-  constructor(props) {
-    super(props);
-  }
-
-  shouldComponentUpdate() {
-    return false;
-  }
-
-  render() {
-    const { navigator } = this.props;
-    return (
-      <Row style={ styles.container }>
-        <Col size={ 10 } style={ styles.left } ></Col>
-        <Col size={ 80 } style={ styles.title.container } >{ this.renderTitle(this.props.title) }</Col>
-        <Col size={ 10 } style={ styles.right } ></Col>
-      </Row>
-    );
-  }
-  
-}
-
-DefaultNav.defaultProps = {
   title: 'Navigator',
-  ...Navigator.defaultProps
 }
 
 export {
   Navigator as default,
-  DefaultNav,
 };

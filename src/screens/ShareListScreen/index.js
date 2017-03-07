@@ -6,17 +6,11 @@ import {
 import { List, ListItem, Icon } from 'react-native-elements';
 
 import EmptyView from '../../components/EmptyView';
-import { create } from '../SideMenuDecorator';
 import { list } from '../../services/account';
 import { userRequiredAndDispatch, checkAuth } from '../../utils/permission';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class ShareListScreen extends Component {
-  static LeftButton = <Icon name="person-outline" onPress={ () => this.props.toggleSideMenu() } />
-  static RightButton = <Icon name="add" onPress={ () => this.props.navigator.push({
-    screen: 'app.shareAdd',
-  }) } />
-
   constructor(props) {
     super(props);
 
@@ -30,6 +24,15 @@ class ShareListScreen extends Component {
   }
 
   componentDidMount() {
+    const { navigator } = this.props;
+    navigator.setTitle('Shares');
+    navigator.setLeftButton(() => {
+      return <Icon name="person-outline" onPress={ () => this.props.toggleSideMenu() } />
+    });
+    navigator.setRightButton(() => {
+      return <Icon name="add" onPress={ () => navigator.pushScreen('app.shareAdd') } />;
+    });
+
     this.fetchData();
   }
 
@@ -108,4 +111,4 @@ class ShareListScreen extends Component {
   }
 }
 
-export default create()(ShareListScreen);
+export default ShareListScreen;

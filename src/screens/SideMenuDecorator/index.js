@@ -1,8 +1,9 @@
 import React, { PropTypes, Component } from 'react';
+import { Text, View } from 'react-native';
 import { List, ListItem, SideMenu } from 'react-native-elements';
 
-const DrawerScreen = () => {
-  return (
+const DrawerScreen = (
+  <View style={{flex: 1, backgroundColor: '#ededed', paddingTop: 50}}>
     <List containerStyle={{marginBottom: 20}}>
       <ListItem
         key={ 1 }
@@ -15,10 +16,10 @@ const DrawerScreen = () => {
         leftIcon={ {name: 'ios-chatboxes-outline', type: 'ionicon'} }
       />
     </List>
-  )
-}
+  </View>
+)
 
-const create = () => (WrappedCompnent) => {
+const create = (otherProps) => (WrappedCompnent) => {
   class SideMenuDecorator extends Component {
 
     constructor(props) {
@@ -42,7 +43,9 @@ const create = () => (WrappedCompnent) => {
         <SideMenu
           isOpen={ this.state.showUser }
           menu={ DrawerScreen }>
-          <WrappedCompnent toggleSideMenu={ this.toggleSideMenu } />
+          <View style={ {flex: 1, backgroundColor: 'white',} }>
+            <WrappedCompnent {...this.props} toggleSideMenu={ this.toggleSideMenu } />
+          </View>
         </SideMenu>
       );
     }
@@ -50,7 +53,6 @@ const create = () => (WrappedCompnent) => {
 
   SideMenuDecorator.LeftButton = WrappedCompnent.LeftButton;
   SideMenuDecorator.RightButton = WrappedCompnent.RightButton;
-  SideMenuDecorator.Title = WrappedCompnent.Title;
 
   return SideMenuDecorator;
 }

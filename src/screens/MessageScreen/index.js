@@ -4,8 +4,6 @@ import {
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
-import { create } from '../SideMenuDecorator';
-
 const list = [
   {
     name: 'Amy Farha',
@@ -63,4 +61,4 @@ class MessageScreen extends Component {
   }
 }
 
-export default create({})(MessageScreen);
+export default MessageScreen;

@@ -57,7 +57,6 @@ class LoginScreen extends Component {
     
     validateForm(async errors => {
       if (errors && errors.length > 0) {
-        console.log(errors);
         Alert.alert(errors[0].err);
         return;
       }

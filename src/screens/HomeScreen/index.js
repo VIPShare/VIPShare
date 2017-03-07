@@ -1,9 +1,10 @@
 import React, { Component, PropTypes } from 'react';
-import { Text } from 'react-native';
+import { SideMenu } from 'react-native-elements';
 
 import TabBar from '../../components/TabBar';
 import ShareListScreen from '../ShareListScreen';
 import MessageScreen from '../MessageScreen';
+import { create } from '../SideMenuDecorator';
 
 class Home extends Component {
   constructor(props) {
@@ -39,4 +40,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default create()(Home);
