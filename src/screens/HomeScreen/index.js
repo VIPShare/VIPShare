@@ -1,43 +1,33 @@
 import React, { Component, PropTypes } from 'react';
-import { SideMenu } from 'react-native-elements';
+import { TabNavigator, DrawerNavigator } from 'react-navigation';
+import { Icon } from 'react-native-elements';
 
-import TabBar from '../../components/TabBar';
-import ShareListScreen from '../ShareListScreen';
+import ShareScreen from '../ShareScreen';
 import MessageScreen from '../MessageScreen';
-import { create } from '../SideMenuDecorator';
 
-class Home extends Component {
-  constructor(props) {
-    super(props);
+const Home = TabNavigator({
+  Share: {
+    screen: ShareScreen,
+  },
+  Message: {
+    screen: MessageScreen,
+  },
+}, {
+  tabBarPosition: 'bottom',
+  animationEnabled: true,
+  swipeEnabled: true,
+  activeTintColor: 'blue',
 
-    this.onChangeTab = this.onChangeTab.bind(this);
+  // ios
+
+  // android
+  upperCaseLabel: false,
+  tabBarOptions: {
+    showIcon: true,
+  },
+  indicatorStyle: {
+    with: 0,
   }
+});
 
-  onChangeTab(title, tab, tabs) {
-
-  }
-
-  render() {
-    return (
-      <TabBar
-        tabs={ [
-          {
-            title: 'Shares',
-            icon: 'share',
-            selectedIcon: 'share',
-            content: <ShareListScreen {...this.props} />,
-          },
-          {
-            title: 'Message',
-            icon: 'message',
-            selectedIcon: 'message',
-            content: <MessageScreen {...this.props} />,
-          }
-        ] }
-        onChangeTab={ this.onChangeTab }
-      />
-    )
-  }
-}
-
-export default create()(Home);
+export default Home;

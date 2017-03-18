@@ -3,14 +3,35 @@ import {
   ListView,
   Alert,
 } from 'react-native';
-import { List, ListItem, Icon } from 'react-native-elements';
+import { List, ListItem, Icon, Button } from 'react-native-elements';
 
-import EmptyView from '../../components/EmptyView';
-import { list } from '../../services/account';
-import { userRequiredAndDispatch, checkAuth } from '../../utils/permission';
+import EmptyView from '../../../components/EmptyView';
+import { list } from '../../../services/account';
+import { userRequiredAndDispatch, checkAuth } from '../../../utils/permission';
+
+import styles from './index.style';
 
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class ShareListScreen extends Component {
+  static navigationOptions = {
+    title: 'Shares',
+    header: ({ state, setParams, navigate }) => {
+      return {
+        left: <Icon name="view-headline" containerStyle={ styles.nav.leftWrapper } onPress={ () => {
+          navigate('DrawerOpen');
+        } }/>,
+        right: <Icon name="add" containerStyle={ styles.nav.rightWrapper } onPress={ () => {
+          navigate('ShareAdd');
+        } } />,
+        visible: true,
+      }
+    },
+    tabBar: {
+      label: 'Shares',
+      icon: ({ tintColor }) => <Icon name="share" color={ tintColor } />
+    },
+  }
+
   constructor(props) {
     super(props);
 
@@ -24,15 +45,6 @@ class ShareListScreen extends Component {
   }
 
   componentDidMount() {
-    const { navigator } = this.props;
-    navigator.setTitle('Shares');
-    navigator.setLeftButton(() => {
-      return <Icon name="person-outline" onPress={ () => this.props.toggleSideMenu() } />
-    });
-    navigator.setRightButton(() => {
-      return <Icon name="add" onPress={ () => navigator.pushScreen('app.shareAdd') } />;
-    });
-
     this.fetchData();
   }
 
