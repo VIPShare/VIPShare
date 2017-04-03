@@ -11,6 +11,13 @@ const MessageScreen = StackNavigator({
   ChatScreen: {
     screen: ChatScreen,
   },
+}, {
+  headerMode: 'screen',
+  navigationOptions: {
+      header: {
+          visible: false
+      }
+  }
 });
 
 export default MessageScreen;

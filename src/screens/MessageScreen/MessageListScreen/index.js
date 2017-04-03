@@ -49,10 +49,9 @@ class MessageScreen extends Component {
   }
 
   onChat(rowData) {
-    // this.props.navigator.push({
-    //   screen: 'app.chat',
-    //   title: rowData.name,
-    // })
+    this.props.navigation.navigate('ChatScreen', {
+      name: 'Test',
+    });
   }
 
   renderRow (rowData, sectionID) {
