@@ -45,7 +45,7 @@ const Drawer = ({
       </Row>
       <Row size={5}>
         <Col>
-          <List>
+          <List containerStyle={styles.list.container}>
             {
               navigation.state.routes.map((route, index) => {
                 const focused = navigation.state.index === index;
@@ -55,10 +55,12 @@ const Drawer = ({
                 if (!drawer) return false;
                 return (
                   <ListItem
+                    containerStyle={styles.list.item.container}
                     key={index}
                     title={drawer.label}
                     titleStyle={labelStyle}
-                    leftIcon={{ name: drawer.icon }}
+                    titleContainerStyle={styles.list.item.title}
+                    leftIcon={{ name: drawer.icon, style: styles.list.item.leftIcon }}
                     hideChevron={true}
                     onPress={() => {
                       navigation.navigate('DrawerClose');
