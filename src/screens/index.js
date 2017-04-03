@@ -1,22 +1,78 @@
 import React, { Component, PropTypes } from 'react';
-import { Navigation } from 'react-native-navigation';
+import { NavigationActions, DrawerNavigator, StackNavigator } from 'react-navigation';
 
 import LoginScreen from './LoginScreen';
-import DrawerScreen from './DrawerScreen';
-import ShareListScreen from './ShareListScreen';
-import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
-import MessageScreen from './MessageScreen';
-import ChatScreen from './ChatScreen';
+import HomeScreen from './HomeScreen';
+import MyShareScreen from './MyShareScreen';
+import ProfileScreen from './ProfileScreen';
 
-export function registerScreens() {
-  Navigation.registerComponent('app.login', () => LoginScreen);
-  Navigation.registerComponent('app.shareList', () => ShareListScreen);
-  Navigation.registerComponent('app.shareAdd', () => ShareAddScreen);
-  Navigation.registerComponent('app.message', () => MessageScreen);
-  Navigation.registerComponent('app.chat', () => ChatScreen);
-  Navigation.registerComponent('app.SideMenu', () => DrawerScreen);
+import Drawer from '../components/Drawer';
 
+const drawers = {
+  MyShare: {
+    label: '我的分享',
+    icon: 'share',
+  },
+  Profile: {
+    label: '个人资料',
+    icon: 'perm-identity',
+  }
+};
 
-  Navigation.registerComponent('shareAdd.typeChoose', () => ShareTypeScreen);
+const MainNavigator = DrawerNavigator({
+  Shares: {
+    screen: HomeScreen,
+  },
+  MyShare: {
+    screen: MyShareScreen,
+  },
+  Profile: {
+    screen: ProfileScreen,
+  },
+}, {
+  contentComponent: props => <Drawer {...props} drawers={drawers} />,
+  contentOptions: {
 
+  }
+});
+
+class Main extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return <MainNavigator screenProps={{
+      redirectLogin: (cb) => {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Login', params: {cb} }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
+      },
+    }} />
+  }
 }
+
+const TopNavigator = StackNavigator({
+  Main: {
+    screen: Main,
+  },
+  Login: {
+    screen: LoginScreen,
+  }
+}, {
+  mode: 'modal',
+  navigationOptions: {
+    header: {
+      visible: false,
+    },
+    cardStack: {
+      gesturesEnabled: false,
+    },
+  },
+});
+
+export default TopNavigator;

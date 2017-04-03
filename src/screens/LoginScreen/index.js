@@ -11,6 +11,7 @@ import {
   findNodeHandle,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 import { FormInput } from 'react-native-elements';
 
 import Form from '../../components/Form';
@@ -18,6 +19,12 @@ import { login } from '../../services/auth';
 import { isBlank } from '../../utils/string';
 
 class LoginScreen extends Component {
+  static navigationOptions = {
+    header: {
+      visible: false,
+    }
+  }
+
   constructor(props) {
     super(props);
 
@@ -52,12 +59,11 @@ class LoginScreen extends Component {
   }
 
   login() {
-    const cb = this.props.cb;
+    const cb = this.props.navigation.state.params.cb;
     const { getFieldsValue, validateForm } = this.props.form;
     
     validateForm(async errors => {
       if (errors && errors.length > 0) {
-        console.log(errors);
         Alert.alert(errors[0].err);
         return;
       }
@@ -230,4 +236,14 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Form.create()(LoginScreen);
+const Login = Form.create()(LoginScreen);
+
+const LoginStack = StackNavigator({
+  Login: {
+    screen: Login,
+  },
+}, {
+  mode: 'modal',
+});
+
+export default LoginStack;

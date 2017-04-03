@@ -6,8 +6,6 @@ import FormItem from './FormItem';
 
 const create = () => (WrappedCompnent) => {
   class FormWrapper extends Component {
-    static navigatorButtons = WrappedCompnent.navigatorButtons || [];
-    
     constructor(props) {
       super(props);
 
@@ -49,10 +47,8 @@ const create = () => (WrappedCompnent) => {
             value,
             validating: false,
           },
-        }
-      }, () => {
-        cb();
-      })
+        },
+      }, cb);
     }
 
     _setSuccFlag(key, options) {
@@ -169,8 +165,14 @@ const create = () => (WrappedCompnent) => {
     }
   }
 
+  Object.keys(WrappedCompnent).forEach(key => {
+    FormWrapper[key] = WrappedCompnent[key];
+  });
+
   return FormWrapper;
 }
+
+
 
 const Form = ({ children }) => {
   return <View>{ children }</View>

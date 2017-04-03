@@ -3,47 +3,43 @@ import {
   ListView,
   Alert,
 } from 'react-native';
-import { List, ListItem } from 'react-native-elements';
+import { List, ListItem, Icon, Button } from 'react-native-elements';
 
-import EmptyView from '../../components/EmptyView';
-import { create } from '../SideMenuDecorator';
-import { list } from '../../services/account';
-import { userRequiredAndDispatch, checkAuth } from '../../utils/permission';
+import EmptyView from '../../../components/EmptyView';
+import { list } from '../../../services/account';
+import { userRequiredAndDispatch, checkAuth } from '../../../utils/permission';
 
-// const list = [
-//   {
-//     name: 'Amy Farha',
-//     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-//     subtitle: 'Vice President'
-//   },
-//   {
-//     name: 'Chris Jackson',
-//     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-//     subtitle: 'Vice Chairman'
-//   },
-// ]
+import styles from './index.style';
+
 const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class ShareListScreen extends Component {
-  static navigatorButtons = {
-    rightButtons: [
-      {
-        title: 'Add',
-        id: 'add',
-        testID: 'add_e2e_rules'
+  static navigationOptions = {
+    title: 'Shares',
+    header: ({ state, setParams, navigate }) => {
+      return {
+        left: <Icon name="view-headline" containerStyle={ styles.nav.leftWrapper } onPress={ () => {
+          navigate('DrawerOpen');
+        } }/>,
+        right: <Icon name="add" containerStyle={ styles.nav.rightWrapper } onPress={ () => {
+          navigate('ShareAdd');
+        } } />,
+        visible: true,
       }
-    ]
-  };
+    },
+    tabBar: {
+      label: 'Shares',
+      icon: ({ tintColor }) => <Icon name="share" color={ tintColor } />
+    },
+  }
 
   constructor(props) {
     super(props);
-    
+
     this.state = {
       accounts: [],
       loading: true,
       loadSuccess: true,
     }
-
-    this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent.bind(this));
 
     this.fetchData = this.fetchData.bind(this);
   }
@@ -62,9 +58,10 @@ class ShareListScreen extends Component {
     this.loading = setTimeout(async () => {
       const { data, err } = await list();
       if (err) {
-        await checkAuth(err, this.fetchData);
+        if (!(await checkAuth(this.props.screenProps.redirectLogin, err, this.fetchData))) {
+          return;
+        }
 
-        Alert.alert(err.message);
         this.setState({
           loading: false,
           loadSuccess: false,
@@ -78,18 +75,6 @@ class ShareListScreen extends Component {
         dataSource: ds.cloneWithRows(data),
       })
     }, 100);
-  }
-
-  onNavigatorEvent(event) {
-    this.props.onNavigatorEvent(event);
-    if (event.type == 'NavBarButtonPress') {
-      if (event.id == 'add') {
-        this.props.navigator.push({
-          screen: 'app.shareAdd',
-          title: '分享'
-        })
-      }
-    }
   }
 
   renderRow(rowData, sectionID) {
@@ -139,4 +124,4 @@ class ShareListScreen extends Component {
   }
 }
 
-export default create()(ShareListScreen);
+export default ShareListScreen;
