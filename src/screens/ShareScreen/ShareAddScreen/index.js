@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Text,
+  Image,
   View,
   TouchableWithoutFeedback,
   StyleSheet,
@@ -21,14 +22,17 @@ class ShareAddScreen extends Component {
     title: 'Share',
     header: (navigation) => {
       const { state, setParams, navigate } = navigation;
+
+      let right = (
+        <TouchableWithoutFeedback onPress={() => navigation.goBack()} disabled={!(state.params && state.params.finishable)}>
+          <View style={styles.nav.rightWrapper}>
+            <Text style={(state.params && state.params.finishable) ? styles.nav.activeButton : styles.nav.unactiveButton} >Finish</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      );
+
       return {
-        right: (
-          <TouchableWithoutFeedback onPress={ () => navigation.goBack() } disabled={ !(state.params && state.params.finishable) }>
-            <View style={ styles.nav.rightWrapper }>
-              <Text>Finish</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        ),
+        right,
         visible: true,
       }
     },
@@ -44,21 +48,10 @@ class ShareAddScreen extends Component {
   }
 
   onFormValidate() {
-    const values = this.props.form.getFieldsValue();
-    if (isBlank(values.type.title)) {
-      Alert.alert('请选择账号类型');
-      return false;
-    }
-    if (isBlank(values.username)) {
-      Alert.alert('请输入账号名');
-      return false;
-    }
-    if (isBlank(values.password)) {
-      Alert.alert('请输入账号密码');
-      return false;
-    }
+    const { form } = this.props;
+
     this.props.navigation.setParams({
-      finishable: true,
+      finishable: this.typeTrue && this.usernameTrue && this.passwordTrue,
     });
   }
 
@@ -67,44 +60,64 @@ class ShareAddScreen extends Component {
 
     const typeProps = getFieldProps('type', {
       validator: (selected, cb) => {
+        if (typeof selected !== 'object') {
+          this.typeTrue = false;
+          this.onFormValidate();
+          return cb('请选择账户类型');
+        }
         const value = selected.title;
-        if (value !== 1 || value !== 2 || value !== 3) {
-          return cb('账户类型选择有误');
+        if (isBlank(value)) {
+          this.typeTrue = false;
+          this.onFormValidate();
+          return cb('请选择账户类型');
         }
         cb();
+        this.typeTrue = true;
         this.onFormValidate();
       }
     });
     const usernameProps = getFieldProps('username', {
       validator: (value, cb) => {
+        if (isBlank(value)) {
+          this.usernameTrue = false;
+          this.onFormValidate();
+          return cb('请填入账户名');
+        }
         cb();
+        this.usernameTrue = true;
         this.onFormValidate();
       }
     });
     const passwordProps = getFieldProps('password', {
       validator: (value, cb) => {
+        if (isBlank(value)) {
+          this.passwordTrue = false;
+          this.onFormValidate();
+          return cb('请填入账户密码');
+        }
         cb();
+        this.passwordTrue = true;
         this.onFormValidate();
       }
     });
 
     return (
       <Form>
-        <FormItem label="账户类型" {...(getFieldValidating('type') ? {} : getFieldError('type'))}>
+        <FormItem label="账户类型" {...(getFieldValidating('type') ? {} : getFieldError('type')) }>
           <PullSelect
             {...typeProps}
             name="type"
             screen="ShareType"
-            title="类型" 
+            title="类型"
             placeholder="请选择账户类型"
-            navigation={ this.props.navigation }
+            navigation={this.props.navigation}
           />
         </FormItem>
-        <FormItem label="账户名" {...(getFieldValidating('username') ? {} : getFieldError('username'))}>
-          <FormInput name="username" {...usernameProps}/>
+        <FormItem label="账户名" {...(getFieldValidating('username') ? {} : getFieldError('username')) }>
+          <FormInput name="username" {...usernameProps} />
         </FormItem>
-        <FormItem label="账户密码" {...(getFieldValidating('password') ? {} : getFieldError('password'))}>
-          <FormInput name="password" {...passwordProps}/>
+        <FormItem label="账户密码" {...(getFieldValidating('password') ? {} : getFieldError('password')) }>
+          <FormInput name="password" {...passwordProps} />
         </FormItem>
       </Form>
     );

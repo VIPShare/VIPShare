@@ -19,7 +19,7 @@ class ShareTypeScreen extends Component {
         right: (
           <TouchableWithoutFeedback onPress={ () => navigation.goBack() }>
             <View style={ styles.nav.rightWrapper }>
-              <Text>Cancel</Text>
+              <Text style={ styles.nav.activeButton } >Cancel</Text>
             </View>
           </TouchableWithoutFeedback>
         ),

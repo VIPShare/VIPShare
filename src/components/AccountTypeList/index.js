@@ -31,17 +31,19 @@ class AccountTypeList extends Component {
   }
 
   componentDidMount() {
-    this.handler = InteractionManager.runAfterInteractions(async () => {
-      await this.fetchData();
+    this._isMounted = true;
+    this.handler = InteractionManager.runAfterInteractions(() => {
+      this.fetchData();
     })
   }
 
-  componentWillUnMount() {
-    InteractionManager.clearInteractionHandle(handler);
+  componentWillUnmount() {
+    this._isMounted = false;
+    InteractionManager.clearInteractionHandle(this.handler);
   }
 
-  async fetchData() {
-    this.setState({
+  fetchData() {
+    this._isMounted && this.setState({
       types: list,
       loading: false,
       loadSuccess: true,
