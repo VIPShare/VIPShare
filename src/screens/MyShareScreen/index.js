@@ -5,7 +5,7 @@ import { Icon } from 'react-native-elements';
 class MyShare extends Component {
   static navigationOptions = {
     drawer: () => ({
-      label: 'My Share',
+      label: 'MyShare',
       icon: ({ tintColor }) => <Icon name="share" />,
     }),
   }
