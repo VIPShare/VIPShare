@@ -58,9 +58,10 @@ class ShareListScreen extends Component {
     this.loading = setTimeout(async () => {
       const { data, err } = await list();
       if (err) {
-        await checkAuth(err, this.fetchData);
+        if (!(await checkAuth(this.props.screenProps.redirectLogin, err, this.fetchData))) {
+          return;
+        }
 
-        Alert.alert(err.message);
         this.setState({
           loading: false,
           loadSuccess: false,

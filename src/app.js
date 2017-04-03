@@ -5,13 +5,11 @@ import { Icon } from 'react-native-elements';
 import { DrawerNavigator } from 'react-navigation';
 import '../ReactotronConfig';  // dev listener
 
-import screen from './screens';
+import AppNavigator from './screens';
 
 // set env
 if (Config.DEV) {
   console.log('dev')
 }
 
-const App = screen;
-
-export default App;
+export default AppNavigator;

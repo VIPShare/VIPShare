@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { DrawerNavigator } from 'react-navigation';
+import { NavigationActions, DrawerNavigator, StackNavigator } from 'react-navigation';
 
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
@@ -19,7 +19,7 @@ const drawers = {
   }
 };
 
-export default DrawerNavigator({
+const MainNavigator = DrawerNavigator({
   Shares: {
     screen: HomeScreen,
   },
@@ -35,3 +35,44 @@ export default DrawerNavigator({
 
   }
 });
+
+class Main extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  render() {
+    return <MainNavigator screenProps={{
+      redirectLogin: (cb) => {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Login', params: {cb} }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
+      },
+    }} />
+  }
+}
+
+const TopNavigator = StackNavigator({
+  Main: {
+    screen: Main,
+  },
+  Login: {
+    screen: LoginScreen,
+  }
+}, {
+  mode: 'modal',
+  navigationOptions: {
+    header: {
+      visible: false,
+    },
+    cardStack: {
+      gesturesEnabled: false,
+    },
+  },
+});
+
+export default TopNavigator;

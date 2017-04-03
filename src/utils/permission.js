@@ -1,13 +1,4 @@
-// import { Navigation } from 'react-native-navigation';
-// import { AsyncStorage } from 'react-native';
-
-// export const userRequired = async () => {
-//   const access_token = await AsyncStorage.getItem('access_token');
-//   if (!access_token) {
-//     return false;
-//   }
-//   return true;
-// }
+import { NavigationActions } from 'react-navigation';
 
 let isLogin = false;
 let eventGroup = [];
@@ -18,18 +9,11 @@ const eventGroupTrigger = () => {
   });
 }
 
-export const userRequiredAndDispatch = async (cb) => {
-  // Navigation.showModal({
-  //   screen: 'app.login',
-  //   title: '登录',
-  //   passProps: {
-  //     cb,
-  //   },
-  //   animationType: 'slide-up',
-  // });
+export const userRequiredAndDispatch = async (redirectLogin, cb) => {
+  redirectLogin(cb);
 }
 
-export const checkAuth = async (err, cb) => {
+export const checkAuth = async (redirectLogin, err, cb) => {
   if (err.status === 401) {
     // 在近乎同一时刻进行登录请求竞争，选择第一个获胜者，将其余请求者的回调请求置入事件队列，当登录成功后，完成队列里的事件执行
     eventGroup.push(cb);
@@ -37,7 +21,7 @@ export const checkAuth = async (err, cb) => {
       return err;
     }
     isLogin = false;
-    await userRequiredAndDispatch(eventGroupTrigger);
+    await userRequiredAndDispatch(redirectLogin, eventGroupTrigger);
   }
-  return err;
+  return isLogin;
 }

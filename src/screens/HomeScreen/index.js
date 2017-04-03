@@ -27,7 +27,7 @@ const Home = TabNavigator({
   },
   indicatorStyle: {
     with: 0,
-  }
+  },
 });
 
 export default Home;
