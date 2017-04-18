@@ -9,25 +9,22 @@ import AccountTypeList from '../../../components/AccountTypeList';
 import styles from './index.style';
 
 class ShareTypeScreen extends Component {
-  static navigationOptions = {
-    mode: 'modal',
-    title: '类型',
-    header: (navigation) => {
-      const { state, setParams, navigate } = navigation;
-      return {
-        left: false,
-        right: (
-          <TouchableWithoutFeedback onPress={ () => navigation.goBack() }>
-            <View style={ styles.nav.rightWrapper }>
-              <Text style={ styles.nav.activeButton } >Cancel</Text>
-            </View>
-          </TouchableWithoutFeedback>
-        ),
-      }
-    },
-    tabBar: {
-      visible: false,
-    },
+  static navigationOptions = ({ navigation }) => {
+    const { state, setParams, navigate } = navigation;
+    return {
+      mode: 'modal',
+      title: '类型',
+      headerLeft: false,
+      headerRight: (
+        <TouchableWithoutFeedback onPress={ () => navigation.goBack() }>
+          <View style={ styles.nav.rightWrapper }>
+            <Text style={ styles.nav.activeButton } >Cancel</Text>
+          </View>
+        </TouchableWithoutFeedback>
+      ),
+      headerVisible: true,
+      tabBarVisible: false,
+    }
   }
 
   constructor(props) {
