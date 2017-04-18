@@ -7,7 +7,7 @@ class ChatScreen extends Component {
     return {
       title: `Chat with ${state.params.name}`,
       headerVisible: true,
-      tabBarVisible: true,
+      tabBarVisible: false,
     }
   }
 

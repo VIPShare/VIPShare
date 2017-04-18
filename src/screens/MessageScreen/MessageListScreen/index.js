@@ -19,7 +19,7 @@ const list = [
   },
 ]
 class MessageScreen extends Component {
-  static navigationOptions = (navigation) => {
+  static navigationOptions = ({ navigation }) => {
     const { navigate } = navigation;
     return {
       title: 'Message',
