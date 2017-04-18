@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { NavigationActions } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
 import Shares from '../../../components/Shares';
@@ -6,12 +7,17 @@ import Shares from '../../../components/Shares';
 import styles from './index.style';
 
 class MyShareList extends Component {
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = (props) => {
+    const { navigation, screenProps } = props;
     const { state, setParams, navigate } = navigation;
     return {
       title: 'My Shares',
-      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={() => {
-        console.log(navigation);
+      headerLeft: <Icon name="keyboard-arrow-left" containerStyle={styles.nav.leftWrapper} onPress={() => {
+        const homeAction = NavigationActions.navigate({
+          routeName: 'Main',
+          action: NavigationActions.navigate({ routeName: 'Shares'}),
+        });
+        navigation.dispatch(homeAction);
       }} />,
       headerRight: <Icon name="add" containerStyle={styles.nav.rightWrapper} onPress={() => {
         navigate('ShareAdd');

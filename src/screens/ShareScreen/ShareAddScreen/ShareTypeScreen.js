@@ -12,7 +12,6 @@ class ShareTypeScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state, setParams, navigate } = navigation;
     return {
-      mode: 'modal',
       title: '类型',
       headerLeft: false,
       headerRight: (

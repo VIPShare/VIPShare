@@ -11,7 +11,7 @@ import {
   findNodeHandle,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, NavigationActions } from 'react-navigation';
 import { FormInput } from 'react-native-elements';
 
 import Form from '../../components/Form';
@@ -77,7 +77,10 @@ class LoginScreen extends Component {
 
       cb && 'function' === typeof cb && cb();
 
-      this.props.navigation.navigate('Home');
+      const resetAction = NavigationActions.navigate({
+        routeName: 'Main',
+      });
+      this.props.navigation.dispatch(resetAction);
     })
   }
 

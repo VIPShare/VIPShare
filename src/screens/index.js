@@ -47,23 +47,12 @@ class Main extends Component {
   render() {
     return <MainNavigator screenProps={{
       redirectLogin: (cb) => {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Login', params: {cb} }),
-          ],
+        const resetAction = NavigationActions.navigate({
+          routeName: 'Login',
+          params: {cb},
         });
         this.props.navigation.dispatch(resetAction);
       },
-      redirectHome: (cb) => {
-        const resetAction = NavigationActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Shares', params: {cb} }),
-          ],
-        });
-        this.props.navigation.dispatch(resetAction);
-      }
     }} />
   }
 }
