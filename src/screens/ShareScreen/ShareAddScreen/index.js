@@ -18,27 +18,20 @@ import styles from './index.style';
 
 const FormItem = Form.Item;
 class ShareAddScreen extends Component {
-  static navigationOptions = {
-    title: 'Share',
-    header: (navigation) => {
-      const { state, setParams, navigate } = navigation;
-
-      let right = (
+  static navigationOptions = ({ navigation }) => {
+    const { state, setParams, navigate } = navigation;
+    return {
+      title: 'Share',
+      headerRight: (
         <TouchableWithoutFeedback onPress={() => navigation.goBack()} disabled={!(state.params && state.params.finishable)}>
           <View style={styles.nav.rightWrapper}>
             <Text style={(state.params && state.params.finishable) ? styles.nav.activeButton : styles.nav.unactiveButton} >Finish</Text>
           </View>
         </TouchableWithoutFeedback>
-      );
-
-      return {
-        right,
-        visible: true,
-      }
-    },
-    tabBar: {
-      visible: false,
-    },
+      ),
+      headerVisible: true,
+      tabBarVisible: false,
+    }
   }
 
   constructor(props) {

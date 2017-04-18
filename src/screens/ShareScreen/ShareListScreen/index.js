@@ -3,33 +3,28 @@ import {
   ListView,
   Alert,
 } from 'react-native';
-import { List, ListItem, Icon, Button } from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 
-import EmptyView from '../../../components/EmptyView';
+import Shares from '../../../components/Shares';
 import { list } from '../../../services/account';
 import { userRequiredAndDispatch, checkAuth } from '../../../utils/permission';
 
 import styles from './index.style';
 
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class ShareListScreen extends Component {
-  static navigationOptions = {
-    title: 'Shares',
-    header: ({ state, setParams, navigate }) => {
-      return {
-        left: <Icon name="view-headline" containerStyle={ styles.nav.leftWrapper } onPress={ () => {
-          navigate('DrawerOpen');
-        } }/>,
-        right: <Icon name="add" containerStyle={ styles.nav.rightWrapper } onPress={ () => {
-          navigate('ShareAdd');
-        } } />,
-        visible: true,
-      }
-    },
-    tabBar: {
-      label: 'Shares',
-      icon: ({ tintColor }) => <Icon name="share" color={ tintColor } />
-    },
+  static navigationOptions = ({ navigation }) => {
+    const { state, setParams, navigate } = navigation;
+    return {
+      title: 'Shares',
+      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={() => {
+        navigate('DrawerOpen');
+      }} />,
+      headerRight: <Icon name="add" containerStyle={styles.nav.rightWrapper} onPress={() => {
+        navigate('ShareAdd');
+      }} />,
+      headerVisible: true,
+    }
   }
 
   constructor(props) {
@@ -77,50 +72,27 @@ class ShareListScreen extends Component {
     }, 100);
   }
 
-  renderRow(rowData, sectionID) {
-    return (
-      <ListItem
-        roundAvatar
-        key={ sectionID }
-        title={ rowData.name }
-        subtitle={ rowData.subtitle }
-        avatar={ {uri:rowData.avatar_url} }
-        rightIcon={ {name: 'chevron-right'} }
-      />
-    )
-  }
-
   render() {
-    if (this.state.loading) {
-      return (
-        <EmptyView
-          tip="请稍后"
-          subTip="正在加载账号分享列表..."
-        />
-      );
-    }
-    if (!this.state.loadSuccess) {
-      return (
-        <EmptyView
-          tip="加载失败"
-          subTip="很抱歉，加载账号分享列表失败"
-        />
-      )
-    }
-    if (this.state.accounts.length === 0) {
-      return (
-        <EmptyView
-          tip="还未有人分享哦！"
-          subTip="点击右上角Add按钮，成为第一个分享者吧！"
-        />
-      )
-    }
     return (
-      <ListView
-        renderRow={ this.renderRow }
-        dataSource={ this.state.dataSource }
+      <Shares
+        loading={this.state.loading}
+        loadSuccess={this.state.loadSuccess}
+        accounts={this.state.accounts}
+        dataSource={this.state.dataSource}
+        loadingTip={{
+          tip: '请稍后',
+          subTip: '正在加载账号分享列表...',
+        }}
+        loadFailTip={{
+          tip: '加载失败',
+          subTip: '很抱歉，加载账号分享列表失败',
+        }}
+        emptyTip={{
+          tip: '还未有人分享哦！',
+          subTip: '点击右上角Add按钮，成为第一个分享者吧！',
+        }}
       />
-    )
+    );
   }
 }
 

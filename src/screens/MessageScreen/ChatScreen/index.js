@@ -2,20 +2,13 @@ import React, { Component, PropTypes } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 class ChatScreen extends Component {
-  static navigationOptions = {
-    title: ({state, navigate}) => {
-      return `Chat with ${state.params.name}`;
-    },
-    header: (navigation) => {
-      const { state, setParams, navigate } = navigation;
-
-      return {
-        visible: true,
-      }
-    },
-    tabBar: {
-      visible: false,
-    },
+  static navigationOptions = ({ navigation }) => {
+    const { state, navigate } = navigation;
+    return {
+      title: `Chat with ${state.params.name}`,
+      headerVisible: true,
+      tabBarVisible: true,
+    }
   }
 
   constructor(props) {

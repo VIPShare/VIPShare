@@ -19,20 +19,15 @@ const list = [
   },
 ]
 class MessageScreen extends Component {
-  static navigationOptions = {
-    title: 'Message',
-    header: ({ state, setParams, navigate }) => {
-      return {
-        left: <Icon name="view-headline" containerStyle={ styles.nav.leftWrapper } onPress={ () => {
-          navigate('DrawerOpen');
-        } }/>,
-        right: false,
-        visible: true,
-      }
-    },
-    tabBar: {
-      label: 'Message',
-      icon: ({ tintColor }) => <Icon name="message" color={ tintColor } />
+  static navigationOptions = (navigation) => {
+    const { navigate } = navigation;
+    return {
+      title: 'Message',
+      headerLeft: <Icon name="view-headline" containerStyle={ styles.nav.leftWrapper } onPress={ () => {
+        navigate('DrawerOpen');
+      } }/>,
+      headerRight: false,
+      headerVisible: true,
     }
   }
 

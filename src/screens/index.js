@@ -33,6 +33,9 @@ const MainNavigator = DrawerNavigator({
   contentComponent: props => <Drawer {...props} drawers={drawers} />,
   contentOptions: {
 
+  },
+  navigationOptions: {
+    headerVisible: false,
   }
 });
 
@@ -52,6 +55,15 @@ class Main extends Component {
         });
         this.props.navigation.dispatch(resetAction);
       },
+      redirectHome: (cb) => {
+        const resetAction = NavigationActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({ routeName: 'Shares', params: {cb} }),
+          ],
+        });
+        this.props.navigation.dispatch(resetAction);
+      }
     }} />
   }
 }
@@ -66,9 +78,7 @@ const TopNavigator = StackNavigator({
 }, {
   mode: 'modal',
   navigationOptions: {
-    header: {
-      visible: false,
-    },
+    headerVisible: false,
     cardStack: {
       gesturesEnabled: false,
     },

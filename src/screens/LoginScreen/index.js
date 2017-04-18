@@ -20,9 +20,7 @@ import { isBlank } from '../../utils/string';
 
 class LoginScreen extends Component {
   static navigationOptions = {
-    header: {
-      visible: false,
-    }
+    headerVisible: false,
   }
 
   constructor(props) {

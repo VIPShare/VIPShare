@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { StackNavigator } from 'react-navigation';
+import { Icon } from 'react-native-elements';
 
 import ShareListScreen from './ShareListScreen';
 import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
@@ -17,10 +18,13 @@ const ShareScreen = StackNavigator({
 }, {
   headerMode: 'screen',
   navigationOptions: {
-      header: {
-          visible: false
-      }
+    headerVisible: false
   }
 });
+
+ShareScreen.navigationOptions = {
+  tabBarLabel: 'Shares',
+  tabBarIcon: ({ tintColor }) => <Icon name="share" color={tintColor} />,
+}
 
 export default ShareScreen;

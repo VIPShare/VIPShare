@@ -1,18 +1,22 @@
 import React, { Component, PropTypes } from 'react';
-import { Text } from 'react-native';
-import { Icon } from 'react-native-elements';
+import { StackNavigator } from 'react-navigation';
 
-class MyShare extends Component {
-  static navigationOptions = {
-    drawer: () => ({
-      label: 'MyShare',
-      icon: ({ tintColor }) => <Icon name="share" />,
-    }),
-  }
+import MyShareListScreen from './MyShareListScreen';
 
-  render() {
-    return <Text>我的分享</Text>
+const MyShare = StackNavigator({
+  MyShareList: {
+    screen: MyShareListScreen,
+  },
+}, {
+  headerMode: 'screen',
+  navigationOptions: {
+    headerVisible: false
   }
+});
+
+MyShare.navigationOptions = {
+  drawerLabel: 'MyShare',
+  drawerIcon: ({ tintColor }) => <Icon name="share" />,
 }
 
 export default MyShare;
