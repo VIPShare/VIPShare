@@ -14,9 +14,9 @@ const MessageScreen = StackNavigator({
 }, {
   headerMode: 'screen',
   navigationOptions: {
-      header: {
-          visible: false
-      }
+    header: {
+      visible: false
+    }
   }
 });
 

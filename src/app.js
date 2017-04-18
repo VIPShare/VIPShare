@@ -7,9 +7,11 @@ import '../ReactotronConfig';  // dev listener
 
 import AppNavigator from './screens';
 
+// dev
+import './utils/fetchmock';
 // set env
 if (Config.DEV) {
-  console.log('dev')
+  alert('dev');
 }
 
 export default AppNavigator;

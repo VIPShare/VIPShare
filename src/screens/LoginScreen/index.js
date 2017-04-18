@@ -79,9 +79,7 @@ class LoginScreen extends Component {
 
       cb && 'function' === typeof cb && cb();
 
-      this.props.navigator.dismissModal({
-        animationType: 'slide-down',
-      });
+      this.props.navigation.navigate('Home');
     })
   }
 

@@ -17,6 +17,7 @@ function parseText(response) {
 }
 
 function parseJSON(text) {
+  alert(text);
   if (text.replace(/(^\s*)|(\s*$)/g, "").length === 0) {
     return Promise.resolve({});
   }
@@ -34,10 +35,11 @@ function checkStatus(response) {
 }
 
 function request(url, options) {
-  return Promise.resolve(fetch(isApiUrl(url), options))
-    .then(checkStatus)
-    .then(parseText)
-    .then(parseJSON)
+  // return Promise.resolve(fetch(isApiUrl(url), options))
+  return Promise.resolve(fetch(url, options))
+    // .then(checkStatus)
+    // .then(parseText)
+    // .then(parseJSON)
     .then((data) => ({ data }))
     .catch((error) => ({ err: error }));
 }
