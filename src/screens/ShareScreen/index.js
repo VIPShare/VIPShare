@@ -1,30 +1,105 @@
-import React, { Component, PropTypes } from 'react';
-import { StackNavigator } from 'react-navigation';
+import React, { Component } from 'react';
+import {
+  ListView,
+  Alert,
+} from 'react-native';
 import { Icon } from 'react-native-elements';
+import { NavigationActions } from 'react-navigation';
 
-import ShareListScreen from './ShareListScreen';
-import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
+import Shares from '../../components/Shares';
+import { list } from '../../services/account';
+import { userRequiredAndDispatch, checkAuth } from '../../utils/permission';
 
-const ShareScreen = StackNavigator({
-  ShareList: {
-    screen: ShareListScreen,
-  },
-  ShareAdd: {
-    screen: ShareAddScreen,
-  },
-  ShareType: {
-    screen: ShareTypeScreen,
-  },
-}, {
-  headerMode: 'screen',
-  navigationOptions: {
-    headerVisible: false
+import styles from './index.style';
+
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
+class ShareListScreen extends Component {
+  static navigationOptions = ({ navigation, screenProps }) => {
+    const { state, setParams, navigate } = navigation;
+    return {
+      title: 'Shares',
+      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={() => {
+        navigate('DrawerOpen');
+      }} />,
+      headerRight: <Icon name="add" containerStyle={styles.nav.rightWrapper} onPress={() => {
+        screenProps.redirect(NavigationActions.navigate({
+          routeName: 'ShareAdd',
+        }));
+      }} />,
+      headerVisible: true,
+
+      tabBarLabel: 'Shares',
+      tabBarIcon: ({ tintColor }) => <Icon name="share" color={tintColor} />,
+    }
   }
-});
 
-ShareScreen.navigationOptions = {
-  tabBarLabel: 'Shares',
-  tabBarIcon: ({ tintColor }) => <Icon name="share" color={tintColor} />,
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      accounts: [],
+      loading: true,
+      loadSuccess: true,
+    }
+
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  componentWillUnmount() {
+    if (this.loading) {
+      clearTimeout(this.loading);
+    }
+  }
+
+  fetchData() {
+    this.loading = setTimeout(async () => {
+      const { data, err } = await list();
+      if (err) {
+        if (!(await checkAuth(this.props.screenProps.redirectLogin, err, this.fetchData))) {
+          return;
+        }
+
+        this.setState({
+          loading: false,
+          loadSuccess: false,
+        })
+        return false;
+      }
+      this.setState({
+        accounts: data,
+        loading: false,
+        loadSuccess: true,
+        dataSource: ds.cloneWithRows(data),
+      })
+    }, 100);
+  }
+
+  render() {
+    return (
+      <Shares
+        loading={this.state.loading}
+        loadSuccess={this.state.loadSuccess}
+        accounts={this.state.accounts}
+        dataSource={this.state.dataSource}
+        loadingTip={{
+          tip: '请稍后',
+          subTip: '正在加载账号分享列表...',
+        }}
+        loadFailTip={{
+          tip: '加载失败',
+          subTip: '很抱歉，加载账号分享列表失败',
+        }}
+        emptyTip={{
+          tip: '还未有人分享哦！',
+          subTip: '点击右上角Add按钮，成为第一个分享者吧！',
+        }}
+      />
+    );
+  }
 }
 
-export default ShareScreen;
+export default ShareListScreen;

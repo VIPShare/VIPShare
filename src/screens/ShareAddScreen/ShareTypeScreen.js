@@ -4,7 +4,7 @@ import {
   Text,
   TouchableWithoutFeedback,
 } from 'react-native';
-import AccountTypeList from '../../../components/AccountTypeList';
+import AccountTypeList from '../../components/AccountTypeList';
 
 import styles from './index.style';
 

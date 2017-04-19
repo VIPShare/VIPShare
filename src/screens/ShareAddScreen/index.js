@@ -10,9 +10,9 @@ import {
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import ShareTypeScreen from './ShareTypeScreen';
 
-import Form from '../../../components/Form';
-import PullSelect from '../../../components/PullSelect';
-import { isBlank } from '../../../utils/string';
+import Form from '../../components/Form';
+import PullSelect from '../../components/PullSelect';
+import { isBlank } from '../../utils/string';
 
 import styles from './index.style';
 

@@ -5,6 +5,8 @@ import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import MyShareScreen from './MyShareScreen';
 import ProfileScreen from './ProfileScreen';
+import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
+import ChatScreen from './ChatScreen';
 
 import Drawer from '../components/Drawer';
 
@@ -19,21 +21,31 @@ const drawers = {
   }
 };
 
+const StackNavigatorWrapper = (key, Comp) => {
+  const Wrapper = StackNavigator({
+    [key]: {
+      screen: Comp,
+    }
+  });
+  return Wrapper;
+}
+
 const MainNavigator = DrawerNavigator({
   Shares: {
-    screen: HomeScreen,
+    screen: StackNavigatorWrapper('Shares', HomeScreen),
   },
   MyShare: {
-    screen: MyShareScreen,
+    screen: StackNavigatorWrapper('MyShare', MyShareScreen),
   },
   Profile: {
-    screen: ProfileScreen,
+    screen: StackNavigatorWrapper('Profile', ProfileScreen),
   },
 }, {
   contentComponent: props => <Drawer {...props} drawers={drawers} />,
   contentOptions: {
 
   },
+  headerMode: 'screen',
   navigationOptions: {
     headerVisible: false,
   }
@@ -42,6 +54,12 @@ const MainNavigator = DrawerNavigator({
 class Main extends Component {
   constructor(props) {
     super(props);
+
+    this.redirectAction = this.redirectAction.bind(this);
+  }
+
+  redirectAction(action) {
+    this.props.navigation.dispatch(action);
   }
 
   render() {
@@ -51,8 +69,9 @@ class Main extends Component {
           routeName: 'Login',
           params: {cb},
         });
-        this.props.navigation.dispatch(resetAction);
+        this.redirectAction(resetAction);
       },
+      redirect: this.redirectAction,
     }} />
   }
 }
@@ -63,7 +82,16 @@ const TopNavigator = StackNavigator({
   },
   Login: {
     screen: LoginScreen,
-  }
+  },
+  ShareAdd: {
+    screen: ShareAddScreen,
+  },
+  ShareType: {
+    screen: ShareTypeScreen,
+  },
+  Chat: {
+    screen: ChatScreen,
+  },
 }, {
   mode: 'modal',
   navigationOptions: {
