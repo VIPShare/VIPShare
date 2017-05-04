@@ -29,7 +29,7 @@ class ShareListScreen extends Component {
       headerVisible: true,
 
       tabBarLabel: 'Shares',
-      tabBarIcon: ({ tintColor }) => <Icon name="share" color={tintColor} />,
+      tabBarIcon: ({ tintColor }) => <Icon name="share" iconStyle={ {color: tintColor} } />,
     }
   }
 

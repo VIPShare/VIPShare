@@ -4,8 +4,8 @@ import { Icon } from 'react-native-elements';
 
 class Profile extends Component {
   static navigationOptions = {
+    headerVisible: false,
     drawerLabel: 'Profile',
-    drawerIcon: ({ tintColor }) => <Icon name="share" />,
   }
 
   render() {

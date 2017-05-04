@@ -47,11 +47,15 @@ const MainNavigator = DrawerNavigator({
   },
   headerMode: 'screen',
   navigationOptions: {
-    headerVisible: false,
+    header: null,
   }
 });
 
 class Main extends Component {
+  static navigationOptions = {
+    header: null,
+  }
+
   constructor(props) {
     super(props);
 
@@ -85,6 +89,7 @@ const TopNavigator = StackNavigator({
   },
   ShareAdd: {
     screen: ShareAddScreen,
+
   },
   ShareType: {
     screen: ShareTypeScreen,
@@ -95,10 +100,7 @@ const TopNavigator = StackNavigator({
 }, {
   mode: 'modal',
   navigationOptions: {
-    headerVisible: false,
-    cardStack: {
-      gesturesEnabled: false,
-    },
+    gesturesEnabled: false,
   },
 });
 

@@ -31,7 +31,7 @@ class MessageScreen extends Component {
       headerVisible: true,
 
       tabBarLabel: 'Message',
-      tabBarIcon: ({ tintColor }) => <Icon name="message" color={ tintColor } />,
+      tabBarIcon: ({ tintColor }) => <Icon name="message" iconStyle={ {color: tintColor} } />,
     }
   }
 

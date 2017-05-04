@@ -13,6 +13,10 @@ const Home = TabNavigator({
     screen: MessageScreen,
   },
 }, {
+  headerMode: 'screen',
+  navigationOptions: {
+    headerVisible: false,
+  },
   tabBarPosition: 'bottom',
   animationEnabled: true,
   swipeEnabled: true,
