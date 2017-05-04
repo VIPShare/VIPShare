@@ -4,8 +4,12 @@ import { Icon } from 'react-native-elements';
 
 import ShareScreen from '../ShareScreen';
 import MessageScreen from '../MessageScreen';
+import RecommendScreen from '../RecommendScreen';
 
 const Home = TabNavigator({
+  Recommend: {
+    screen: RecommendScreen,
+  },
   Share: {
     screen: ShareScreen,
   },
