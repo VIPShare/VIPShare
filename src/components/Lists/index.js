@@ -6,7 +6,8 @@ import { List, ListItem } from 'react-native-elements';
 
 import EmptyView from '../EmptyView';
 
-export default ({ loading, loadSuccess, data, dataSource, loadingTip, loadFailTip, emptyTip, renderRow, containerStyle = {} }) => {
+export default (props) => {
+  const { loading, loadSuccess, data, dataSource, loadingTip, loadFailTip, emptyTip, renderRow, containerStyle = {}, ...other } = props;
   if (loading) {
     return (
       <EmptyView
@@ -33,6 +34,7 @@ export default ({ loading, loadSuccess, data, dataSource, loadingTip, loadFailTi
   }
   return (
     <ListView
+      {...other}
       style={containerStyle}
       renderRow={renderRow}
       dataSource={dataSource}
