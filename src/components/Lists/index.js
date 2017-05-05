@@ -41,3 +41,5 @@ export default (props) => {
     />
   );
 };
+
+export { default as FlatLists } from './FlatLists';
