@@ -1,7 +1,27 @@
 
 export default {
-	'/api/recommends': () => {
-		return Promise.resolve([
+  '/api/tops': () => {
+    return Promise.resolve([
+      {
+        title: '1都搞错了，漫威要出柜的英雄其实是她',
+        image: require('./img/1.jpg'),
+      },
+      {
+        title: '2都搞错了，漫威要出柜的英雄其实是她',
+        image: require('./img/2.jpg'),
+      },
+      {
+        title: '3都搞错了，漫威要出柜的英雄其实是她',
+        image: require('./img/3.jpg'),
+      },
+      {
+        title: '4都搞错了，漫威要出柜的英雄其实是她',
+        image: require('./img/4.jpg'),
+      },
+    ]);
+  },
+  '/api/recommends': () => {
+    return Promise.resolve([
       {
         title: '都搞错了，漫威要出柜的英雄其实是她',
         image: require('./movie.jpg'),
@@ -15,5 +35,5 @@ export default {
         type: '漫威',
       },
     ]);
-	}
+  }
 }

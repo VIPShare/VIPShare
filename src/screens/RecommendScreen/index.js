@@ -4,13 +4,13 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
-import Swiper from 'react-native-swiper';
 
 import Recommend from './Recommend';
 import Page from '../../components/Page';
 import Lists from '../../components/Lists';
+import Banner from '../../components/Banner';
 
-import { list } from '../../services/recommend';
+import { list, top } from '../../services/recommend';
 
 import styles from './index.style';
 
@@ -36,6 +36,7 @@ class RecommendScreen extends Component {
 
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
+      tops: [],
       recommends: [],
       loading: true,
       loadSuccess: true,
@@ -43,6 +44,7 @@ class RecommendScreen extends Component {
 
     this.fetchData = this.fetchData.bind(this);
     this.renderRow = this.renderRow.bind(this);
+    this.renderHeader = this.renderHeader.bind(this);
   }
 
   componentDidMount() {
@@ -57,8 +59,9 @@ class RecommendScreen extends Component {
 
   fetchData() {
     this.loading = setTimeout(async () => {
-      const { data, err } = await list();
-      if (err) {
+      const { data: tops, err1 } = await top();
+      const { data: recommends, err2 } = await list();
+      if (err1 || err2) {
         this.setState({
           loading: false,
           loadSuccess: false,
@@ -66,12 +69,19 @@ class RecommendScreen extends Component {
         return false;
       }
       this.setState({
-        recommends: data,
+        tops,
+        recommends,
         loading: false,
         loadSuccess: true,
-        dataSource: ds.cloneWithRows(data),
+        dataSource: ds.cloneWithRows(recommends),
       });
     }, 100);
+  }
+
+  renderHeader() {
+    return (
+      <Banner banners={this.state.tops} />
+    );
   }
 
   renderRow(rowData, sectionID) {
@@ -82,7 +92,6 @@ class RecommendScreen extends Component {
     return (
       <Page>
         <Lists
-          containerStyle={{ marginTop: 20 }}
           loading={this.state.loading}
           loadSuccess={this.state.loadSuccess}
           data={this.state.recommends}
@@ -98,6 +107,7 @@ class RecommendScreen extends Component {
           emptyTip={{
             tip: '还未有推荐哦！',
           }}
+          renderHeader={this.renderHeader}
           renderRow={this.renderRow}
         />
       </Page>
