@@ -4,8 +4,10 @@ import {
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
+import Swiper from 'react-native-swiper';
 
 import Recommend from './Recommend';
+import Page from '../../components/Page';
 import Lists from '../../components/Lists';
 
 import { list } from '../../services/recommend';
@@ -78,25 +80,27 @@ class RecommendScreen extends Component {
 
   render() {
     return (
-      <Lists
-        containerStyle={{ marginTop: 20 }}
-        loading={this.state.loading}
-        loadSuccess={this.state.loadSuccess}
-        data={this.state.recommends}
-        dataSource={this.state.dataSource}
-        loadingTip={{
-          tip: '请稍后',
-          subTip: '正在加载影视推荐...',
-        }}
-        loadFailTip={{
-          tip: '加载失败',
-          subTip: '很抱歉，加载影视推荐失败',
-        }}
-        emptyTip={{
-          tip: '还未有推荐哦！',
-        }}
-        renderRow={this.renderRow}
-      />
+      <Page>
+        <Lists
+          containerStyle={{ marginTop: 20 }}
+          loading={this.state.loading}
+          loadSuccess={this.state.loadSuccess}
+          data={this.state.recommends}
+          dataSource={this.state.dataSource}
+          loadingTip={{
+            tip: '请稍后',
+            subTip: '正在加载影视推荐...',
+          }}
+          loadFailTip={{
+            tip: '加载失败',
+            subTip: '很抱歉，加载影视推荐失败',
+          }}
+          emptyTip={{
+            tip: '还未有推荐哦！',
+          }}
+          renderRow={this.renderRow}
+        />
+      </Page>
     );
   }
 }

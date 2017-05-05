@@ -5,6 +5,8 @@ import {
 import { List, ListItem, Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 
+import Page from '../../components/Page';
+
 import styles from './index.style';
 
 const list = [
@@ -73,10 +75,12 @@ class MessageScreen extends Component {
 
   render() {
     return (
-      <ListView
-        renderRow={ this.renderRow }
-        dataSource={ this.state.dataSource }
-      />
+      <Page>
+        <ListView
+          renderRow={ this.renderRow }
+          dataSource={ this.state.dataSource }
+        />
+      </Page>
     )
   }
 }

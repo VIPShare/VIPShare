@@ -10,6 +10,7 @@ import {
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import ShareTypeScreen from './ShareTypeScreen';
 
+import Page from '../../components/Page';
 import Form from '../../components/Form';
 import PullSelect from '../../components/PullSelect';
 import { isBlank } from '../../utils/string';
@@ -95,24 +96,26 @@ class ShareAddScreen extends Component {
     });
 
     return (
-      <Form>
-        <FormItem label="账户类型" {...(getFieldValidating('type') ? {} : getFieldError('type')) }>
-          <PullSelect
-            {...typeProps}
-            name="type"
-            screen="ShareType"
-            title="类型"
-            placeholder="请选择账户类型"
-            navigation={this.props.navigation}
-          />
-        </FormItem>
-        <FormItem label="账户名" {...(getFieldValidating('username') ? {} : getFieldError('username')) }>
-          <FormInput name="username" {...usernameProps} />
-        </FormItem>
-        <FormItem label="账户密码" {...(getFieldValidating('password') ? {} : getFieldError('password')) }>
-          <FormInput name="password" {...passwordProps} />
-        </FormItem>
-      </Form>
+      <Page>
+        <Form>
+          <FormItem label="账户类型" {...(getFieldValidating('type') ? {} : getFieldError('type')) }>
+            <PullSelect
+              {...typeProps}
+              name="type"
+              screen="ShareType"
+              title="类型"
+              placeholder="请选择账户类型"
+              navigation={this.props.navigation}
+            />
+          </FormItem>
+          <FormItem label="账户名" {...(getFieldValidating('username') ? {} : getFieldError('username')) }>
+            <FormInput name="username" {...usernameProps} />
+          </FormItem>
+          <FormItem label="账户密码" {...(getFieldValidating('password') ? {} : getFieldError('password')) }>
+            <FormInput name="password" {...passwordProps} />
+          </FormItem>
+        </Form>
+      </Page>
     );
   }
 }

@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { GiftedChat } from 'react-native-gifted-chat';
 
+import Page from '../../components/Page';
+
 class ChatScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const { state, navigate } = navigation;
@@ -48,13 +50,15 @@ class ChatScreen extends Component {
 
   render() {
     return (
-      <GiftedChat
-        messages={ this.state.messages }
-        onSend={this.onSend}
-        user={{
-          _id: 1,
-        }}
-      />
+      <Page>
+        <GiftedChat
+          messages={this.state.messages}
+          onSend={this.onSend}
+          user={{
+            _id: 1,
+          }}
+        />
+      </Page>
     )
   }
 }

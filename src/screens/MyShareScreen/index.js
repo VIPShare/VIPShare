@@ -3,6 +3,7 @@ import { ListView } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
+import Page from '../../components/Page';
 import Shares from '../../components/Shares';
 import { list } from '../../services/myaccount';
 
@@ -18,7 +19,7 @@ class MyShareList extends Component {
       headerLeft: <Icon name="keyboard-arrow-left" containerStyle={styles.nav.leftWrapper} onPress={() => {
         const homeAction = NavigationActions.navigate({
           routeName: 'Main',
-          action: NavigationActions.navigate({ routeName: 'Shares'}),
+          action: NavigationActions.navigate({ routeName: 'Shares' }),
         });
         navigation.dispatch(homeAction);
       }} />,
@@ -28,7 +29,7 @@ class MyShareList extends Component {
         }));
       }} />,
       headerVisible: true,
-      
+
       drawerLabel: 'MyShare',
       drawerIcon: ({ tintColor }) => <Icon name="share" />,
     }
@@ -81,24 +82,26 @@ class MyShareList extends Component {
 
   render() {
     return (
-      <Shares
-        loading={this.state.loading}
-        loadSuccess={this.state.loadSuccess}
-        accounts={this.state.accounts}
-        dataSource={this.state.dataSource}
-        loadingTip={{
-          tip: '请稍后',
-          subTip: '正在加载我的分享...',
-        }}
-        loadFailTip={{
-          tip: '加载失败',
-          subTip: '很抱歉，加载我的分享失败',
-        }}
-        emptyTip={{
-          tip: '还未有人分享哦！',
-          subTip: '点击右上角Add按钮，加入分享者的队列吧！',
-        }}
-      />
+      <Page>
+        <Shares
+          loading={this.state.loading}
+          loadSuccess={this.state.loadSuccess}
+          accounts={this.state.accounts}
+          dataSource={this.state.dataSource}
+          loadingTip={{
+            tip: '请稍后',
+            subTip: '正在加载我的分享...',
+          }}
+          loadFailTip={{
+            tip: '加载失败',
+            subTip: '很抱歉，加载我的分享失败',
+          }}
+          emptyTip={{
+            tip: '还未有人分享哦！',
+            subTip: '点击右上角Add按钮，加入分享者的队列吧！',
+          }}
+        />
+      </Page>
     );
   }
 }

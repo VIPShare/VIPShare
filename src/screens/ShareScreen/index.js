@@ -6,6 +6,7 @@ import {
 import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 
+import Page from '../../components/Page';
 import Shares from '../../components/Shares';
 import { list } from '../../services/account';
 import { userRequiredAndDispatch, checkAuth } from '../../utils/permission';
@@ -29,7 +30,7 @@ class ShareListScreen extends Component {
       headerVisible: true,
 
       tabBarLabel: 'Shares',
-      tabBarIcon: ({ tintColor }) => <Icon name="share" iconStyle={ {color: tintColor} } />,
+      tabBarIcon: ({ tintColor }) => <Icon name="share" iconStyle={{ color: tintColor }} />,
     }
   }
 
@@ -80,24 +81,26 @@ class ShareListScreen extends Component {
 
   render() {
     return (
-      <Shares
-        loading={this.state.loading}
-        loadSuccess={this.state.loadSuccess}
-        accounts={this.state.accounts}
-        dataSource={this.state.dataSource}
-        loadingTip={{
-          tip: '请稍后',
-          subTip: '正在加载账号分享列表...',
-        }}
-        loadFailTip={{
-          tip: '加载失败',
-          subTip: '很抱歉，加载账号分享列表失败',
-        }}
-        emptyTip={{
-          tip: '还未有人分享哦！',
-          subTip: '点击右上角Add按钮，成为第一个分享者吧！',
-        }}
-      />
+      <Page>
+        <Shares
+          loading={this.state.loading}
+          loadSuccess={this.state.loadSuccess}
+          accounts={this.state.accounts}
+          dataSource={this.state.dataSource}
+          loadingTip={{
+            tip: '请稍后',
+            subTip: '正在加载账号分享列表...',
+          }}
+          loadFailTip={{
+            tip: '加载失败',
+            subTip: '很抱歉，加载账号分享列表失败',
+          }}
+          emptyTip={{
+            tip: '还未有人分享哦！',
+            subTip: '点击右上角Add按钮，成为第一个分享者吧！',
+          }}
+        />
+      </Page>
     );
   }
 }
