@@ -5,6 +5,7 @@ import {
 import { List, ListItem } from 'react-native-elements';
 
 import EmptyView from '../EmptyView';
+import Lists from '../Lists';
 
 const renderRow = (rowData, sectionID) => {
   return (
@@ -19,35 +20,15 @@ const renderRow = (rowData, sectionID) => {
   )
 }
 
-export default ({ loading, loadSuccess, accounts, dataSource, loadingTip, loadFailTip, emptyTip }) => {
-  if (loading) {
-    return (
-      <EmptyView
-        tip={loadingTip.tip}
-        subTip={loadingTip.subTip}
-      />
-    );
-  }
-  if (!loadSuccess) {
-    return (
-      <EmptyView
-        tip={loadFailTip.tip}
-        subTip={loadFailTip.subTip}
-      />
-    )
-  }
-  if (accounts.length === 0) {
-    return (
-      <EmptyView
-        tip={emptyTip.tip}
-        subTip={emptyTip.subTip}
-      />
-    )
-  }
-  return (
-    <ListView
-      renderRow={renderRow}
-      dataSource={dataSource}
-    />
-  );
-}
+export default ({ loading, loadSuccess, accounts, dataSource, loadingTip, loadFailTip, emptyTip }) => (
+  <Lists
+    loading={loading}
+    loadSuccess={loadSuccess}
+    data={accounts}
+    dataSource={dataSource}
+    loadingTip={loadingTip}
+    loadFailTip={loadFailTip}
+    emptyTip={emptyTip}
+    renderRow={renderRow}
+  />
+);
