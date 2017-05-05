@@ -6,23 +6,13 @@ import { Icon } from 'react-native-elements';
 import { NavigationActions } from 'react-navigation';
 
 import Recommend from './Recommend';
+import Lists from '../../components/Lists';
+
+import { list } from '../../services/recommend';
 
 import styles from './index.style';
 
-const list = [
-  {
-    title: '都搞错了，漫威要出柜的英雄其实是她',
-    image: require('../../../__mocks__/recommend/movie.jpg'),
-    time: '2小时前',
-    type: '漫威',
-  },
-  {
-    title: '都搞错了，漫威要出柜的英雄其实是她',
-    image: require('../../../__mocks__/recommend/movie.jpg'),
-    time: '2小时前',
-    type: '漫威',
-  },
-]
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class RecommendScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const { navigate } = navigation;
@@ -44,10 +34,42 @@ class RecommendScreen extends Component {
 
     const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      dataSource: ds.cloneWithRows(list),
-    };
+      recommends: [],
+      loading: true,
+      loadSuccess: true,
+    }
 
+    this.fetchData = this.fetchData.bind(this);
     this.renderRow = this.renderRow.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetchData();
+  }
+
+  componentWillUnmount() {
+    if (this.loading) {
+      clearTimeout(this.loading);
+    }
+  }
+
+  fetchData() {
+    this.loading = setTimeout(async () => {
+      const { data, err } = await list();
+      if (err) {
+        this.setState({
+          loading: false,
+          loadSuccess: false,
+        });
+        return false;
+      }
+      this.setState({
+        recommends: data,
+        loading: false,
+        loadSuccess: true,
+        dataSource: ds.cloneWithRows(data),
+      });
+    }, 100);
   }
 
   renderRow(rowData, sectionID) {
@@ -56,12 +78,26 @@ class RecommendScreen extends Component {
 
   render() {
     return (
-      <ListView
-        style={{ marginTop: 20 }}
-        renderRow={this.renderRow}
+      <Lists
+        containerStyle={{ marginTop: 20 }}
+        loading={this.state.loading}
+        loadSuccess={this.state.loadSuccess}
+        data={this.state.recommends}
         dataSource={this.state.dataSource}
+        loadingTip={{
+          tip: '请稍后',
+          subTip: '正在加载影视推荐...',
+        }}
+        loadFailTip={{
+          tip: '加载失败',
+          subTip: '很抱歉，加载影视推荐失败',
+        }}
+        emptyTip={{
+          tip: '还未有推荐哦！',
+        }}
+        renderRow={this.renderRow}
       />
-    )
+    );
   }
 }
 
