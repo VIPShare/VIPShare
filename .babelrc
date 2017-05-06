@@ -1,4 +1,6 @@
 {
-"presets": ["react-native"],
-"sourceMaps": true
+  "presets": [
+    "react-native"
+  ],
+  "sourceMaps": true
 }
