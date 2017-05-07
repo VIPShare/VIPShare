@@ -75,7 +75,9 @@ class MessageScreen extends Component {
 
   render() {
     return (
-      <Page>
+      <Page
+        enableLoad={false}
+      >
         <ListView
           renderRow={ this.renderRow }
           dataSource={ this.state.dataSource }

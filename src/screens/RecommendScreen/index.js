@@ -53,14 +53,11 @@ class RecommendScreen extends Component {
       pageSize: 5,
     }
 
+    this.init = this.init.bind(this);
     this.fetchData = this.fetchData.bind(this);
     this.fetchList = this.fetchList.bind(this);
     this.renderItem = this.renderItem.bind(this);
     this.renderHeader = this.renderHeader.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchData();
   }
 
   componentWillUnmount() {
@@ -68,6 +65,10 @@ class RecommendScreen extends Component {
       clearTimeout(this.loading);
       clearTimeout(this.fetchListLoading);
     }
+  }
+
+  init() {
+    this.fetchData();
   }
 
   fetchData() {
@@ -125,7 +126,11 @@ class RecommendScreen extends Component {
 
   render() {
     return (
-      <Page>
+      <Page
+        needLogin={false}
+        init={this.init}
+        loading={this.state.loading}
+      >
         <FlatLists
           refreshing={this.state.loading}
           loadSuccess={this.state.loadSuccess}

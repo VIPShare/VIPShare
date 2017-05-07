@@ -44,17 +44,18 @@ class MyShareList extends Component {
       loadSuccess: true,
     }
 
+    this.init = this.init.bind(this);
     this.fetchData = this.fetchData.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchData();
   }
 
   componentWillUnmount() {
     if (this.loading) {
       clearTimeout(this.loading);
     }
+  }
+
+  init() {
+    this.fetchData();
   }
 
   fetchData() {
@@ -82,7 +83,11 @@ class MyShareList extends Component {
 
   render() {
     return (
-      <Page>
+      <Page
+        {...this.props}
+        init={this.init}
+        loading={this.state.loading}
+      >
         <Shares
           loading={this.state.loading}
           loadSuccess={this.state.loadSuccess}

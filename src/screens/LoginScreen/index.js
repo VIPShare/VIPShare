@@ -20,7 +20,7 @@ import { isBlank } from '../../utils/string';
 
 class LoginScreen extends Component {
   static navigationOptions = {
-    headerVisible: false,
+    header: null,
   }
 
   constructor(props) {
@@ -237,12 +237,4 @@ const styles = StyleSheet.create({
 
 const Login = Form.create()(LoginScreen);
 
-const LoginStack = StackNavigator({
-  Login: {
-    screen: Login,
-  },
-}, {
-  mode: 'modal',
-});
-
-export default LoginStack;
+export default Login;

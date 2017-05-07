@@ -9,7 +9,7 @@ import { NavigationActions } from 'react-navigation';
 import Page from '../../components/Page';
 import Shares from '../../components/Shares';
 import { list } from '../../services/account';
-import { userRequiredAndDispatch, checkAuth } from '../../utils/permission';
+import { checkAuth } from '../../utils/permission';
 
 import styles from './index.style';
 
@@ -43,11 +43,8 @@ class ShareListScreen extends Component {
       loadSuccess: true,
     }
 
+    this.init = this.init.bind(this);
     this.fetchData = this.fetchData.bind(this);
-  }
-
-  componentDidMount() {
-    this.fetchData();
   }
 
   componentWillUnmount() {
@@ -56,14 +53,14 @@ class ShareListScreen extends Component {
     }
   }
 
+  async init() {
+    this.fetchData();
+  }
+
   fetchData() {
     this.loading = setTimeout(async () => {
       const { data, err } = await list();
       if (err) {
-        if (!(await checkAuth(this.props.screenProps.redirectLogin, err, this.fetchData))) {
-          return;
-        }
-
         this.setState({
           loading: false,
           loadSuccess: false,
@@ -81,7 +78,11 @@ class ShareListScreen extends Component {
 
   render() {
     return (
-      <Page>
+      <Page
+        {...this.props}
+        init={this.init}
+        loading={this.state.loading}
+      >
         <Shares
           loading={this.state.loading}
           loadSuccess={this.state.loadSuccess}
