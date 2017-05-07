@@ -77,16 +77,17 @@ async function _pre() {
 }
 
 async function rest(url, options = {}) {
-  const obj = await _pre();
+  // const obj = await _pre();
+  // console.log(obj)
 
-  if (obj.err) {
-    return { err: obj.err };
-  }
-  
+  // if (obj.err) {
+  //   return { err: obj.err };
+  // }
+
   const { data, err } = await request(url, {
     ...options,
     headers: {
-      'Authorization': `Bearer ${obj.access_token}`, // could be overrided by options.headers.Authorization
+      'Authorization': `Bearer `, // could be overrided by options.headers.Authorization
       ...options.headers,
     }
   });
