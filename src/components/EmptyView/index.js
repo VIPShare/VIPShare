@@ -1,11 +1,25 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, Image } from 'react-native';
+import { Text, Image, View } from 'react-native';
+import { Col } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
-import Flex from '../Flex';
 
 import styles from './index.style';
 
 class EmptyView extends Component {
+  static propTypes = {
+    tip: PropTypes.string.isRequired,
+    subTip: PropTypes.string,
+    iconContainer: PropTypes.object.isRequired,
+    icon: PropTypes.node,
+    iconStyle: PropTypes.object.isRequired,
+    footer: PropTypes.node.isRequired,
+  }
+  static defaultProps = {
+    iconContainer: {},
+    iconStyle: {},
+    footer: false,
+  }
+
   constructor(props) {
     super(props);
 
@@ -21,9 +35,9 @@ class EmptyView extends Component {
       // icon from vector icons, now only support ionicons.
       return (
         <Icon
-          name={ icon.name }
-          size={ icon.size }
-          color={ icon.color }
+          name={icon.name}
+          size={icon.size}
+          color={icon.color}
         />
       )
     }
@@ -38,14 +52,15 @@ class EmptyView extends Component {
     // icon from require
     return (
       <Image
-        source={ icon }
+        style={this.props.iconStyle}
+        source={icon}
       />
     )
   }
 
   renderSubTip(subTip) {
     if (subTip) {
-      return <Text style={ styles.subTip }>{ subTip }</Text>
+      return <Text style={styles.subTip}>{subTip}</Text>
     }
     return false;
   }
@@ -53,22 +68,16 @@ class EmptyView extends Component {
   render() {
     const { icon, tip, subTip } = this.props;
     return (
-      <Flex column justifyContent="center" alignItems="center">
-        { this.renderIcon(icon) }
-        <Text style={ styles.tip }>{ tip }</Text>
-        { this.renderSubTip(subTip) }
-      </Flex>
+      <Col style={styles.container}>
+        <View style={this.props.iconContainer}>
+          {this.renderIcon(icon)}
+        </View>
+        <Text style={styles.tip}>{tip}</Text>
+        {this.renderSubTip(subTip)}
+        {this.props.footer}
+      </Col>
     )
   }
-}
-
-EmptyView.propTypes = {
-  tip: PropTypes.string.isRequired,
-  subTip: PropTypes.string,
-  icon: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-}
-
-EmptyView.defaultProps = {
 }
 
 export default EmptyView;
