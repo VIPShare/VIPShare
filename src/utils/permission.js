@@ -1,3 +1,4 @@
+import { AsyncStorage } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 
 let isLogin = false;
@@ -24,4 +25,12 @@ export const checkAuth = async (redirectLogin, err, cb) => {
     await userRequiredAndDispatch(redirectLogin, eventGroupTrigger);
   }
   return isLogin;
+}
+
+export const isLoginin = async () => {
+  const access_token = await AsyncStorage.getItem('access_token');
+  if ('string' === typeof access_token) {
+    return true;
+  }
+  return false;
 }
