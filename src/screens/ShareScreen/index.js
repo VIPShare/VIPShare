@@ -4,7 +4,7 @@ import {
   Alert,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackNavigator } from 'react-navigation';
 
 import Page from '../../components/Page';
 import Shares from '../../components/Shares';
@@ -106,4 +106,10 @@ class ShareListScreen extends Component {
   }
 }
 
-export default ShareListScreen;
+const ShareListStack = StackNavigator({
+  ShareList: {
+    screen: ShareListScreen,
+  },
+});
+
+export default ShareListStack;

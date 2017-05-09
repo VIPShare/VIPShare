@@ -3,7 +3,7 @@ import {
   ListView,
 } from 'react-native';
 import { List, ListItem, Icon } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackNavigator } from 'react-navigation';
 
 import Page from '../../components/Page';
 
@@ -87,4 +87,10 @@ class MessageScreen extends Component {
   }
 }
 
-export default MessageScreen;
+const MessageStack = StackNavigator({
+  Message: {
+    screen: MessageScreen,
+  },
+});
+
+export default MessageStack;

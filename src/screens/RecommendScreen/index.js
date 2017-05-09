@@ -5,12 +5,13 @@ import {
   FlatList,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { NavigationActions } from 'react-navigation';
+import { NavigationActions, StackNavigator } from 'react-navigation';
 
 import Recommend from './Recommend';
 import Page from '../../components/Page';
 import { FlatLists } from '../../components/Lists';
 import Banner from '../../components/Banner';
+import RecommendScreen from './RecommendScreen';
 
 import { list, top } from '../../services/recommend';
 
@@ -24,7 +25,7 @@ const VIEWABILITY_CONFIG = {
   waitForInteraction: true,
 };
 
-class RecommendScreen extends Component {
+class RecommendsScreen extends Component {
   static navigationOptions = ({ navigation }) => {
     const { navigate } = navigation;
     return {
@@ -121,7 +122,7 @@ class RecommendScreen extends Component {
   }
 
   renderItem({ item, index }) {
-    return <Recommend key={index} recommend={item} />;
+    return <Recommend {...this.props} key={index} recommend={item} />;
   }
 
   render() {
@@ -157,4 +158,13 @@ class RecommendScreen extends Component {
   }
 }
 
-export default RecommendScreen;
+const RecommendStack = StackNavigator({
+  Recommends: {
+    screen: RecommendsScreen,
+  },
+  Recommend: {
+    screen: RecommendScreen,
+  },
+});
+
+export default RecommendStack;

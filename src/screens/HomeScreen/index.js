@@ -19,7 +19,7 @@ const Home = TabNavigator({
 }, {
   headerMode: 'screen',
   navigationOptions: {
-    headerVisible: false,
+    header: null,
   },
   tabBarPosition: 'bottom',
   animationEnabled: true,

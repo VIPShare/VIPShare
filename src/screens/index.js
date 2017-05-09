@@ -89,7 +89,6 @@ const TopNavigator = StackNavigator({
   },
   ShareAdd: {
     screen: ShareAddScreen,
-
   },
   ShareType: {
     screen: ShareTypeScreen,
