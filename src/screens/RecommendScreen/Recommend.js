@@ -4,13 +4,21 @@ import { Card, Grid, Row, Col, Badge } from 'react-native-elements'
 
 import styles from './Recommend.style';
 
-export default ({ recommend }) => {
+export default ({ recommend, navigation }) => {
   return (
     <Card
       flexDirection="row"
       containerStyle={styles.recommend.container}
     >
-      <Grid containerStyle={styles.recommend.wrapper}>
+      <Grid
+        containerStyle={styles.recommend.wrapper}
+        onPress={() => {
+          navigation.navigate('Recommend', {
+            id: recommend.id,
+            title: recommend.title,
+          })
+        }}
+      >
         <Row>
           <Col containerStyle={styles.recommend.content.container}>
             <Text style={styles.recommend.content.title.text}>{recommend.title}</Text>
