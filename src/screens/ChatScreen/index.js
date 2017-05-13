@@ -18,6 +18,8 @@ class ChatScreen extends Component {
 
     this.state = {
       messages: [],
+      loading: true,
+      loadSuccess: false,
     }
 
     this.onSend = this.onSend.bind(this);
@@ -37,6 +39,8 @@ class ChatScreen extends Component {
           },
         },
       ],
+      loading: false,
+      loadSuccess: true,
     });
   }
 
@@ -50,7 +54,9 @@ class ChatScreen extends Component {
 
   render() {
     return (
-      <Page>
+      <Page
+        enableLoad={false}
+      >
         <GiftedChat
           messages={this.state.messages}
           onSend={this.onSend}
