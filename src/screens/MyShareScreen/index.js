@@ -28,7 +28,7 @@ class MyShareList extends Component {
           routeName: 'ShareAdd',
         }));
       }} />,
-      headerVisible: true,
+      header: undefined,
 
       drawerLabel: 'MyShare',
       drawerIcon: ({ tintColor }) => <Icon name="share" />,

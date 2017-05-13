@@ -5,6 +5,7 @@ import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import MyShareScreen from './MyShareScreen';
 import ProfileScreen from './ProfileScreen';
+import { SexChooseScreen } from './ProfileScreen/ProfileUpdateScreen';
 import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
 import ChatScreen from './ChatScreen';
 
@@ -32,19 +33,16 @@ const StackNavigatorWrapper = (key, Comp) => {
 
 const MainNavigator = DrawerNavigator({
   Shares: {
-    screen: StackNavigatorWrapper('Shares', HomeScreen),
+    screen: HomeScreen,
   },
   MyShare: {
     screen: StackNavigatorWrapper('MyShare', MyShareScreen),
   },
   Profile: {
-    screen: StackNavigatorWrapper('Profile', ProfileScreen),
+    screen: ProfileScreen,
   },
 }, {
   contentComponent: props => <Drawer {...props} drawers={drawers} />,
-  contentOptions: {
-
-  },
   headerMode: 'screen',
   navigationOptions: {
     header: null,
@@ -92,6 +90,9 @@ const TopNavigator = StackNavigator({
   },
   ShareType: {
     screen: ShareTypeScreen,
+  },
+  SexChoose: {
+    screen: SexChooseScreen,
   },
   Chat: {
     screen: ChatScreen,
