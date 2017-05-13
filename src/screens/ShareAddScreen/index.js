@@ -96,7 +96,9 @@ class ShareAddScreen extends Component {
     });
 
     return (
-      <Page>
+      <Page
+        enableLoad={false}
+      >
         <Form>
           <FormItem label="账户类型" {...(getFieldValidating('type') ? {} : getFieldError('type')) }>
             <PullSelect
