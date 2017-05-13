@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { Text } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Grid, Row, Col, Avatar } from 'react-native-elements';
+import ImagePicker from 'react-native-image-picker';
 
 import ProfileUpdateScreen from './ProfileUpdateScreen';
 import Page from '../../components/Page';
@@ -17,9 +18,47 @@ class Profile extends Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {};
+
+    this.onPressAvatar = this.onPressAvatar.bind(this);
+  }
+
+  onPressAvatar() {
+    console.log('press avatar')
+    ImagePicker.showImagePicker({
+      title: 'Select Avatar',
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    }, (response) => {
+      console.log('Response = ', response);
+
+      if (response.didCancel) {
+        console.log('User cancelled image picker');
+      }
+      else if (response.error) {
+        console.log('ImagePicker Error: ', response.error);
+      }
+      else if (response.customButton) {
+        console.log('User tapped custom button: ', response.customButton);
+      }
+      else {
+        let source = { uri: response.uri };
+
+        // You can also display the image using data:
+        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
+
+        this.setState({
+          avatarSource: source
+        });
+      }
+    });
   }
 
   render() {
+    const avatarSource = this.state.avatarSource || { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" };
     return (
       <Page
         enableLoad={false}
@@ -42,12 +81,13 @@ class Profile extends Component {
                   <Text style={styles.header.right.text}>Edit</Text>
                 </Col>
               </Row>
-              <Row containerStyle={styles.avatar.container}>
+              <Row containerStyle={styles.avatar.container} onPress={this.onPressAvatar}>
                 <Avatar
                   xlarge
                   rounded
-                  source={{ uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" }}
+                  source={avatarSource}
                   containerStyle={styles.avatar.avatar}
+                  activeOpacity={1}
                 />
               </Row>
             </Col>
@@ -102,10 +142,10 @@ const ProfileStack = StackNavigator({
     screen: ProfileUpdateScreen,
   },
 }, {
-  // headerMode: 'screen',
-  navigationOptions: {
-    header: null,
-  },
-});
+    // headerMode: 'screen',
+    navigationOptions: {
+      header: null,
+    },
+  });
 
 export default ProfileStack;

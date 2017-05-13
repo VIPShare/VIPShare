@@ -3598,6 +3598,10 @@ react-native-htmlview@^0.9.0:
     entities "^1.1.1"
     htmlparser2-without-node-native "^3.9.0"
 
+react-native-image-picker@^0.26.3:
+  version "0.26.3"
+  resolved "http://registry.npm.taobao.org/react-native-image-picker/download/react-native-image-picker-0.26.3.tgz#0ad2eede49501a7046d8046a73813696539c3dcd"
+
 react-native-invertible-scroll-view@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-invertible-scroll-view/-/react-native-invertible-scroll-view-1.0.0.tgz#60ceb384dc950c34eba3a5aeda39f97cdc7d4e23"
