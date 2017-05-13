@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { View, Text, TouchableHighlight } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 
 import styles from './index.style';
@@ -16,6 +17,14 @@ class PullSelect extends Component {
     this.onPress = this.onPress.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.selected !== this.props.selected) {
+      this.setState({
+        selected: nextProps.selected,
+      });
+    }
+  }
+
   onSelect(selected) {
     this.setState({
       selected,
@@ -24,6 +33,17 @@ class PullSelect extends Component {
   }
 
   onPress() {
+    if ('undefined' !== typeof this.props.action) {
+      const action = NavigationActions.navigate({
+        ...this.props.action,
+        params: {
+          ...this.props.action.params,
+          onSelect: this.onSelect,
+        },
+      })
+      return this.props.screenProps.redirect(action);
+    }
+    
     this.props.navigation.navigate(this.props.screen, {
       onSelect: this.onSelect,
     });
@@ -50,8 +70,10 @@ class PullSelect extends Component {
 
 PullSelect.propTypes = {
   placeholder: PropTypes.string.isRequired,
-  screen: PropTypes.string.isRequired,
+  screen: PropTypes.string,
+  action: PropTypes.object,
   title: PropTypes.string.isRequired,
+  selected: PropTypes.object,
   onChangeText: PropTypes.func.isRequired,
 }
 
