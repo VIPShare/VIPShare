@@ -16,6 +16,7 @@ const create = () => (WrappedCompnent) => {
 
       this._initElement = this._initElement.bind(this);
       this._putElement = this._putElement.bind(this);
+      this._putElements = this._putElements.bind(this);
       this._onChange = this._onChange.bind(this);
       this._setSuccFlag = this._setSuccFlag.bind(this);
       this._validateCb = this._validateCb.bind(this);
@@ -27,6 +28,8 @@ const create = () => (WrappedCompnent) => {
       this.getFieldsValue = this.getFieldsValue.bind(this);
       this.getFieldValue = this.getFieldValue.bind(this);
       this.validateForm = this.validateForm.bind(this);
+      this.setFieldValue = this.setFieldValue.bind(this);
+      this.setFieldsValue = this.setFieldsValue.bind(this);
     }
 
     _initElement(key, options) {
@@ -47,6 +50,24 @@ const create = () => (WrappedCompnent) => {
             value,
             validating: false,
           },
+        },
+      }, cb);
+    }
+
+    _putElements(elements, cb) {
+      let result = {};
+      Object.keys(elements).forEach((key) => {
+        const value = elements[key];
+        result[key] = {
+          ...this.state.form[key],
+          value,
+          validating: false,
+        };
+      });
+      this.setState({
+        form: {
+          ...this.state.form,
+          ...result,
         },
       }, cb);
     }
@@ -149,6 +170,14 @@ const create = () => (WrappedCompnent) => {
       });
     }
 
+    setFieldValue(key, value, cb = () => {}) {
+      this._putElement(key, value, cb);
+    }
+
+    setFieldsValue(elements, cb = () => {}) {
+      this._putElements(elements, cb);
+    }
+
     render() {
       const form = {
         getFieldProps: this.getFieldProps,
@@ -157,6 +186,8 @@ const create = () => (WrappedCompnent) => {
         getFieldsValue: this.getFieldsValue,
         getFieldValue: this.getFieldValue,
         validateForm: this.validateForm,
+        setFieldValue: this.setFieldValue,
+        setFieldsValue: this.setFieldsValue,
       }
 
       return (
