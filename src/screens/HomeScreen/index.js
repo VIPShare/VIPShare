@@ -23,7 +23,7 @@ const Home = TabNavigator({
   },
   tabBarPosition: 'bottom',
   animationEnabled: true,
-  swipeEnabled: true,
+  swipeEnabled: false,
   activeTintColor: 'blue',
 
   // ios
