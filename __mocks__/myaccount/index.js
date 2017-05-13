@@ -3,8 +3,9 @@ export default {
 	'/api/mine/accounts': () => {
 		return Promise.resolve([
       {
+        id: 1,
         type: '爱奇艺',
-        account: '175****273',
+        username: '175****273',
       }
     ]);
 	}

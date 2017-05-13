@@ -89,6 +89,7 @@ class MyShareList extends Component {
         loading={this.state.loading}
       >
         <Shares
+          screenProps={this.props.screenProps}
           loading={this.state.loading}
           loadSuccess={this.state.loadSuccess}
           accounts={this.state.accounts}

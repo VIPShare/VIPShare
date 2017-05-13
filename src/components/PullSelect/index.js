@@ -43,24 +43,24 @@ class PullSelect extends Component {
       })
       return this.props.screenProps.redirect(action);
     }
-    
+
     this.props.navigation.navigate(this.props.screen, {
       onSelect: this.onSelect,
     });
   }
 
   render() {
-    let { placeholder } = this.props;
+    let { placeholder, disabled } = this.props;
     if (this.state.selected) {
       placeholder = this.state.selected.title;
     }
-    
+
     return (
-      <TouchableHighlight onPress={ this.onPress } underlayColor="#eee" >
-        <View style={ styles.buttonWrapper }>
-          <Text style={ styles.buttonText }>{ placeholder }</Text>
-          <View style={ styles.buttonIcon }>
-            <Icon name="chevron-right" size={ 20 } color="#ccc" />
+      <TouchableHighlight onPress={this.onPress} underlayColor="#eee" disabled={disabled} >
+        <View style={styles.buttonWrapper}>
+          <Text style={styles.buttonText}>{placeholder}</Text>
+          <View style={styles.buttonIcon}>
+            <Icon name="chevron-right" size={20} color="#ccc" />
           </View>
         </View>
       </TouchableHighlight>
@@ -74,11 +74,13 @@ PullSelect.propTypes = {
   action: PropTypes.object,
   title: PropTypes.string.isRequired,
   selected: PropTypes.object,
+  disabled: PropTypes.bool.isRequired,
   onChangeText: PropTypes.func.isRequired,
 }
 
 PullSelect.defaultProps = {
-  onChangeText: () => {},
+  disabled: false,
+  onChangeText: () => { },
 }
 
 export default PullSelect;

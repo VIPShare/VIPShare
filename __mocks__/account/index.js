@@ -3,8 +3,9 @@ export default {
 	'/api/accounts': () => {
 		return Promise.resolve([
       {
+        id: 1,
         type: '爱奇艺',
-        account: '175****273',
+        username: '175****273',
       }
     ]);
 	},
@@ -12,7 +13,7 @@ export default {
     return Promise.resolve({
       id: urlparams.id,
       type: '爱奇艺',
-      account: '1758738273',
+      username: '1758738273',
       password: '123456',
     });
   }

@@ -21,7 +21,6 @@ class ShareTypeScreen extends Component {
           </View>
         </TouchableWithoutFeedback>
       ),
-      headerVisible: true,
       tabBarVisible: false,
     }
   }

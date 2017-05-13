@@ -2,6 +2,7 @@ import React from 'react';
 import {
   ListView,
 } from 'react-native';
+import { NavigationActions } from 'react-navigation';
 import { List, ListItem } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 
@@ -13,21 +14,29 @@ const swipeoutBtns = [
     text: 'Button'
   }
 ];
-const renderRow = (rowData, sectionID) => {
+const renderRow = (rowData, sectionID, screenProps) => {
   return (
     <Swipeout right={swipeoutBtns} backgroundColor="transparent">
       <ListItem
         key={sectionID}
         title={rowData.type}
-        subtitle={rowData.account}
+        subtitle={rowData.username}
         // avatar={{ uri: rowData.avatar_url }}
         rightIcon={{ name: 'chevron-right' }}
+        onPress={()=> {
+          screenProps.redirect(NavigationActions.navigate({
+            routeName: 'ShareAdd',
+            params: {
+              id: rowData.id,
+            }
+          }));
+        }}
       />
     </Swipeout>
   )
 }
 
-export default ({ loading, loadSuccess, accounts, dataSource, loadingTip, loadFailTip, emptyTip }) => (
+export default ({ loading, loadSuccess, accounts, dataSource, loadingTip, loadFailTip, emptyTip, screenProps }) => (
   <Lists
     loading={loading}
     loadSuccess={loadSuccess}
@@ -36,6 +45,6 @@ export default ({ loading, loadSuccess, accounts, dataSource, loadingTip, loadFa
     loadingTip={loadingTip}
     loadFailTip={loadFailTip}
     emptyTip={emptyTip}
-    renderRow={renderRow}
+    renderRow={(rowData, sectionID) => renderRow(rowData, sectionID, screenProps)}
   />
 );

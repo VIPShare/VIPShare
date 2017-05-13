@@ -81,6 +81,9 @@ class SexChooseScreen extends Component {
         <VirtualizedList
           data={sexList}
           renderItem={this.renderItem}
+          keyExtractor={(item, index) => {
+            return index;
+          }}
         />
       </Page>
     );

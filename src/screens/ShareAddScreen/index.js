@@ -15,6 +15,8 @@ import Form from '../../components/Form';
 import PullSelect from '../../components/PullSelect';
 import { isBlank } from '../../utils/string';
 
+import { item } from '../../services/account';
+
 import styles from './index.style';
 
 const FormItem = Form.Item;
@@ -30,7 +32,6 @@ class ShareAddScreen extends Component {
           </View>
         </TouchableWithoutFeedback>
       ),
-      headerVisible: true,
       tabBarVisible: false,
     }
   }
@@ -38,7 +39,50 @@ class ShareAddScreen extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      account: {},
+      loading: true,
+      loadSuccess: false,
+    };
+
+    this.init = this.init.bind(this);
+    this.fetchData = this.fetchData.bind(this);
     this.onFormValidate = this.onFormValidate.bind(this);
+  }
+
+  init() {
+    const id = this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.id;
+    if ('undefined' !== typeof id) {
+      return this.fetchData(id);
+    }
+    this.setState({
+      loading: false,
+      loadSuccess: true,
+    });
+  }
+
+  fetchData(id) {
+    this.fetchDataLoading = setTimeout(async () => {
+      const { setFieldsValue } = this.props.form;
+      const { data, err } = await item(id);
+      if (err) {
+        this.setState({
+          loading: false,
+          loadSuccess: false,
+        });
+        return false;
+      };
+
+      this.setState({
+        loading: false,
+        loadSuccess: true,
+        account: data,
+      }, () => {
+        setFieldsValue({
+          ...data,
+        });
+      });
+    }, 100);
   }
 
   onFormValidate() {
@@ -50,6 +94,7 @@ class ShareAddScreen extends Component {
   }
 
   render() {
+    const { readonly = false } = this.props;
     const { getFieldProps, getFieldError, getFieldValidating } = this.props.form;
 
     const typeProps = getFieldProps('type', {
@@ -97,7 +142,8 @@ class ShareAddScreen extends Component {
 
     return (
       <Page
-        enableLoad={false}
+        init={this.init}
+        loading={this.state.loading}
       >
         <Form>
           <FormItem label="账户类型" {...(getFieldValidating('type') ? {} : getFieldError('type')) }>
@@ -108,13 +154,17 @@ class ShareAddScreen extends Component {
               title="类型"
               placeholder="请选择账户类型"
               navigation={this.props.navigation}
+              selected={{
+                title: typeProps.value,
+              }}
+              disabled={readonly}
             />
           </FormItem>
           <FormItem label="账户名" {...(getFieldValidating('username') ? {} : getFieldError('username')) }>
-            <FormInput name="username" {...usernameProps} />
+            <FormInput name="username" {...usernameProps} editable={!readonly} />
           </FormItem>
           <FormItem label="账户密码" {...(getFieldValidating('password') ? {} : getFieldError('password')) }>
-            <FormInput name="password" {...passwordProps} />
+            <FormInput name="password" {...passwordProps} editable={!readonly} />
           </FormItem>
         </Form>
       </Page>
