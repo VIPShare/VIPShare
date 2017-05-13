@@ -1,7 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Text } from 'react-native';
+import { StackNavigator } from 'react-navigation';
 import { Grid, Row, Col, Avatar } from 'react-native-elements';
 
+import ProfileUpdateScreen from './ProfileUpdateScreen';
 import Page from '../../components/Page';
 import PersonItem from './PersonItem';
 
@@ -26,15 +28,17 @@ class Profile extends Component {
           <Row size={1} containerStyle={{ backgroundColor: '#aaa' }}>
             <Col containerStyle={{ flex: 1 }}>
               <Row containerStyle={styles.header.container}>
-                <Col size={1} containerStyle={styles.header.left.container} onPress={ () => {
+                <Col size={1} containerStyle={styles.header.left.container} onPress={() => {
                   this.props.navigation.navigate('Recommends');
-                } }>
+                }}>
                   <Text style={styles.header.left.text}>{'<'}</Text>
                 </Col>
                 <Col size={3} containerStyle={styles.header.title.container}>
                   <Text style={styles.header.title.text}>Profile</Text>
                 </Col>
-                <Col size={1} containerStyle={styles.header.right.container}>
+                <Col size={1} containerStyle={styles.header.right.container} onPress={() => {
+                  this.props.navigation.navigate('ProfileUpdate');
+                }}>
                   <Text style={styles.header.right.text}>Edit</Text>
                 </Col>
               </Row>
@@ -90,4 +94,18 @@ class Profile extends Component {
   }
 }
 
-export default Profile;
+const ProfileStack = StackNavigator({
+  Profile: {
+    screen: Profile,
+  },
+  ProfileUpdate: {
+    screen: ProfileUpdateScreen,
+  },
+}, {
+  // headerMode: 'screen',
+  navigationOptions: {
+    header: null,
+  },
+});
+
+export default ProfileStack;
