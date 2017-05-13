@@ -6,6 +6,7 @@ export default {
         id: 1,
         type: '爱奇艺',
         username: '175****273',
+        editable: true,
       }
     ]);
 	}

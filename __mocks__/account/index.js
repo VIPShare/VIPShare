@@ -6,7 +6,14 @@ export default {
         id: 1,
         type: '爱奇艺',
         username: '175****273',
-      }
+        editable: true,
+      },
+      {
+        id: 2,
+        type: '腾讯视频',
+        username: '25****273',
+        editable: false,
+      },
     ]);
 	},
   '/api/accounts/{id}': ({urlparams}) => {

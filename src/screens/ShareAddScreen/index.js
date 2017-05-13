@@ -22,10 +22,10 @@ import styles from './index.style';
 const FormItem = Form.Item;
 class ShareAddScreen extends Component {
   static navigationOptions = ({ navigation }) => {
-    const { state, setParams, navigate } = navigation;
+    const { state = {}, setParams, navigate } = navigation;
     return {
       title: 'Share',
-      headerRight: (
+      headerRight: state.params && !state.params.readonly && (
         <TouchableWithoutFeedback onPress={() => navigation.goBack()} disabled={!(state.params && state.params.finishable)}>
           <View style={styles.nav.rightWrapper}>
             <Text style={(state.params && state.params.finishable) ? styles.nav.activeButton : styles.nav.unactiveButton} >Finish</Text>
@@ -98,7 +98,7 @@ class ShareAddScreen extends Component {
   }
 
   render() {
-    const { readonly = false } = this.props;
+    const readonly = this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.readonly || false;
     const { getFieldProps, getFieldError, getFieldValidating } = this.props.form;
 
     const typeProps = getFieldProps('type', {

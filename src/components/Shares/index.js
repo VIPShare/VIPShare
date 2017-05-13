@@ -16,7 +16,7 @@ const swipeoutBtns = [
 ];
 const renderRow = (rowData, sectionID, screenProps) => {
   return (
-    <Swipeout right={swipeoutBtns} backgroundColor="transparent">
+    <Swipeout right={swipeoutBtns} backgroundColor="transparent" disabled={!rowData.editable}>
       <ListItem
         key={sectionID}
         title={rowData.type}
@@ -28,6 +28,7 @@ const renderRow = (rowData, sectionID, screenProps) => {
             routeName: 'ShareAdd',
             params: {
               id: rowData.id,
+              readonly: !rowData.editable,
             }
           }));
         }}
