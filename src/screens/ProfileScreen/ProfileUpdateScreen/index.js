@@ -44,6 +44,10 @@ class ProfileUpdateScreen extends Component {
     this.fetchData = this.fetchData.bind(this);
   }
 
+  componentWillUnmount() {
+    clearTimeout(this.fetchDataLoading);
+  }
+
   init() {
     this.fetchData();
   }
@@ -145,9 +149,6 @@ class ProfileUpdateScreen extends Component {
     });
 
     const profile = this.state.profile || {};
-    console.log({
-                title: profile.sex,
-              })
     return (
       <Page
         init={this.init}
