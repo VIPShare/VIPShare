@@ -3,10 +3,17 @@ export default {
 	'/api/accounts': () => {
 		return Promise.resolve([
       {
-        name: 'test',
-        subtitle: 'test',
-        avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg',
+        type: '爱奇艺',
+        account: '175****273',
       }
     ]);
-	}
+	},
+  '/api/accounts/{id}': ({urlparams}) => {
+    return Promise.resolve({
+      id: urlparams.id,
+      type: '爱奇艺',
+      account: '1758738273',
+      password: '123456',
+    });
+  }
 }
