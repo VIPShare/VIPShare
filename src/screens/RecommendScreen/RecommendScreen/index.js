@@ -74,11 +74,11 @@ class RecommendScreen extends Component {
               <Image style={styles.banner.image} source={recommend.image} />
             </View>
             <View style={styles.content.container}>
-            <Text style={styles.content.title}>{recommend.title}</Text>
-            <Text style={styles.content.info}>{`${recommend.date}  ${recommend.source}  |  撰文  ${recommend.author}`}</Text>
-            <HTMLView
-              value={recommend.content}
-            />
+              <Text style={styles.content.title}>{recommend.title}</Text>
+              <Text style={styles.content.info}>{`${recommend.date}  ${recommend.source}  |  撰文  ${recommend.author}`}</Text>
+              <HTMLView
+                value={recommend.content}
+              />
             </View>
           </Col>
         </ScrollView>
