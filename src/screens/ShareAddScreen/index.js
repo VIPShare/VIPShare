@@ -80,6 +80,10 @@ class ShareAddScreen extends Component {
       }, () => {
         setFieldsValue({
           ...data,
+        }, () => {
+          this.props.navigation.setParams({
+            finishable: true,
+          });
         });
       });
     }, 100);
