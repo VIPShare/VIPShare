@@ -101,7 +101,7 @@ class ProfileUpdateScreen extends Component {
     });
     const sexProps = getFieldProps('sex', {
       validator: ({title}, cb) => {
-        if (isBlank(value)) {
+        if (isBlank(title)) {
           this.sexTrue = false;
           this.onFormValidate();
           return cb('请选择性别');
@@ -169,7 +169,7 @@ class ProfileUpdateScreen extends Component {
                 routeName: 'SexChoose'
               }}
               selected={{
-                title: sexProps.value,
+                title: 'object' === typeof sexProps.value ? sexProps.value.title : sexProps.value,
               }}
             />
           </FormItem>

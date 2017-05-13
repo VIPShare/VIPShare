@@ -159,7 +159,7 @@ class ShareAddScreen extends Component {
               placeholder="请选择账户类型"
               navigation={this.props.navigation}
               selected={{
-                title: typeProps.value,
+                title: 'object' === typeof typeProps.value ? typeProps.value.title : typeProps.value,
               }}
               disabled={readonly}
             />
