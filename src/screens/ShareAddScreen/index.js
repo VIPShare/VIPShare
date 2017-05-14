@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {
   Text,
+  TextInput,
   Image,
   View,
   TouchableWithoutFeedback,
@@ -12,10 +13,11 @@ import ShareTypeScreen from './ShareTypeScreen';
 
 import Page from '../../components/Page';
 import Form from '../../components/Form';
+import EmptyView from '../../components/EmptyView';
 import PullSelect from '../../components/PullSelect';
 import { isBlank } from '../../utils/string';
 
-import { item } from '../../services/account';
+import { item, viewable } from '../../services/account';
 
 import styles from './index.style';
 
@@ -47,6 +49,7 @@ class ShareAddScreen extends Component {
 
     this.init = this.init.bind(this);
     this.fetchData = this.fetchData.bind(this);
+    this.onPassEnd = this.onPassEnd.bind(this);
     this.onFormValidate = this.onFormValidate.bind(this);
   }
 
@@ -89,6 +92,24 @@ class ShareAddScreen extends Component {
     }, 100);
   }
 
+  async onPassEnd() {
+    if (!isBlank(this.state.password)) {
+      const id = this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.id;
+      const { data, err } = await viewable(id, this.state.password);
+      if (err || !data.viewable) {
+        return this.setState({
+          viewableError: true,
+        });
+      }
+
+      this.setState({
+        viewable: true,
+      }, () => {
+        this.init();
+      });
+    }
+  }
+
   onFormValidate() {
     const { form } = this.props;
 
@@ -100,6 +121,45 @@ class ShareAddScreen extends Component {
   render() {
     const readonly = this.props.navigation.state && this.props.navigation.state.params && this.props.navigation.state.params.readonly || false;
     const { getFieldProps, getFieldError, getFieldValidating } = this.props.form;
+    const viewableVar = !readonly || this.state.viewable;
+
+    if (!viewableVar) {
+      if (this.state.viewableError) {
+        return (
+          <EmptyView
+            tip="Error View Password"
+            footer={
+              <Button title="BACK" onPress={() => {
+                this.props.navigation.goBack();
+              }} />
+            }
+          />
+        )
+      }
+
+      return (
+        <Page
+          containerStyle={{ justifyContent: 'center' }}
+          enableLoad={false}
+        >
+          <TextInput
+            style={{ height: 40, borderWidth: 0, paddingLeft: 15, paddingRight: 15, paddingTop: 5, paddingBottom: 5 }}
+            autoCapitalize="none"
+            autoCorrect={false}
+            placeholder="Enter password"
+            secureTextEntry={true}
+            onChangeText={(password) => {
+              if (!isBlank(password)) {
+                this.setState({
+                  password,
+                });
+              }
+            }}
+          />
+          <Button title="View" style={{ marginTop: 30, marginBottom: 60 }} onPress={this.onPassEnd} />
+        </Page>
+      );
+    }
 
     const typeProps = getFieldProps('type', {
       validator: (selected, cb) => {

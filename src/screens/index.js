@@ -42,7 +42,6 @@ const screenProps = (navigation) => {
         routeName: 'Login',
         params: { cb },
       });
-      console.log(resetAction)
       redirectAction(navigation, resetAction);
     },
     redirect: (action) => {

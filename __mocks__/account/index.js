@@ -23,5 +23,18 @@ export default {
       username: '1758738273',
       password: '123456',
     });
-  }
+  },
+  '/api/accounts/{id}/viewable': ({urlparams, params}) => {
+    if (params.data.password !== '123456') {
+      return Promise.resolve({
+        id: urlparams.id,
+        viewable: false,
+        msg: 'no permission',
+      });
+    }
+    return Promise.resolve({
+      id: urlparams.id,
+      viewable: true,
+    });
+  },
 }
