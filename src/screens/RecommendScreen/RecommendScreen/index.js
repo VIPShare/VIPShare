@@ -67,6 +67,7 @@ class RecommendScreen extends Component {
       <Page
         init={this.init}
         loading={this.state.loading}
+        needLogin={false}
       >
         <ScrollView>
           <Col>

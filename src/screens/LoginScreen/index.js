@@ -10,12 +10,14 @@ import {
   ScrollView,
   findNodeHandle,
   TouchableWithoutFeedback,
+  AsyncStorage,
 } from 'react-native';
 import { StackNavigator, NavigationActions } from 'react-navigation';
 import { FormInput } from 'react-native-elements';
 
 import Form from '../../components/Form';
 import { login } from '../../services/auth';
+import { info } from '../../services/mine';
 import { isBlank } from '../../utils/string';
 
 class LoginScreen extends Component {
@@ -70,11 +72,25 @@ class LoginScreen extends Component {
       // login
       const { err } = await login(data.username, data.password);
       if (err) {
-        // 登录失败
+        // Error login
         Alert.alert('用户名或者密码错误');
         return;
       }
 
+      const { data: profile, err: infoErr } = await info();
+      if (infoErr) {
+        // Error fetch profile
+        Alert.alert('网络通讯存在问题,请稍后再试!');
+        return;
+      }
+
+      try {
+        await AsyncStorage.setItem('user:profile', JSON.stringify(profile));
+      } catch (error) {
+        // Error saving data
+        Alert.alert('网络通讯存在问题,请稍后再试!');
+        return;
+      }
       cb && 'function' === typeof cb && cb();
 
       const resetAction = NavigationActions.navigate({

@@ -13,6 +13,7 @@ import { FlatLists } from '../../components/Lists';
 import Banner from '../../components/Banner';
 import RecommendScreen from './RecommendScreen';
 
+import { isLoginin } from '../../utils/permission';
 import { list, top } from '../../services/recommend';
 
 import styles from './index.style';
@@ -26,12 +27,16 @@ const VIEWABILITY_CONFIG = {
 };
 
 class RecommendsScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = ({ navigation, screenProps }) => {
     const { navigate } = navigation;
     return {
       title: 'Recommend',
-      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={() => {
-        navigate('DrawerOpen');
+      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={async () => {
+        if (await isLoginin()) {
+          navigate('DrawerOpen');
+        } else {
+          screenProps.redirectLogin();
+        }
       }} />,
       headerRight: false,
       headerVisible: true,

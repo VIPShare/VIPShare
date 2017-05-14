@@ -7,6 +7,8 @@ import { NavigationActions, StackNavigator } from 'react-navigation';
 
 import Page from '../../components/Page';
 
+import { isLoginin } from '../../utils/permission';
+
 import styles from './index.style';
 
 const list = [
@@ -22,25 +24,29 @@ const list = [
   },
 ]
 class MessageScreen extends Component {
-  static navigationOptions = ({ navigation }) => {
+  static navigationOptions = ({ navigation, screenProps }) => {
     const { navigate } = navigation;
     return {
       title: 'Message',
-      headerLeft: <Icon name="view-headline" containerStyle={ styles.nav.leftWrapper } onPress={ () => {
-        navigate('DrawerOpen');
-      } }/>,
+      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={async () => {
+        if (await isLoginin()) {
+          navigate('DrawerOpen');
+        } else {
+          screenProps.redirectLogin();
+        }
+      }} />,
       headerRight: false,
       headerVisible: true,
 
       tabBarLabel: 'Message',
-      tabBarIcon: ({ tintColor }) => <Icon name="message" iconStyle={ {color: tintColor} } />,
+      tabBarIcon: ({ tintColor }) => <Icon name="message" iconStyle={{ color: tintColor }} />,
     }
   }
 
   constructor(props) {
     super(props);
 
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
       dataSource: ds.cloneWithRows(list),
     };
@@ -58,17 +64,17 @@ class MessageScreen extends Component {
     }));
   }
 
-  renderRow (rowData, sectionID) {
+  renderRow(rowData, sectionID) {
     return (
       <ListItem
         roundAvatar
-        key={ sectionID }
-        title={ rowData.name }
-        subtitle={ rowData.subtitle }
-        avatar={ {uri:rowData.avatar_url} }
-        hideChevron={ false }
-        rightIcon={ {name: 'chevron-right'} }
-        onPress={ () => this.onChat(rowData) }
+        key={sectionID}
+        title={rowData.name}
+        subtitle={rowData.subtitle}
+        avatar={{ uri: rowData.avatar_url }}
+        hideChevron={false}
+        rightIcon={{ name: 'chevron-right' }}
+        onPress={() => this.onChat(rowData)}
       />
     )
   }
@@ -79,8 +85,8 @@ class MessageScreen extends Component {
         enableLoad={false}
       >
         <ListView
-          renderRow={ this.renderRow }
-          dataSource={ this.state.dataSource }
+          renderRow={this.renderRow}
+          dataSource={this.state.dataSource}
         />
       </Page>
     )

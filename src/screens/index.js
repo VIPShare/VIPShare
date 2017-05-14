@@ -31,6 +31,26 @@ const StackNavigatorWrapper = (key, Comp) => {
   return Wrapper;
 }
 
+const redirectAction = (navigation, action) => {
+  navigation.dispatch(action);
+}
+
+const screenProps = (navigation) => {
+  return {
+    redirectLogin: (cb) => {
+      const resetAction = NavigationActions.navigate({
+        routeName: 'Login',
+        params: { cb },
+      });
+      console.log(resetAction)
+      redirectAction(navigation, resetAction);
+    },
+    redirect: (action) => {
+      redirectAction(navigation, action);
+    },
+  }
+}
+
 const MainNavigator = DrawerNavigator({
   Shares: {
     screen: HomeScreen,
@@ -42,12 +62,12 @@ const MainNavigator = DrawerNavigator({
     screen: ProfileScreen,
   },
 }, {
-  contentComponent: props => <Drawer {...props} drawers={drawers} />,
-  headerMode: 'screen',
-  navigationOptions: {
-    header: null,
-  }
-});
+    contentComponent: props => <Drawer {...props} drawers={drawers} />,
+    headerMode: 'screen',
+    navigationOptions: {
+      header: null,
+    }
+  });
 
 class Main extends Component {
   static navigationOptions = {
@@ -56,25 +76,10 @@ class Main extends Component {
 
   constructor(props) {
     super(props);
-
-    this.redirectAction = this.redirectAction.bind(this);
-  }
-
-  redirectAction(action) {
-    this.props.navigation.dispatch(action);
   }
 
   render() {
-    return <MainNavigator screenProps={{
-      redirectLogin: (cb) => {
-        const resetAction = NavigationActions.navigate({
-          routeName: 'Login',
-          params: {cb},
-        });
-        this.redirectAction(resetAction);
-      },
-      redirect: this.redirectAction,
-    }} />
+    return <MainNavigator screenProps={screenProps(this.props.navigation)} />
   }
 }
 
@@ -98,10 +103,10 @@ const TopNavigator = StackNavigator({
     screen: ChatScreen,
   },
 }, {
-  mode: 'modal',
-  navigationOptions: {
-    gesturesEnabled: false,
-  },
-});
+    mode: 'modal',
+    navigationOptions: {
+      gesturesEnabled: false,
+    },
+  });
 
 export default TopNavigator;

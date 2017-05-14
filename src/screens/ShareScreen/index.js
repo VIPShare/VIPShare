@@ -9,7 +9,7 @@ import { NavigationActions, StackNavigator } from 'react-navigation';
 import Page from '../../components/Page';
 import Shares from '../../components/Shares';
 import { list } from '../../services/account';
-import { checkAuth } from '../../utils/permission';
+import { checkAuth, isLoginin } from '../../utils/permission';
 
 import styles from './index.style';
 
@@ -19,8 +19,12 @@ class ShareListScreen extends Component {
     const { state, setParams, navigate } = navigation;
     return {
       title: 'Shares',
-      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={() => {
-        navigate('DrawerOpen');
+      headerLeft: <Icon name="view-headline" containerStyle={styles.nav.leftWrapper} onPress={async () => {
+        if (await isLoginin()) {
+          navigate('DrawerOpen');
+        } else {
+          screenProps.redirectLogin();
+        }
       }} />,
       headerRight: <Icon name="add" containerStyle={styles.nav.rightWrapper} onPress={() => {
         screenProps.redirect(NavigationActions.navigate({
