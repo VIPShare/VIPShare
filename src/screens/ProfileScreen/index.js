@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Text } from 'react-native';
+import { Text, View, AsyncStorage } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Grid, Row, Col, Avatar } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
@@ -19,9 +19,19 @@ class Profile extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {};
+    this.state = {
+      profile: {},
+    };
 
+    this.init = this.init.bind(this);
     this.onPressAvatar = this.onPressAvatar.bind(this);
+  }
+
+  async init() {
+    const profile = JSON.parse(await AsyncStorage.getItem('user:profile'));
+    this.setState({
+      profile,
+    });
   }
 
   onPressAvatar() {
@@ -58,9 +68,10 @@ class Profile extends Component {
   }
 
   render() {
-    const avatarSource = this.state.avatarSource || { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" };
+    const profile = this.state.profile;
     return (
       <Page
+        init={this.init}
         enableLoad={false}
       >
         <Grid containerStyle={{ flex: 1 }}>
@@ -85,10 +96,13 @@ class Profile extends Component {
                 <Avatar
                   xlarge
                   rounded
-                  source={avatarSource}
+                  source={{uri: profile.avatar}}
                   containerStyle={styles.avatar.avatar}
                   activeOpacity={1}
                 />
+                <View style={styles.avatar.info.container}>
+                  <Text style={styles.avatar.info.text}>{profile.nick}</Text>
+                </View>
               </Row>
             </Col>
           </Row>

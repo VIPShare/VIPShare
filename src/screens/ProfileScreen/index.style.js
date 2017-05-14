@@ -1,4 +1,4 @@
-import { size, colors } from '../../theme';
+import { size, colors, weight } from '../../theme';
 
 const headerItem = {
   container: {
@@ -47,13 +47,25 @@ export default {
       justifyContent: 'center',
     },
     avatar: {
-      bottom: -40,
-      left: -64,
+      bottom: -30,
+      // left: -64,
+      left: -7.5,
+    },
+    info: {
+      container: {
+        bottom: -170,
+      },
+      text: {
+        backgroundColor: 'transparent',
+        color: colors.normal,
+        fontWeight: weight.bolder,
+        fontSize: size.xlg,
+      },
     },
   },
   items: {
     container: {
-      marginTop: 60,
+      marginTop: 80,
     },
   },
 }
