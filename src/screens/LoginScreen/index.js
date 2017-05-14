@@ -102,7 +102,7 @@ class LoginScreen extends Component {
   }
 
   signup() {
-
+    this.props.navigation.navigate('Signup');
   }
 
   render() {

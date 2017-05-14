@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import { NavigationActions, DrawerNavigator, StackNavigator } from 'react-navigation';
 
 import LoginScreen from './LoginScreen';
+import SignupScreen from './SignupScreen';
 import HomeScreen from './HomeScreen';
 import MyShareScreen from './MyShareScreen';
 import ProfileScreen from './ProfileScreen';
@@ -96,6 +97,9 @@ const TopNavigator = StackNavigator({
   },
   Login: {
     screen: LoginScreen,
+  },
+  Signup: {
+    screen: SignupScreen,
   },
   ShareAdd: {
     screen: ShareAddScreen,
