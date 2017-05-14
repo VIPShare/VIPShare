@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { Text } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 
 import Page from '../../components/Page';
@@ -8,7 +9,6 @@ class ChatScreen extends Component {
     const { state, navigate } = navigation;
     return {
       title: `Chat with ${state.params.name}`,
-      headerVisible: true,
       tabBarVisible: false,
     }
   }
@@ -22,10 +22,11 @@ class ChatScreen extends Component {
       loadSuccess: false,
     }
 
+    this.init = this.init.bind(this);
     this.onSend = this.onSend.bind(this);
   }
 
-  componentWillMount() {
+  init() {
     this.setState({
       messages: [
         {
@@ -39,8 +40,11 @@ class ChatScreen extends Component {
           },
         },
       ],
-      loading: false,
-      loadSuccess: true,
+    }, () => {
+      this.setState({
+        loading: false,
+        loadSuccess: true,
+      });
     });
   }
 
@@ -55,7 +59,8 @@ class ChatScreen extends Component {
   render() {
     return (
       <Page
-        enableLoad={false}
+        init={this.init}
+        loading={this.state.loading}
       >
         <GiftedChat
           messages={this.state.messages}
