@@ -8,6 +8,7 @@ import ProfileScreen from './ProfileScreen';
 import { SexChooseScreen } from './ProfileScreen/ProfileUpdateScreen';
 import ShareAddScreen, { ShareTypeScreen } from './ShareAddScreen';
 import ChatScreen from './ChatScreen';
+import SettingScreen from './SettingScreen';
 
 import Drawer from '../components/Drawer';
 
@@ -19,7 +20,11 @@ const drawers = {
   Profile: {
     label: '个人资料',
     icon: 'perm-identity',
-  }
+  },
+  Setting: {
+    label: '设置',
+    icon: 'settings',
+  },
 };
 
 const StackNavigatorWrapper = (key, Comp) => {
@@ -59,6 +64,9 @@ const MainNavigator = DrawerNavigator({
   },
   Profile: {
     screen: ProfileScreen,
+  },
+  Setting: {
+    screen: StackNavigatorWrapper('Setting', SettingScreen),
   },
 }, {
     contentComponent: props => <Drawer {...props} drawers={drawers} />,

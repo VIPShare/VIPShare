@@ -33,10 +33,11 @@ class LoginScreen extends Component {
     }
 
     this.login = this.login.bind(this);
+    this.signup = this.signup.bind(this);
   }
 
   // Scroll a component into view. Just pass the component ref string.
-  inputFocused (refName) {
+  inputFocused(refName) {
     setTimeout(() => {
       let scrollResponder = this.refs.scrollView.getScrollResponder();
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
@@ -47,7 +48,7 @@ class LoginScreen extends Component {
     }, 50);
   }
 
-  inputBlured (refName) {
+  inputBlured(refName) {
     setTimeout(() => {
       let scrollResponder = this.refs.scrollView.getScrollResponder();
       scrollResponder.scrollResponderScrollNativeHandleToKeyboard(
@@ -61,7 +62,7 @@ class LoginScreen extends Component {
   login() {
     const cb = this.props.navigation.state.params.cb;
     const { getFieldsValue, validateForm } = this.props.form;
-    
+
     validateForm(async errors => {
       if (errors && errors.length > 0) {
         Alert.alert(errors[0].err);
@@ -100,6 +101,10 @@ class LoginScreen extends Component {
     })
   }
 
+  signup() {
+
+  }
+
   render() {
     const { form } = this.props;
     const { getFieldProps } = form;
@@ -122,21 +127,21 @@ class LoginScreen extends Component {
     })
 
     return (
-      <ScrollView 
-        ref='scrollView' 
-        style={styles.sv} 
-        scrollEnabled={ this.state.scrollEnabled }
-        contentContainerStyle={ styles.container }
+      <ScrollView
+        ref='scrollView'
+        style={styles.sv}
+        scrollEnabled={this.state.scrollEnabled}
+        contentContainerStyle={styles.container}
         keyboardDismissMode="interactive"
       >
-        <Image style={styles.bg} source={ require('./login1_bg.png') } />
+        <Image style={styles.bg} source={require('./login1_bg.png')} />
         <View style={styles.header}>
-          <Image style={styles.mark} source={ require('./login1_mark.png') } />
+          <Image style={styles.mark} source={require('./login1_mark.png')} />
         </View>
         <View style={styles.inputs}>
           <View style={styles.inputContainer}>
-            <Image style={styles.inputUsername} source={ require('./login1_person.png') }/>
-            <TextInput 
+            <Image style={styles.inputUsername} source={require('./login1_person.png')} />
+            <TextInput
               ref="username"
               style={[styles.input, styles.whiteFont]}
               placeholder="Username"
@@ -147,7 +152,7 @@ class LoginScreen extends Component {
             />
           </View>
           <View style={styles.inputContainer}>
-            <Image style={styles.inputPassword} source={ require('./login1_lock.png') }/>
+            <Image style={styles.inputPassword} source={require('./login1_lock.png')} />
             <TextInput
               ref="password"
               password={true}
@@ -163,14 +168,16 @@ class LoginScreen extends Component {
             <Text style={styles.greyFont}>Forgot Password</Text>
           </View>
         </View>
-        <TouchableWithoutFeedback onPress={ this.login }>
+        <TouchableWithoutFeedback onPress={this.login}>
           <View style={styles.signin}>
             <Text style={styles.whiteFont}>Sign In</Text>
           </View>
         </TouchableWithoutFeedback>
-        <View style={styles.signup}>
-          <Text style={styles.greyFont}>Don't have an account?<Text style={styles.whiteFont}>  Sign Up</Text></Text>
-        </View>
+        <TouchableWithoutFeedback onPress={this.signup}>
+          <View style={styles.signup}>
+            <Text style={styles.greyFont}>Don't have an account?<Text style={styles.whiteFont}>  Sign Up</Text></Text>
+          </View>
+        </TouchableWithoutFeedback>
       </ScrollView>
     )
   }
