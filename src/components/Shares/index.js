@@ -9,21 +9,37 @@ import Swipeout from 'react-native-swipeout';
 import EmptyView from '../EmptyView';
 import Lists from '../Lists';
 
-const swipeoutBtns = [
-  {
-    text: 'Button'
-  }
-];
+const swipeoutBtns = (screenProps, rowData) => {
+  return [
+    {
+      text: '编辑',
+      onPress: () => {
+        screenProps.redirect(NavigationActions.navigate({
+          routeName: 'ShareAdd',
+          params: {
+            id: rowData.id,
+            readonly: !rowData.editable,
+          }
+        }));
+      },
+    }
+  ]
+};
 const renderRow = (rowData, sectionID, screenProps) => {
   return (
-    <Swipeout right={swipeoutBtns} backgroundColor="transparent" disabled={!rowData.editable}>
+    <Swipeout
+      right={swipeoutBtns(screenProps, rowData)}
+      backgroundColor="transparent"
+      disabled={!rowData.editable}
+      autoClose={true}
+    >
       <ListItem
         key={sectionID}
         title={rowData.type}
         subtitle={rowData.username}
         // avatar={{ uri: rowData.avatar_url }}
         rightIcon={{ name: 'chevron-right' }}
-        onPress={()=> {
+        onPress={() => {
           screenProps.redirect(NavigationActions.navigate({
             routeName: 'ShareAdd',
             params: {
