@@ -82,6 +82,7 @@ class MessageScreen extends Component {
   render() {
     return (
       <Page
+        {...this.props}
         enableLoad={false}
       >
         <ListView
