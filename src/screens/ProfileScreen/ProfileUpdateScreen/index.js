@@ -9,7 +9,7 @@ import PullSelect from '../../../components/PullSelect';
 
 import { isBlank } from '../../../utils/string';
 
-import { info } from '../../../services/mine';
+import { info, update } from '../../../services/mine';
 
 import styles from './index.style';
 
@@ -20,7 +20,14 @@ class ProfileUpdateScreen extends Component {
     return {
       title: 'ProfileUpdate',
       headerRight: (
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()} disabled={!(state.params && state.params.finishable)}>
+        <TouchableWithoutFeedback onPress={async () => {
+          await update({
+            ...state.params.profile,
+            sex: state.params.profile.sex.title,
+          });
+
+          navigation.goBack();
+        }} disabled={!(state.params && state.params.finishable)}>
           <View style={styles.nav.rightWrapper}>
             <Text style={(state.params && state.params.finishable) ? styles.nav.activeButton : styles.nav.unactiveButton} >Finish</Text>
           </View>
@@ -72,6 +79,11 @@ class ProfileUpdateScreen extends Component {
         setFieldsValue({
           ...this.state.profile,
         });
+        this.nickTrue = !isBlank(new String(this.state.profile.nickname));
+        this.sexTrue = !isBlank(new String(this.state.profile.sex));
+        this.birthdayTrue = !isBlank(new String(this.state.profile.birthday));
+        this.addressTrue = !isBlank(new String(this.state.profile.address));
+        this.emailTrue = !isBlank(new String(this.state.profile.email));
       });
     }, 100);
   }
@@ -81,13 +93,14 @@ class ProfileUpdateScreen extends Component {
 
     this.props.navigation.setParams({
       finishable: this.nickTrue && this.sexTrue && this.birthdayTrue && this.addressTrue && this.emailTrue,
+      profile: form.getFieldsValue(),
     });
   }
 
   render() {
     const { getFieldProps, getFieldError, getFieldValidating } = this.props.form;
 
-    const nickProps = getFieldProps('nick', {
+    const nickProps = getFieldProps('nickname', {
       validator: (value, cb) => {
         if (isBlank(value)) {
           this.nickTrue = false;
@@ -155,8 +168,8 @@ class ProfileUpdateScreen extends Component {
         loading={this.state.loading}
       >
         <Form>
-          <FormItem label="昵称" {...(getFieldValidating('nick') ? {} : getFieldError('nick')) }>
-            <FormInput name="nick" {...nickProps}/>
+          <FormItem label="昵称" {...(getFieldValidating('nickname') ? {} : getFieldError('nickname')) }>
+            <FormInput name="nickname" {...nickProps}/>
           </FormItem>
           <FormItem label="性别" {...(getFieldValidating('sex') ? {} : getFieldError('sex')) }>
             <PullSelect

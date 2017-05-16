@@ -2,13 +2,12 @@ import constants from './constants';
 
 const ROOT_PATH = constants.api_root;
 const ROOT_API_PATH = `${ROOT_PATH}/api`;
-const TOKEN_API_PATH = `${ROOT_API_PATH}/oauth2/token`;
 
 function isApiUrl(url) {
   if (url.startsWith(ROOT_PATH)) {
     return url;
   }
-  
+  console.log(`${ROOT_PATH}${url}`);
   return `${ROOT_PATH}${url}`;
 }
 
@@ -17,14 +16,16 @@ function parseText(response) {
 }
 
 function parseJSON(text) {
-  alert(text);
+  console.log(text);
   if (text.replace(/(^\s*)|(\s*$)/g, "").length === 0) {
     return Promise.resolve({});
   }
+  console.log(JSON.parse(text))
   return Promise.resolve(JSON.parse(text));
 }
 
 function checkStatus(response) {
+  console.log(response.status)
   if (response.status >= 200 && response.status < 300) {
     return response;
   }
@@ -35,11 +36,11 @@ function checkStatus(response) {
 }
 
 function request(url, options) {
-  // return Promise.resolve(fetch(isApiUrl(url), options))
-  return Promise.resolve(fetch(url, options))
-    // .then(checkStatus)
-    // .then(parseText)
-    // .then(parseJSON)
+  return Promise.resolve(fetch(isApiUrl(url), options))
+  // return Promise.resolve(fetch(url, options))
+    .then(checkStatus)
+    .then(parseText)
+    .then(parseJSON)
     .then((data) => ({ data }))
     .catch((error) => ({ err: error }));
 }

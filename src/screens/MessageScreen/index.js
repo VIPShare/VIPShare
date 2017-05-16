@@ -13,11 +13,13 @@ import styles from './index.style';
 
 const list = [
   {
+    id: 1,
     name: 'Amy Farha',
     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
     subtitle: '你在哪里？',
   },
   {
+    id: 2,
     name: 'Chris Jackson',
     avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
     subtitle: '明天去野外烧烤吧？',
@@ -36,7 +38,6 @@ class MessageScreen extends Component {
         }
       }} />,
       headerRight: false,
-      headerVisible: true,
 
       tabBarLabel: 'Message',
       tabBarIcon: ({ tintColor }) => <Icon name="message" iconStyle={{ color: tintColor }} />,
@@ -59,6 +60,7 @@ class MessageScreen extends Component {
     this.props.screenProps.redirect(NavigationActions.navigate({
       routeName: 'Chat',
       params: {
+        id: rowData.id,
         name: rowData.name,
       }
     }));

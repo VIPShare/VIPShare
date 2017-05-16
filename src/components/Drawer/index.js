@@ -27,6 +27,8 @@ class Drawer extends Component {
   async componentDidMount() {
     if (await isLoginin()) {
       const profile = JSON.parse(await AsyncStorage.getItem('user:profile'));
+      console.log('profile')
+      console.log(profile)
       this.setState({
         loginin: true,
         profile,
@@ -38,7 +40,7 @@ class Drawer extends Component {
     if (loginin) {
       return (
         <Col size={2} containerStyle={styles.info.username.container} >
-          <Text style={styles.info.username.text}>{profile.nick}</Text>
+          <Text style={styles.info.username.text}>{profile.nickname}</Text>
           <Text style={styles.info.username.sign}>如果你无法表达你的想法...</Text>
         </Col>
       );

@@ -48,8 +48,8 @@ export default {
     },
     avatar: {
       bottom: -30,
-      // left: -64,
-      left: -7.5,
+      left: -34,
+      // left: -7.5,
     },
     info: {
       container: {

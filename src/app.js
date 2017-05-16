@@ -7,8 +7,10 @@ import '../ReactotronConfig';  // dev listener
 
 import AppNavigator from './screens';
 
+window.navigator.userAgent = "react-native";
+
 // dev
-import './utils/fetchmock';
+// import './utils/fetchmock';
 // set env
 if (Config.DEV) {
   alert('dev');

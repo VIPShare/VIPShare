@@ -9,5 +9,5 @@ export async function item(id) {
 }
 
 export async function top() {
-  return await GET('/api/tops');
+  return await GET('/api/recommends/tops');
 }

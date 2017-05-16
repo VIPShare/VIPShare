@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
   ListView,
   Alert,
+  DeviceEventEmitter,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { NavigationActions, StackNavigator } from 'react-navigation';
@@ -51,9 +52,16 @@ class ShareListScreen extends Component {
     this.fetchData = this.fetchData.bind(this);
   }
 
+  componentDidMount() {
+    this.subscription = DeviceEventEmitter.addListener('ShareRefresh', this.init);
+  }
+
   componentWillUnmount() {
     if (this.loading) {
       clearTimeout(this.loading);
+    }
+    if (this.subscription) {
+      this.subscription.remove();
     }
   }
 

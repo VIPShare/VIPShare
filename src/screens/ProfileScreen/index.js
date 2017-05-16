@@ -101,7 +101,7 @@ class Profile extends Component {
                   activeOpacity={1}
                 />
                 <View style={styles.avatar.info.container}>
-                  <Text style={styles.avatar.info.text}>{profile.nick}</Text>
+                  <Text style={styles.avatar.info.text}>{profile.nickname}</Text>
                 </View>
               </Row>
             </Col>

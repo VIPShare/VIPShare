@@ -62,10 +62,6 @@ class MyShareList extends Component {
     this.loading = setTimeout(async () => {
       const { data, err } = await list();
       if (err) {
-        if (!(await checkAuth(this.props.screenProps.redirectLogin, err, this.fetchData))) {
-          return;
-        }
-
         this.setState({
           loading: false,
           loadSuccess: false,

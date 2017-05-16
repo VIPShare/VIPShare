@@ -7,9 +7,11 @@ import {
   TouchableWithoutFeedback,
   StyleSheet,
   Alert,
+  DeviceEventEmitter,
 } from 'react-native';
 import { FormLabel, FormInput, Button } from 'react-native-elements';
 import ShareTypeScreen from './ShareTypeScreen';
+import Toast from 'react-native-root-toast';
 
 import Page from '../../components/Page';
 import Form from '../../components/Form';
@@ -17,7 +19,7 @@ import EmptyView from '../../components/EmptyView';
 import PullSelect from '../../components/PullSelect';
 import { isBlank } from '../../utils/string';
 
-import { item, viewable } from '../../services/account';
+import { item, viewable, create } from '../../services/account';
 
 import styles from './index.style';
 
@@ -28,7 +30,19 @@ class ShareAddScreen extends Component {
     return {
       title: 'Share',
       headerRight: state.params && !state.params.readonly && (
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()} disabled={!(state.params && state.params.finishable)}>
+        <TouchableWithoutFeedback onPress={async () => {
+          const {data, err} = await create({
+            ...state.params.account,
+            type: state.params.account.type.title,
+          });
+          if (err) {
+            Toast.show('add share account failed');
+          } else {
+            DeviceEventEmitter.emit('ShareRefresh');
+          }
+          
+          navigation.goBack();
+        }} disabled={!(state.params && state.params.finishable)}>
           <View style={styles.nav.rightWrapper}>
             <Text style={(state.params && state.params.finishable) ? styles.nav.activeButton : styles.nav.unactiveButton} >Finish</Text>
           </View>
@@ -114,7 +128,8 @@ class ShareAddScreen extends Component {
     const { form } = this.props;
 
     this.props.navigation.setParams({
-      finishable: this.typeTrue && this.usernameTrue && this.passwordTrue,
+      finishable: this.typeTrue && this.usernameTrue && this.passwordTrue && this.sharePassTrue,
+      account: form.getFieldsValue(),
     });
   }
 
@@ -203,6 +218,18 @@ class ShareAddScreen extends Component {
         this.onFormValidate();
       }
     });
+    const sharePassProps = getFieldProps('sharePass', {
+      validator: (value, cb) => {
+        if (isBlank(value)) {
+          this.sharePassTrue = false;
+          this.onFormValidate();
+          return cb('请填入分享密码');
+        }
+        cb();
+        this.sharePassTrue = true;
+        this.onFormValidate();
+      }
+    });
 
     return (
       <Page
@@ -229,6 +256,9 @@ class ShareAddScreen extends Component {
           </FormItem>
           <FormItem label="账户密码" {...(getFieldValidating('password') ? {} : getFieldError('password')) }>
             <FormInput name="password" {...passwordProps} editable={!readonly} />
+          </FormItem>
+          <FormItem label="分享密码" {...(getFieldValidating('sharePass') ? {} : getFieldError('sharePass')) }>
+            <FormInput name="sharePass" {...sharePassProps} editable={!readonly} />
           </FormItem>
         </Form>
       </Page>

@@ -1,6 +1,7 @@
 import { AsyncStorage } from 'react-native';
 import querystring from 'querystring';
 import request, { parseError } from './request';
+import { isBlank } from './string';
 
 async function accessToken(username, password) {
   if (!username) {
@@ -9,21 +10,20 @@ async function accessToken(username, password) {
   if (!password) {
     return { err: new Error('you should specific password parameter so that to get access_token') };
   }
-  const { data, err } = await request('/api/oauth2/token', {
+  const { data, err } = await request('/api/login', {
     method: 'POST',
     headers: {
-      'Authorization': 'Basic YXBwOnNlY3JldA==',
+      'Authorization': 'Basic VWpkeXc3MzY9Og==',
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: `grant_type=password&username=${username}&password=${password}&scope=*`,
+    body: `username=${username}&password=${password}`,
   });
 
   if (!err) {
-    await AsyncStorage.setItem('access_token', data.token);
-    await AsyncStorage.setItem('refresh_token', data.value);
+    console.log(data);
+    await AsyncStorage.setItem('access_token', data.access_token);
     return {
-      access_token: data.token,
-      refresh_token: data.refresh_token,
+      access_token: data.access_token,
     };
   }
 
@@ -31,50 +31,50 @@ async function accessToken(username, password) {
   return { err: error };
 }
 
-async function refreshToken(refresh_token) {
-  if(!refresh_token) {
-    return { err: new Error('refresh_token should not be undefined') }
-  }
-  const { data, err } = await request('/api/oauth2/token', {
-    method: 'POST',
-    headers: {
-      'Authorization': 'Basic YXBwOnNlY3JldA==',
-      'Content-Type': 'application/x-www-form-urlencoded',
-    },
-    body: `grant_type=refresh_token&refresh_token=${refresh_token}`,
-  });
+// async function refreshToken(refresh_token) {
+//   if(!refresh_token) {
+//     return { err: new Error('refresh_token should not be undefined') }
+//   }
+//   const { data, err } = await request('/api/oauth2/token', {
+//     method: 'POST',
+//     headers: {
+//       'Authorization': 'Basic YXBwOnNlY3JldA==',
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//     },
+//     body: `grant_type=refresh_token&refresh_token=${refresh_token}`,
+//   });
 
-  if (!err) {
-    await AsyncStorage.setItem('access_token', data.token);
-    await AsyncStorage.setItem('refresh_token', data.value);
-    return {
-      access_token: data.token,
-      refresh_token: data.refresh_token,
-    };
-  }
-  
-  const error = await parseError(err);
-  return { err: error };
-}
+//   if (!err) {
+//     await AsyncStorage.setItem('access_token', data.token);
+//     await AsyncStorage.setItem('refresh_token', data.value);
+//     return {
+//       access_token: data.token,
+//       refresh_token: data.refresh_token,
+//     };
+//   }
 
-async function _pre() {
-  const access_token = await AsyncStorage.getItem('access_token');
-  const refresh_token = await AsyncStorage.getItem('refresh_token');
-  if (!access_token) {
-    return {
-      err: {
-        timestamp: new Date().getTime(),
-        message: 'need login',
-        status: 401,
-      },
-    }
-  }
+//   const error = await parseError(err);
+//   return { err: error };
+// }
 
-  return {
-    access_token,
-    refresh_token,
-  };
-}
+// async function _pre() {
+//   const access_token = await AsyncStorage.getItem('access_token');
+//   const refresh_token = await AsyncStorage.getItem('refresh_token');
+//   if (!access_token) {
+//     return {
+//       err: {
+//         timestamp: new Date().getTime(),
+//         message: 'need login',
+//         status: 401,
+//       },
+//     }
+//   }
+
+//   return {
+//     access_token,
+//     refresh_token,
+//   };
+// }
 
 async function rest(url, options = {}) {
   // const obj = await _pre();
@@ -84,10 +84,11 @@ async function rest(url, options = {}) {
   //   return { err: obj.err };
   // }
 
+  const access_token = await AsyncStorage.getItem('access_token');
   const { data, err } = await request(url, {
     ...options,
     headers: {
-      'Authorization': `Bearer `, // could be overrided by options.headers.Authorization
+      'Authorization': access_token != null ? `Bearer ${access_token}` : 'Basic VWpkeXc3MzY9Og==', // could be overrided by options.headers.Authorization
       ...options.headers,
     }
   });
@@ -97,13 +98,14 @@ async function rest(url, options = {}) {
   }
 
   const error = await parseError(err);
+  console.log(error);
   return { err: error };
 }
 
 
 
 async function GET(url, params) {
-  return await rest(`${url}?${querystring.stringify(params)}`);
+  return await rest(`${url}${isBlank(params) ? '' : querystring.stringify(params)}`);
 }
 
 async function POST(url, data) {

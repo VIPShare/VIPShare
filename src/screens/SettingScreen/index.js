@@ -55,7 +55,7 @@ SettingScreen.navigationOptions = ({ navigation }) => {
         routeName: 'Main',
         action: NavigationActions.navigate({ routeName: 'Recommends' }),
       });
-      navigation.redirect(homeAction);
+      navigation.dispatch(homeAction);
     }} />,
   }
 }

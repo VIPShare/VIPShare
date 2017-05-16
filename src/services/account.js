@@ -10,8 +10,12 @@ export async function item(id) {
 
 export async function viewable(id, password) {
   return await POST(`/api/accounts/${id}/viewable`, {
-    data: {
-      password,
-    },
+    password,
+  });
+}
+
+export async function create(account) {
+  return await POST('/api/accounts', {
+    ...account,
   });
 }

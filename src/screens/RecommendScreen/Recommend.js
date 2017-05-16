@@ -23,7 +23,7 @@ export default ({ recommend, navigation }) => {
           <Col containerStyle={styles.recommend.content.container}>
             <Text style={styles.recommend.content.title.text}>{recommend.title}</Text>
             <View style={styles.recommend.content.bar.container}>
-              <Badge containerStyle={styles.recommend.content.bar.badge.container} textStyle={styles.recommend.content.bar.badge.text} value={recommend.type} />
+              <Badge containerStyle={styles.recommend.content.bar.badge.container} textStyle={styles.recommend.content.bar.badge.text} value={recommend.source} />
               <Text style={styles.recommend.content.bar.time.text}>{recommend.time}</Text>
             </View>
           </Col>

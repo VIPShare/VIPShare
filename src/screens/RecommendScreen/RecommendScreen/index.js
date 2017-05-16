@@ -76,7 +76,7 @@ class RecommendScreen extends Component {
             </View>
             <View style={styles.content.container}>
               <Text style={styles.content.title}>{recommend.title}</Text>
-              <Text style={styles.content.info}>{`${recommend.date}  ${recommend.source}  |  撰文  ${recommend.author}`}</Text>
+              <Text style={styles.content.info}>{`${recommend.time}  ${recommend.source}  |  撰文  ${recommend.author}`}</Text>
               <HTMLView
                 value={recommend.content}
               />

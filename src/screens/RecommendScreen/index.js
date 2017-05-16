@@ -39,7 +39,6 @@ class RecommendsScreen extends Component {
         }
       }} />,
       headerRight: false,
-      headerVisible: true,
 
       tabBarLabel: 'Recommend',
       tabBarIcon: ({ tintColor }) => <Icon name="movie" iconStyle={{ color: tintColor }} />,
@@ -80,8 +79,10 @@ class RecommendsScreen extends Component {
   fetchData() {
     this.loading = setTimeout(async () => {
       const { data: tops, err1 } = await top();
+      console.log(tops)
       const { data, err2 } = await list(1, 5);
-      const { list: recommends, pageinfo } = data;
+      console.log(err2)
+      const { list: recommends, pageInfo } = data;
       if (err1 || err2) {
         this.setState({
           loading: false,
@@ -94,8 +95,8 @@ class RecommendsScreen extends Component {
         recommends,
         loading: false,
         loadSuccess: true,
-        pageNumber: pageinfo.pageNumber + 1,
-        pageSize: pageinfo.pageSize,
+        pageNumber: pageInfo.pageNumber + 1,
+        pageSize: pageInfo.pageSize,
       });
     }, 100);
   }
@@ -103,7 +104,7 @@ class RecommendsScreen extends Component {
   fetchList() {
     this.fetchListLoading = setTimeout(async () => {
       const { data, err } = await list(this.state.pageNumber, this.state.pageSize);
-      const { list: recommends, pageinfo } = data;
+      const { list: recommends, pageInfo } = data;
       if (err) {
         return false;
       }
@@ -114,8 +115,8 @@ class RecommendsScreen extends Component {
       }
       this.setState({
         recommends: [...this.state.recommends, ...recommends],
-        pageNumber: pageinfo.pageNumber + 1,
-        pageSize: pageinfo.pageSize,
+        pageNumber: pageInfo.pageNumber + 1,
+        pageSize: pageInfo.pageSize,
       });
     });
   }

@@ -24,9 +24,27 @@ class ChatScreen extends Component {
 
     this.init = this.init.bind(this);
     this.onSend = this.onSend.bind(this);
+
+    // const io = require('socket.io-client');
+    this.socket = require('socket.io-client')('ws://127.0.0.1:7001/chat', {
+      transports: ['websocket'],
+    });
+  }
+
+  componentWillUnmount() {
+    this.socket.disconnect();
   }
 
   init() {
+    this.socket.on('connect', () => {
+      console.log('connect!');
+      this.socket.emit('chatWith', this.props.navigation.state.params.id);
+    });
+
+    this.socket.on('res', msg => {
+      console.log('res from server: %s!', msg);
+    });
+
     this.setState({
       messages: [
         {
