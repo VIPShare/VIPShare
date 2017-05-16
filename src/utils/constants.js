@@ -1,4 +1,4 @@
 
 export default {
-  "api_root": "https://127.0.0.1"
+  "api_root": "https://192.168.2.40"
 }

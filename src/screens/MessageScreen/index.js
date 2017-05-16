@@ -39,6 +39,7 @@ class MessageScreen extends Component {
       users: [],
       loading: true,
       loadSuccess: false,
+      dataSource: ds.cloneWithRows([])
     };
 
     this.init = this.init.bind(this);
@@ -80,7 +81,7 @@ class MessageScreen extends Component {
       routeName: 'Chat',
       params: {
         id: rowData.id,
-        name: rowData.name,
+        name: rowData.nickname,
       }
     }));
   }

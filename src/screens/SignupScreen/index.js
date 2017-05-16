@@ -2,11 +2,14 @@ import React, { Component } from 'react';
 import { ScrollView, TouchableWithoutFeedback, View, Text } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Icon, FormLabel, FormInput, Button } from 'react-native-elements';
+import Toast from 'react-native-root-toast';
 
 import PullSelect from '../../components/PullSelect';
 import Page from '../../components/Page';
 import Form from '../../components/Form';
+
 import { isBlank } from '../../utils/string';
+import { signup } from '../../services/auth';
 
 import styles from './index.style';
 
@@ -20,7 +23,15 @@ class SignupScreen extends Component {
         navigation.goBack();
       }} />,
       headerRight: (
-        <TouchableWithoutFeedback onPress={() => navigation.goBack()} disabled={!(state.params && state.params.finishable)}>
+        <TouchableWithoutFeedback onPress={async () => {
+          const { err } = await signup({
+            ...state.params.user,
+            invite_code: state.params.user.inviteCode,
+          });
+          if (err) {
+            Toast.show('signup failed');
+          }
+        }} disabled={!(state.params && state.params.finishable)}>
           <View style={styles.nav.rightWrapper}>
             <Text style={(state.params && state.params.finishable) ? styles.nav.activeButton : styles.nav.unactiveButton} >Next</Text>
           </View>
@@ -40,6 +51,7 @@ class SignupScreen extends Component {
 
     this.props.navigation.setParams({
       finishable: this.usernameTrue && this.passwordTrue && this.nickTrue && this.emailTrue && this.inviteCodeTrue,
+      user: form.getFieldsValue(),
     });
   }
 
