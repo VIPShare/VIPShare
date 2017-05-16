@@ -7,24 +7,12 @@ import { NavigationActions, StackNavigator } from 'react-navigation';
 
 import Page from '../../components/Page';
 
+import { list } from '../../services/user';
 import { isLoginin } from '../../utils/permission';
 
 import styles from './index.style';
 
-const list = [
-  {
-    id: 1,
-    name: 'Amy Farha',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-    subtitle: '你在哪里？',
-  },
-  {
-    id: 2,
-    name: 'Chris Jackson',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-    subtitle: '明天去野外烧烤吧？',
-  },
-]
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class MessageScreen extends Component {
   static navigationOptions = ({ navigation, screenProps }) => {
     const { navigate } = navigation;
@@ -47,13 +35,44 @@ class MessageScreen extends Component {
   constructor(props) {
     super(props);
 
-    const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
     this.state = {
-      dataSource: ds.cloneWithRows(list),
+      users: [],
+      loading: true,
+      loadSuccess: false,
     };
 
+    this.init = this.init.bind(this);
     this.onChat = this.onChat.bind(this);
     this.renderRow = this.renderRow.bind(this);
+  }
+
+  componentWillUnmount() {
+    if (this.loading) {
+      clearTimeout(this.loading);
+    }
+  }
+
+  async init() {
+    this.fetchData();
+  }
+
+  fetchData() {
+    this.loading = setTimeout(async () => {
+      const { data, err } = await list();
+      if (err) {
+        this.setState({
+          loading: false,
+          loadSuccess: false,
+        })
+        return false;
+      }
+      this.setState({
+        users: data,
+        loading: false,
+        loadSuccess: true,
+        dataSource: ds.cloneWithRows(data),
+      })
+    }, 100);
   }
 
   onChat(rowData) {
@@ -71,9 +90,9 @@ class MessageScreen extends Component {
       <ListItem
         roundAvatar
         key={sectionID}
-        title={rowData.name}
-        subtitle={rowData.subtitle}
-        avatar={{ uri: rowData.avatar_url }}
+        title={rowData.nickname}
+
+        avatar={{ uri: rowData.avatar }}
         hideChevron={false}
         rightIcon={{ name: 'chevron-right' }}
         onPress={() => this.onChat(rowData)}
@@ -85,7 +104,8 @@ class MessageScreen extends Component {
     return (
       <Page
         {...this.props}
-        enableLoad={false}
+        init={this.init}
+        loading={this.state.loading}
       >
         <ListView
           renderRow={this.renderRow}
