@@ -13,7 +13,7 @@ import Toast from 'react-native-root-toast';
 import { viewable } from '../../services/account';
 
 import EmptyView from '../EmptyView';
-import Lists from '../Lists';
+import { FlatLists } from '../Lists';
 
 const swipeoutBtns = (screenProps, rowData) => {
   return [
@@ -72,17 +72,21 @@ export default class Shares extends Component {
   }
 
   render() {
-    const { loading, loadSuccess, accounts, dataSource, loadingTip, loadFailTip, emptyTip, screenProps } = this.props;
+    const { loading, loadSuccess, accounts, loadFailTip, emptyTip, screenProps, onRefresh } = this.props;
     return (
-      <Lists
-        loading={loading}
+      <FlatLists
+        refreshing={loading}
         loadSuccess={loadSuccess}
         data={accounts}
-        dataSource={dataSource}
-        loadingTip={loadingTip}
         loadFailTip={loadFailTip}
         emptyTip={emptyTip}
-        renderRow={(rowData, sectionID) => this.renderRow(rowData, sectionID, screenProps)}
+
+        initialNumToRender={10}
+        renderItem={({ item, index }) => this.renderRow(item, index, screenProps)}
+        keyExtractor={(item, index) => {
+          return index;
+        }}
+        onRefresh={onRefresh}
       />
     );
   }

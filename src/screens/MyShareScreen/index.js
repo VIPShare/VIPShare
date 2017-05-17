@@ -9,7 +9,6 @@ import { list } from '../../services/myaccount';
 
 import styles from './index.style';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class MyShareList extends Component {
   static navigationOptions = (props) => {
     const { navigation, screenProps } = props;
@@ -72,7 +71,6 @@ class MyShareList extends Component {
         accounts: data,
         loading: false,
         loadSuccess: true,
-        dataSource: ds.cloneWithRows(data),
       });
     }, 100);
   }
@@ -89,11 +87,6 @@ class MyShareList extends Component {
           loading={this.state.loading}
           loadSuccess={this.state.loadSuccess}
           accounts={this.state.accounts}
-          dataSource={this.state.dataSource}
-          loadingTip={{
-            tip: '请稍后',
-            subTip: '正在加载我的分享...',
-          }}
           loadFailTip={{
             tip: '加载失败',
             subTip: '很抱歉，加载我的分享失败',
@@ -102,6 +95,7 @@ class MyShareList extends Component {
             tip: '还未有人分享哦！',
             subTip: '点击右上角Add按钮，加入分享者的队列吧！',
           }}
+          onRefresh={this.init}
         />
       </Page>
     );

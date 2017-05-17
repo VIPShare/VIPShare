@@ -14,7 +14,6 @@ import { checkAuth, isLoginin } from '../../utils/permission';
 
 import styles from './index.style';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class ShareListScreen extends Component {
   static navigationOptions = ({ navigation, screenProps }) => {
     const { state, setParams, navigate } = navigation;
@@ -83,7 +82,6 @@ class ShareListScreen extends Component {
         accounts: data,
         loading: false,
         loadSuccess: true,
-        dataSource: ds.cloneWithRows(data),
       })
     }, 100);
   }
@@ -100,11 +98,6 @@ class ShareListScreen extends Component {
           loading={this.state.loading}
           loadSuccess={this.state.loadSuccess}
           accounts={this.state.accounts}
-          dataSource={this.state.dataSource}
-          loadingTip={{
-            tip: '请稍后',
-            subTip: '正在加载账号分享列表...',
-          }}
           loadFailTip={{
             tip: '加载失败',
             subTip: '很抱歉，加载账号分享列表失败',
@@ -113,6 +106,7 @@ class ShareListScreen extends Component {
             tip: '还未有人分享哦！',
             subTip: '点击右上角Add按钮，成为第一个分享者吧！',
           }}
+          onRefresh={this.init}
         />
       </Page>
     );

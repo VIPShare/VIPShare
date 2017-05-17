@@ -6,13 +6,13 @@ import { List, ListItem, Icon } from 'react-native-elements';
 import { NavigationActions, StackNavigator } from 'react-navigation';
 
 import Page from '../../components/Page';
+import { FlatLists } from '../../components/Lists';
 
 import { list } from '../../services/user';
 import { isLoginin } from '../../utils/permission';
 
 import styles from './index.style';
 
-const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 class MessageScreen extends Component {
   static navigationOptions = ({ navigation, screenProps }) => {
     const { navigate } = navigation;
@@ -39,7 +39,6 @@ class MessageScreen extends Component {
       users: [],
       loading: true,
       loadSuccess: false,
-      dataSource: ds.cloneWithRows([])
     };
 
     this.init = this.init.bind(this);
@@ -71,7 +70,6 @@ class MessageScreen extends Component {
         users: data,
         loading: false,
         loadSuccess: true,
-        dataSource: ds.cloneWithRows(data),
       })
     }, 100);
   }
@@ -86,7 +84,7 @@ class MessageScreen extends Component {
     }));
   }
 
-  renderRow(rowData, sectionID) {
+  renderRow({item: rowData, index: sectionID}) {
     return (
       <ListItem
         roundAvatar
@@ -108,9 +106,24 @@ class MessageScreen extends Component {
         init={this.init}
         loading={this.state.loading}
       >
-        <ListView
-          renderRow={this.renderRow}
-          dataSource={this.state.dataSource}
+        <FlatLists
+          refreshing={this.state.loading}
+          loadSuccess={this.state.loadSuccess}
+          data={this.state.users}
+          loadFailTip={{
+            tip: '加载失败',
+            subTip: '很抱歉，加载聊天列表失败',
+          }}
+          emptyTip={{
+            tip: '还未有其他用户哦！',
+          }}
+
+          initialNumToRender={10}
+          renderItem={this.renderRow}
+          keyExtractor={(item, index) => {
+            return index;
+          }}
+          onRefresh={this.init}
         />
       </Page>
     )
