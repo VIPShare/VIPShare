@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import { DeviceEventEmitter } from 'react-native';
 import { TabNavigator, DrawerNavigator } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
@@ -17,25 +18,25 @@ const Home = TabNavigator({
     screen: MessageScreen,
   },
 }, {
-  headerMode: 'screen',
-  navigationOptions: {
-    header: null,
-  },
-  tabBarPosition: 'bottom',
-  animationEnabled: true,
-  swipeEnabled: false,
-  activeTintColor: 'blue',
+    headerMode: 'screen',
+    navigationOptions: {
+      header: null,
+    },
+    tabBarPosition: 'bottom',
+    animationEnabled: true,
+    swipeEnabled: false,
+    activeTintColor: 'blue',
 
-  // ios
+    // ios
 
-  // android
-  upperCaseLabel: false,
-  tabBarOptions: {
-    showIcon: true,
-  },
-  indicatorStyle: {
-    with: 0,
-  },
-});
+    // android
+    upperCaseLabel: false,
+    tabBarOptions: {
+      showIcon: true,
+    },
+    indicatorStyle: {
+      with: 0,
+    },
+  });
 
 export default Home;

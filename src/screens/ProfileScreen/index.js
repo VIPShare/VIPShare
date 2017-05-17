@@ -8,6 +8,8 @@ import ProfileUpdateScreen from './ProfileUpdateScreen';
 import Page from '../../components/Page';
 import PersonItem from './PersonItem';
 
+import { statistics } from '../../services/mine';
+
 import styles from './index.style';
 
 class Profile extends Component {
@@ -21,9 +23,12 @@ class Profile extends Component {
 
     this.state = {
       profile: {},
+      loading: true,
+      loadSuccess: false,
     };
 
     this.init = this.init.bind(this);
+    this.fetchData = this.fetchData.bind(this);
     this.onPressAvatar = this.onPressAvatar.bind(this);
   }
 
@@ -31,11 +36,29 @@ class Profile extends Component {
     const profile = JSON.parse(await AsyncStorage.getItem('user:profile'));
     this.setState({
       profile,
+    }, () => {
+      this.fetchData();
+    });
+  }
+
+  async fetchData() {
+    const { data, err } = await statistics();
+    if (err) {
+      this.setState({
+        loading: false,
+        loadSuccess: false,
+        statistics: {},
+      });
+      return false;
+    }
+    this.setState({
+      loading: false,
+      loadSuccess: true,
+      statistics: data,
     });
   }
 
   onPressAvatar() {
-    console.log('press avatar')
     ImagePicker.showImagePicker({
       title: 'Select Avatar',
       storageOptions: {
@@ -68,7 +91,7 @@ class Profile extends Component {
   }
 
   render() {
-    const profile = this.state.profile;
+    const { profile, statistics } = this.state;
     return (
       <Page
         init={this.init}
@@ -96,7 +119,7 @@ class Profile extends Component {
                 <Avatar
                   xlarge
                   rounded
-                  source={{uri: profile.avatar}}
+                  source={{ uri: profile.avatar }}
                   containerStyle={styles.avatar.avatar}
                   activeOpacity={1}
                 />
@@ -114,14 +137,14 @@ class Profile extends Component {
                     name: 'share',
                     color: 'blue',
                   }}
-                  title="分享了4个账号"
+                  title={this.state.loading ? '加载中' : (this.state.loadSuccess ? `分享了${statistics.shares_count}个账号` : '加载失败')}
                 />
                 <PersonItem
                   icon={{
                     name: 'people',
                     color: 'red',
                   }}
-                  title="结交了10位好友"
+                  title={this.state.loading ? '加载中' : (this.state.loadSuccess ? `结交了${statistics.friends_count}位好友` : '加载失败')}
                 />
               </Row>
               <Row size={1}>
@@ -130,7 +153,7 @@ class Profile extends Component {
                     name: 'favorite',
                     color: 'red',
                   }}
-                  title="帮助了234次"
+                  title={this.state.loading ? '加载中' : (this.state.loadSuccess ? `帮助了${statistics.helpful_count}次` : '加载失败')}
                 />
                 <PersonItem
                   icon={{
