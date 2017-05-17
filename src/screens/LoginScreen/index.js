@@ -88,7 +88,7 @@ class LoginScreen extends Component {
 
       // to https
       if (!profile.avatar.startsWith('http')) {
-        profile.avatar =  `${constants.api_root}${profile.avatar}`;
+        profile.avatar = `${constants.api_root}${profile.avatar}`;
       }
 
       try {
@@ -171,7 +171,7 @@ class LoginScreen extends Component {
             />
           </View>
           <View style={styles.forgotContainer}>
-            <Text style={styles.greyFont}>Forgot Password</Text>
+            <Text style={styles.greyFont}></Text>
           </View>
         </View>
         <TouchableWithoutFeedback onPress={this.login}>
