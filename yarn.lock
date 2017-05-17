@@ -3639,6 +3639,10 @@ react-native-image-picker@^0.26.3:
   version "0.26.3"
   resolved "http://registry.npm.taobao.org/react-native-image-picker/download/react-native-image-picker-0.26.3.tgz#0ad2eede49501a7046d8046a73813696539c3dcd"
 
+react-native-image-resizer@^0.1.1:
+  version "0.1.1"
+  resolved "http://registry.npm.taobao.org/react-native-image-resizer/download/react-native-image-resizer-0.1.1.tgz#2abcac85d97e08854b2de716d62953bbae003c77"
+
 react-native-invertible-scroll-view@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-invertible-scroll-view/-/react-native-invertible-scroll-view-1.0.0.tgz#60ceb384dc950c34eba3a5aeda39f97cdc7d4e23"

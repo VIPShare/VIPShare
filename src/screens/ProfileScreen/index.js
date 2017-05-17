@@ -5,6 +5,7 @@ import { Grid, Row, Col, Avatar } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
 import Spinner from 'react-native-loading-spinner-overlay';
 import Toast from 'react-native-root-toast';
+import ImageResizer from 'react-native-image-resizer';
 
 import ProfileUpdateScreen from './ProfileUpdateScreen';
 import Page from '../../components/Page';
@@ -96,12 +97,23 @@ class Profile extends Component {
         } else {
           let source = { uri: response.uri };
 
-          const { data, err } = await avatar({
-            uri: response.uri,
+          let resizedUri;
+          try {
+            resizedUri = await ImageResizer.createResizedImage(response.uri, 120, 120, 'JPEG', 100);
+          } catch (error) {
+            this.setState({
+              imageLoading: false,
+            });
+            Toast.show('update avatar failed');
+            return false;
+          }
+
+          const { data, err: err2 } = await avatar({
+            uri: resizedUri,
             type: 'multipart/form-data',
             name: `${this.state.profile.nickname}_${Math.floor(Math.random() * 100000)}.png`,
           });
-          if (err) {
+          if (err2) {
             this.setState({
               imageLoading: false,
             });

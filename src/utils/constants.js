@@ -1,4 +1,4 @@
 
 export default {
-  "api_root": "https://192.168.2.40"
+  "api_root": "https://vipshare.whatakitty.com"
 }
