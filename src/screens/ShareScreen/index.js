@@ -26,10 +26,14 @@ class ShareListScreen extends Component {
           screenProps.redirectLogin();
         }
       }} />,
-      headerRight: <Icon name="add" containerStyle={styles.nav.rightWrapper} onPress={() => {
-        screenProps.redirect(NavigationActions.navigate({
-          routeName: 'ShareAdd',
-        }));
+      headerRight: <Icon name="add" containerStyle={styles.nav.rightWrapper} onPress={async () => {
+        if (await isLoginin()) {
+          navigate('DrawerOpen');
+        } else {
+          screenProps.redirect(NavigationActions.navigate({
+            routeName: 'ShareAdd',
+          }));
+        }
       }} />,
       headerVisible: true,
 
