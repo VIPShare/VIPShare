@@ -78,12 +78,17 @@ class ProfileUpdateScreen extends Component {
       }, () => {
         setFieldsValue({
           ...this.state.profile,
+          sex: {
+            title: this.state.profile.sex,
+          }
+        }, () => {
+          this.nickTrue = !isBlank(new String(this.state.profile.nickname));
+          this.sexTrue = !isBlank(new String(this.state.profile.sex));
+          this.birthdayTrue = !isBlank(new String(this.state.profile.birthday));
+          this.addressTrue = !isBlank(new String(this.state.profile.address));
+          this.emailTrue = !isBlank(new String(this.state.profile.email));
+          this.onFormValidate();
         });
-        this.nickTrue = !isBlank(new String(this.state.profile.nickname));
-        this.sexTrue = !isBlank(new String(this.state.profile.sex));
-        this.birthdayTrue = !isBlank(new String(this.state.profile.birthday));
-        this.addressTrue = !isBlank(new String(this.state.profile.address));
-        this.emailTrue = !isBlank(new String(this.state.profile.email));
       });
     }, 100);
   }
@@ -113,7 +118,7 @@ class ProfileUpdateScreen extends Component {
       }
     });
     const sexProps = getFieldProps('sex', {
-      validator: ({title}, cb) => {
+      validator: ({ title }, cb) => {
         if (isBlank(title)) {
           this.sexTrue = false;
           this.onFormValidate();
@@ -169,7 +174,7 @@ class ProfileUpdateScreen extends Component {
       >
         <Form>
           <FormItem label="昵称" {...(getFieldValidating('nickname') ? {} : getFieldError('nickname')) }>
-            <FormInput name="nickname" {...nickProps}/>
+            <FormInput name="nickname" {...nickProps} />
           </FormItem>
           <FormItem label="性别" {...(getFieldValidating('sex') ? {} : getFieldError('sex')) }>
             <PullSelect
@@ -187,13 +192,13 @@ class ProfileUpdateScreen extends Component {
             />
           </FormItem>
           <FormItem label="生日" {...(getFieldValidating('birthday') ? {} : getFieldError('birthday')) }>
-            <FormInput name="birthday" {...birthdayProps}/>
+            <FormInput name="birthday" {...birthdayProps} />
           </FormItem>
           <FormItem label="所在地" {...(getFieldValidating('address') ? {} : getFieldError('address')) }>
-            <FormInput name="address" {...addressProps}/>
+            <FormInput name="address" {...addressProps} />
           </FormItem>
           <FormItem label="邮箱" {...(getFieldValidating('email') ? {} : getFieldError('email')) }>
-            <FormInput name="email" {...emailProps}/>
+            <FormInput name="email" {...emailProps} />
           </FormItem>
         </Form>
       </Page>

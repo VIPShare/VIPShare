@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { ListView } from 'react-native';
+import { ListView, DeviceEventEmitter } from 'react-native';
 import { NavigationActions } from 'react-navigation';
 import { Icon } from 'react-native-elements';
 
@@ -47,9 +47,16 @@ class MyShareList extends Component {
     this.fetchData = this.fetchData.bind(this);
   }
 
+  componentDidMount() {
+    this.subscription = DeviceEventEmitter.addListener('ShareRefresh', this.init);
+  }
+
   componentWillUnmount() {
     if (this.loading) {
       clearTimeout(this.loading);
+    }
+    if (this.subscription) {
+      this.subscription.remove();
     }
   }
 

@@ -19,7 +19,7 @@ import EmptyView from '../../components/EmptyView';
 import PullSelect from '../../components/PullSelect';
 import { isBlank } from '../../utils/string';
 
-import { item, viewable, create } from '../../services/account';
+import { item, viewable, create, update } from '../../services/account';
 
 import styles from './index.style';
 
@@ -31,16 +31,21 @@ class ShareAddScreen extends Component {
       title: 'Share',
       headerRight: state.params && !state.params.readonly && (
         <TouchableWithoutFeedback onPress={async () => {
-          const {data, err} = await create({
+          const action = state.params.id ? update : create;
+          let row = {
             ...state.params.account,
             type: state.params.account.type.title,
-          });
+          };
+          if (state.params.id) {
+            row.id = state.params.id;
+          }
+          const { data, err } = await action(row);
           if (err) {
-            Toast.show('add share account failed');
+            Toast.show(state.params.id ? 'update share account failed': 'add share account failed');
           } else {
             DeviceEventEmitter.emit('ShareRefresh');
           }
-          
+
           navigation.goBack();
         }} disabled={!(state.params && state.params.finishable)}>
           <View style={styles.nav.rightWrapper}>
@@ -96,11 +101,19 @@ class ShareAddScreen extends Component {
         account: data,
       }, () => {
         setFieldsValue({
-          ...data,
+          ...this.state.account,
+          type: {
+            title: this.state.account.type,
+          },
         }, () => {
           this.props.navigation.setParams({
             finishable: true,
           });
+          this.typeTrue = !isBlank(new String(this.state.account.type));
+          this.usernameTrue = !isBlank(new String(this.state.account.username));
+          this.passwordTrue = !isBlank(new String(this.state.account.password));
+          this.sharePassTrue = !isBlank(new String(this.state.account.sharePass));
+          this.onFormValidate();
         });
       });
     }, 100);

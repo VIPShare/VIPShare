@@ -1,4 +1,4 @@
-import rest, { GET, POST } from '../utils/rest';
+import rest, { GET, POST, PUT } from '../utils/rest';
 
 export async function list() {
   return await GET('/api/accounts');
@@ -16,6 +16,12 @@ export async function viewable(id, password) {
 
 export async function create(account) {
   return await POST('/api/accounts', {
+    ...account,
+  });
+}
+
+export async function update(account) {
+  return await PUT(`/api/accounts/${account.id}`, {
     ...account,
   });
 }
