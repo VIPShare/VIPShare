@@ -148,6 +148,21 @@ async function DELETE(url, data) {
   });
 }
 
+async function UPLOAD(url, data) {
+  const formData = new FormData();
+  Object.keys(data).forEach(key => {
+    const value = data[key];
+    formData.append(key, value);
+  });
+  return await rest(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+    body: formData,
+  });
+}
+
 export {
   rest as default,
   // parseError,
@@ -157,4 +172,5 @@ export {
   PUT,
   PATCH,
   DELETE,
+  UPLOAD,
 }

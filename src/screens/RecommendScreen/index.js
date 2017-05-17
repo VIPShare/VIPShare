@@ -79,9 +79,7 @@ class RecommendsScreen extends Component {
   fetchData() {
     this.loading = setTimeout(async () => {
       const { data: tops, err1 } = await top();
-      console.log(tops)
       const { data, err2 } = await list(1, 5);
-      console.log(err2)
       const { list: recommends, pageInfo } = data;
       if (err1 || err2) {
         this.setState({

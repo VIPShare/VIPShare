@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, View, AsyncStorage } from 'react-native';
+import { Text, View, AsyncStorage, DeviceEventEmitter } from 'react-native';
 import { Grid, Row, Col, List, ListItem, Avatar } from 'react-native-elements';
 
 import { isLoginin } from '../../utils/permission';
@@ -21,19 +21,32 @@ class Drawer extends Component {
       profile: {},
     }
 
+    this.onAvatarRefresh = this.onAvatarRefresh.bind(this);
     this.renderInfo = this.renderInfo.bind(this);
   }
 
   async componentDidMount() {
     if (await isLoginin()) {
       const profile = JSON.parse(await AsyncStorage.getItem('user:profile'));
-      console.log('profile')
-      console.log(profile)
       this.setState({
         loginin: true,
         profile,
       });
     }
+
+    this.subscription = DeviceEventEmitter.addListener('AvatarRefresh', this.onAvatarRefresh);
+  }
+
+  componentWillUnmount() {
+    if (this.subscription) {
+      this.subscription.remove();
+    }
+  }
+
+  async onAvatarRefresh() {
+    this.setState({
+      profile: JSON.parse(await AsyncStorage.getItem('user:profile')),
+    });
   }
 
   renderInfo(loginin, profile) {
@@ -64,7 +77,6 @@ class Drawer extends Component {
       labelStyle,
       drawers } = this.props;
     const { loginin, profile } = this.state;
-    const avatar = loginin ? { uri: profile.avatar } : { uri: "https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg" };
     return (
       <Grid containerStyle={[styles.container, style]}>
         <Row size={1} containerStyle={styles.info.container}>
@@ -72,7 +84,7 @@ class Drawer extends Component {
             <Avatar
               large
               rounded
-              source={avatar}
+              source={{ uri: profile.avatar }}
               onPress={() => {
                 if (loginin) {
                   navigation.navigate('Profile')

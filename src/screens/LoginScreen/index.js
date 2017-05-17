@@ -19,6 +19,7 @@ import Form from '../../components/Form';
 import { login } from '../../services/auth';
 import { info } from '../../services/mine';
 import { isBlank } from '../../utils/string';
+import constants from '../../utils/constants';
 
 class LoginScreen extends Component {
   static navigationOptions = {
@@ -83,6 +84,11 @@ class LoginScreen extends Component {
         // Error fetch profile
         Alert.alert('网络通讯存在问题,请稍后再试!');
         return;
+      }
+
+      // to https
+      if (!profile.avatar.startsWith('http')) {
+        profile.avatar =  `${constants.api_root}${profile.avatar}`;
       }
 
       try {

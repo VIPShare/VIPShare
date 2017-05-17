@@ -1,14 +1,17 @@
 import React, { Component, PropTypes } from 'react';
-import { Text, View, AsyncStorage } from 'react-native';
+import { Text, View, AsyncStorage, Platform, DeviceEventEmitter } from 'react-native';
 import { StackNavigator } from 'react-navigation';
 import { Grid, Row, Col, Avatar } from 'react-native-elements';
 import ImagePicker from 'react-native-image-picker';
+import Spinner from 'react-native-loading-spinner-overlay';
+import Toast from 'react-native-root-toast';
 
 import ProfileUpdateScreen from './ProfileUpdateScreen';
 import Page from '../../components/Page';
 import PersonItem from './PersonItem';
+import constants from '../../utils/constants';
 
-import { statistics } from '../../services/mine';
+import { statistics, avatar } from '../../services/mine';
 
 import styles from './index.style';
 
@@ -25,6 +28,7 @@ class Profile extends Component {
       profile: {},
       loading: true,
       loadSuccess: false,
+      imageLoading: false,
     };
 
     this.init = this.init.bind(this);
@@ -64,29 +68,61 @@ class Profile extends Component {
       storageOptions: {
         skipBackup: true,
         path: 'images'
-      }
+      },
+      noData: true,
+      mediaType: 'photo',
     }, (response) => {
-      console.log('Response = ', response);
+      this.setState({
+        imageLoading: true,
+      }, async () => {
+        if (response.didCancel) {
+          console.log('User cancelled image picker');
+          this.setState({
+            imageLoading: false,
+          });
+          return false;
+        } else if (response.error) {
+          console.log('ImagePicker Error: ', response.error);
+          this.setState({
+            imageLoading: false,
+          });
+          return false;
+        } else if (response.customButton) {
+          console.log('User tapped custom button: ', response.customButton);
+          this.setState({
+            imageLoading: false,
+          });
+          return false;
+        } else {
+          let source = { uri: response.uri };
 
-      if (response.didCancel) {
-        console.log('User cancelled image picker');
-      }
-      else if (response.error) {
-        console.log('ImagePicker Error: ', response.error);
-      }
-      else if (response.customButton) {
-        console.log('User tapped custom button: ', response.customButton);
-      }
-      else {
-        let source = { uri: response.uri };
+          const { data, err } = await avatar({
+            uri: response.uri,
+            type: 'multipart/form-data',
+            name: `${this.state.profile.nickname}_${Math.floor(Math.random() * 100000)}.png`,
+          });
+          if (err) {
+            this.setState({
+              imageLoading: false,
+            });
+            Toast.show('update avatar failed');
+            return false;
+          }
 
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
-        this.setState({
-          avatarSource: source
-        });
-      }
+          let profile = {
+            ...this.state.profile,
+            avatar: `${constants.api_root}${data.filename}`,
+          };
+          await AsyncStorage.setItem('user:profile', JSON.stringify(profile));
+          this.setState({
+            profile,
+            imageLoading: false,
+          }, () => {
+            console.log(this.state.profile)
+            DeviceEventEmitter.emit('AvatarRefresh');
+          });
+        }
+      });
     });
   }
 
@@ -97,6 +133,7 @@ class Profile extends Component {
         init={this.init}
         enableLoad={false}
       >
+        <Spinner visible={this.state.imageLoading} />
         <Grid containerStyle={{ flex: 1 }}>
           <Row size={1} containerStyle={{ backgroundColor: '#aaa' }}>
             <Col containerStyle={{ flex: 1 }}>

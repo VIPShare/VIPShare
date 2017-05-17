@@ -1403,21 +1403,15 @@ debug@2.2.0, debug@~2.2.0:
   dependencies:
     ms "0.7.1"
 
-debug@2.3.3, debug@^2.1.1, debug@^2.2.0:
+debug@2.3.3, debug@^2.2.0:
   version "2.3.3"
   resolved "http://registry.npm.taobao.org/debug/download/debug-2.3.3.tgz#40c453e67e6e13c901ddec317af8986cda9eff8c"
   dependencies:
     ms "0.7.2"
 
-debug@2.6.4:
+debug@2.6.4, debug@^2.1.1, debug@^2.6.3, debug@~2.6.4:
   version "2.6.4"
   resolved "http://registry.npm.taobao.org/debug/download/debug-2.6.4.tgz#7586a9b3c39741c0282ae33445c4e8ac74734fe0"
-  dependencies:
-    ms "0.7.3"
-
-debug@^2.6.3, debug@~2.6.4:
-  version "2.6.6"
-  resolved "http://registry.npm.taobao.org/debug/download/debug-2.6.6.tgz#a9fa6fbe9ca43cf1e79f73b75c0189cbb7d6db5a"
   dependencies:
     ms "0.7.3"
 
@@ -3657,6 +3651,10 @@ react-native-lightbox@oblador/react-native-lightbox#c84a8543d4511fe6a44c3d782074
   resolved "https://codeload.github.com/oblador/react-native-lightbox/tar.gz/c84a8543d4511fe6a44c3d7820747c9c1bddd875"
   dependencies:
     react-timer-mixin "^0.13.3"
+
+react-native-loading-spinner-overlay@^0.5.0:
+  version "0.5.0"
+  resolved "http://registry.npm.taobao.org/react-native-loading-spinner-overlay/download/react-native-loading-spinner-overlay-0.5.0.tgz#2f06c14da24139303ff95364f4b9de8ab1cacc97"
 
 react-native-parsed-text@0.0.16:
   version "0.0.16"
