@@ -44,7 +44,6 @@ class ChatScreen extends Component {
       profile,
     })
     this.socket.on('connect', () => {
-      console.log('connect!');
       this.socket.emit('chatWith', {
         ownerId: profile.id,
         targetId: this.props.navigation.state.params.id,
@@ -52,7 +51,6 @@ class ChatScreen extends Component {
     });
 
     this.socket.on('roomJoined', ({ previousMessages }) => {
-      console.log(previousMessages);
       this.setState({
         messages: previousMessages,
         loading: false,
@@ -62,7 +60,6 @@ class ChatScreen extends Component {
 
     this.socket.on('reback', ({ messages = [], time }) => {
       this.setState((previousState) => {
-        console.log(previousState.messages)
         return {
           messages: GiftedChat.append(previousState.messages, messages),
         };
@@ -70,7 +67,6 @@ class ChatScreen extends Component {
     });
 
     this.socket.on('echo', ({ messages = [], time }) => {
-      console.log('echo');
       this.setState((previousState) => {
         return {
           messages: GiftedChat.append(previousState.messages, messages),
@@ -104,7 +100,6 @@ class ChatScreen extends Component {
   }
 
   onSend(messages = []) {
-    console.log('send message')
     this.socket.emit('send', {
       ownerId: this.state.profile.id,
       targetId: this.props.navigation.state.params.id,

@@ -7,7 +7,6 @@ function isApiUrl(url) {
   if (url.startsWith(ROOT_PATH)) {
     return url;
   }
-  console.log(`${ROOT_PATH}${url}`);
   return `${ROOT_PATH}${url}`;
 }
 
@@ -16,16 +15,13 @@ function parseText(response) {
 }
 
 function parseJSON(text) {
-  console.log(text);
   if (text.replace(/(^\s*)|(\s*$)/g, "").length === 0) {
     return Promise.resolve({});
   }
-  console.log(JSON.parse(text))
   return Promise.resolve(JSON.parse(text));
 }
 
 function checkStatus(response) {
-  console.log(response.status)
   if (response.status >= 200 && response.status < 300) {
     return response;
   }

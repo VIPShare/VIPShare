@@ -20,7 +20,6 @@ async function accessToken(username, password) {
   });
 
   if (!err) {
-    console.log(data);
     await AsyncStorage.setItem('access_token', data.access_token);
     return {
       access_token: data.access_token,
@@ -98,7 +97,6 @@ async function rest(url, options = {}) {
   }
 
   const error = await parseError(err);
-  console.log(error);
   return { err: error };
 }
 

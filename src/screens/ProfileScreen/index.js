@@ -77,19 +77,16 @@ class Profile extends Component {
         imageLoading: true,
       }, async () => {
         if (response.didCancel) {
-          console.log('User cancelled image picker');
           this.setState({
             imageLoading: false,
           });
           return false;
         } else if (response.error) {
-          console.log('ImagePicker Error: ', response.error);
           this.setState({
             imageLoading: false,
           });
           return false;
         } else if (response.customButton) {
-          console.log('User tapped custom button: ', response.customButton);
           this.setState({
             imageLoading: false,
           });
@@ -130,7 +127,6 @@ class Profile extends Component {
             profile,
             imageLoading: false,
           }, () => {
-            console.log(this.state.profile)
             DeviceEventEmitter.emit('AvatarRefresh');
           });
         }
